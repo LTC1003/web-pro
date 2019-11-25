@@ -6,10 +6,7 @@
 
 <script>
 export default {
-  name: 'Header',
-  props: {
-
-  },
+  name: 'header',
   component:{},
   data() {
     return {
@@ -24,11 +21,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-    .header{
-        background: #399;
-        font-size: 36px;
-        color: #000;
-    }
-</style>

@@ -7,9 +7,6 @@
 <script>
 export default {
   name: 'footer',
-  props: {
-
-  },
   component:{},
   data() {
     return {
