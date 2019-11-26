@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    count:0
+    count: '阿灿学vue之旅'
   },
   mutations: {
     imcrement(state){
