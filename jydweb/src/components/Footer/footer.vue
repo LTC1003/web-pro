@@ -22,10 +22,6 @@ export default {
 }
 </script>
 
-<style scoped>
-    .footer{
-        background: #f23a93;
-        font-size: 36px;
-        color: #000;
-    }
+<style lang="scss" scoped>
+    @import 'Footer';
 </style>

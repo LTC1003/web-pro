@@ -1,23 +1,23 @@
 <template>
   <div class="home">
     <div class="head-nav">
-      <head-top datastr></head-top>
+      <head-top></head-top>
     </div>
     <div class="content-main">
-      首页内容 {{viewShow}}
+      <main-content></main-content>
       <router-view></router-view>
     </div>
     <div class="foot-info">
-      
-      <foot-info viewData>底部公共信息</foot-info> 
+      <foot-info></foot-info> 
     </div>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
-import headTop from "../components/Header/Header.vue"
-import footInfo from "../components/Footer/Footer.vue"
+import headTop from "../components/Header/Header"
+import footInfo from "../components/Footer/Footer"
+import mainContent from "../components/Main/Main"
 Vue.use(headTop);
 Vue.use(footInfo);
 
@@ -26,11 +26,12 @@ export default {
 
   components: {
    headTop,
-   footInfo
+   footInfo,
+   mainContent
   },
   data () {
     return {
-      viewShow : "先知道我看到了什么？"
+      
     }
   },
   mounted() {
@@ -42,6 +43,6 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
-
+<style lang="scss">
+  @import 'common'
 </style>

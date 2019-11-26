@@ -1,20 +1,19 @@
 <template>
   <div class="header">
-    {{datastr}}
-    {{count}}
+    <div class="nav">
+      <div><img src="/src/asset/observing.png" alt="logo"></div>
+    </div>
     <router-view/>
   </div>
 </template>
 
 <script>
 // import store from 'store'
-console.log(333);
 export default {
   name: 'header',
   component:{},
   data() {
     return {
-      datastr: '所有页面的头部'  
     }
   },
   computed: {
@@ -30,3 +29,6 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+  @import 'Header';
+</style>
