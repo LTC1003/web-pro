@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <div class="nav">
-      <div><img src="/src/asset/observing.png" alt="logo"></div>
+      <div>
+        <!-- <img src="/src/asset/observing.png" alt="logo"> -->
+      </div>
     </div>
     <router-view/>
   </div>
