@@ -1,7 +1,22 @@
 .header{
    height: inherit;
    .nav{
-        // width: 100%;
-        padding: 11px 260px;
+      background: chocolate;
+        width: 100%;
+      div{
+         display: inline-block;
+         vertical-align: middle;
+      }
+      .logo{
+         height: 38px;
+         margin-left: 200px;
+      }
+      .navLlist{
+         .navItem{
+            position: absolute;
+            top: 14px;
+         }
+      }
    }
+   
 }

@@ -15,11 +15,13 @@
 
 <script>
 import Vue from "vue";
-import headTop from "../components/Header/Header"
-import footInfo from "../components/Footer/Footer"
-import mainContent from "../components/Main/Main"
+import headTop from "../components/Header/Header";
+import footInfo from "../components/Footer/Footer";
+import mainContent from "../components/Main/Main";
+
 Vue.use(headTop);
 Vue.use(footInfo);
+Vue.use(mainContent);
 
 export default {
   name: "home",
@@ -31,7 +33,7 @@ export default {
   },
   data () {
     return {
-      
+
     }
   },
   mounted() {
