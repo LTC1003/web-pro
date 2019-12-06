@@ -1,5 +1,5 @@
 # fragrantleaf
-
+@vue/cli4.4 + view-ui
 ## Project setup
 ```
 npm install
