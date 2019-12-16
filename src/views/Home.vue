@@ -7,15 +7,9 @@
       </div>
       <div class="navList">
         <div class="navtab" :class="[navItem.name == activeName ? 'activeClass': '']" v-for="(navItem, i) in navList" :key="i" :name ="navItem.name"
-          @click="routeName(navItem.route,navItem.name,); ">
+          @click="routeName(navItem.route,navItem.name); ">
           {{navItem.name}}
         </div>
-        <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-          <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-          <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-          <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
-        </el-tabs> -->
       </div>
 
       <div class="user-login-info">
@@ -73,12 +67,8 @@ export default {
       // console.log(this.$router.push(route));
       this.activeName = name;
       this.$router.push(route);
-      // this.$router.push({name: 'supplementary'})
     },
-    handleClick(val){
-      console.log(val);
-      this.ctiveName = val;
-    }
+   
   }
 };
 </script>
