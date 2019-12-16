@@ -1,0 +1,134 @@
+.footer{
+  height:409px;
+  .footer-link{
+    height: 129px;
+    padding: 60px 100px;
+    border-bottom: 1px solid #cccccc;
+    display: flex;
+    .link-child{
+      height: 129px;
+      display: inline-block;
+      vertical-align: middle;
+      flex: 1;
+    }
+  }
+
+  .partner{
+    height: 54px;
+    margin-bottom: 20px;
+    padding-top:3px;
+
+    &>div{
+      display: inline-block;
+      vertical-align: middle;
+      height: 48px;
+      img{
+        width:48px; 
+        height:48px;
+      }
+    }
+    .partner-list{
+      display: inline-block;
+      text-align: left;
+      margin-left: 10px;
+      h3{
+        height:24px;
+        font-size:18px;
+        font-family:Microsoft YaHei;
+        font-weight:400;
+        line-height:24px;
+      }
+      p{
+        color: #999999;
+        height:19px;
+        font-size:14px;
+        font-family:Microsoft YaHei;
+        font-weight:400;
+        line-height:19px;
+      }
+    }
+  }
+  .security{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 100px;
+    .security-group{
+      margin-right: 50px;
+      &:last-of-type{
+        margin-right: 0;
+      }
+      p{
+        width:99px;
+        height:21px;
+        font-size:16px;
+        font-family:Microsoft YaHei;
+        font-weight:400;
+        line-height:21px;
+        color: #232323;
+        margin-bottom: 4px;
+      }
+      &>div{
+        height: 100px;
+        img{
+          height: 100px;
+          width: 100px;
+        }
+      }
+      
+    }
+  }
+  .help-list{
+    font-size:14px;
+    font-family:Microsoft YaHei;
+    font-weight:400;
+    line-height: 30px;        
+    text-align: left;
+    padding-left: 100px;
+    li{
+      a{color: #666666;
+        &:hover{
+          cursor: pointer;
+          color: #42b983;
+        }
+      };
+      &:first-of-type{
+        a{
+          font-size: 16px;
+          color: #333333;
+        }
+      }
+    }
+  }
+
+  .copyright{
+    // border-top: 1px solid #666666;
+    .lick-copyinfo{
+      width:73%;
+      height:19px;
+      font-size:14px;
+      font-family:Microsoft YaHei;
+      font-weight:400;
+      margin: 21px auto;
+      a{
+        color: #666666;
+        &:hover{
+          cursor: pointer;
+          color: #42b983;
+        }
+      }
+    }
+    .copyinfo{
+      height:75px;
+      font-size:12px;
+      font-family:Microsoft YaHei;
+      font-weight:400;
+      line-height:18px;
+      color: #666666;
+    }
+  } 
+}
+.vertical-line{
+  height:129px;
+}

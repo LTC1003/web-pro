@@ -1,41 +1,90 @@
 <template>
   <div class="home">
-    <!-- <HeadCommon></HeadCommon> -->
-    <div>
-      <!-- <div v-for="(item, index) in navList" :key="item"
-        @click="$router.push(item.route); 
-        navIndex = index" 
-        :class="{choose: navIndex == index}">
-        <img :src="item.img" alt=""><p>{{item.name}}</p>
-      </div> -->
-      <div v-for="(item, index) in navList" :key="item.route" :name ="item.name"
-        @click="$router.push(item.route); ">
-        {{item.name}}
+    
+    <header class="header-top">
+      <div class="applogo">
+        <!-- <img src="@/assets/logo.png" alt="logo"> -->
       </div>
-      <router-view></router-view>
-    </div>
+      <div class="navList">
+        <div class="navtab" :class="[navItem.name == activeName ? 'activeClass': '']" v-for="(navItem, i) in navList" :key="i" :name ="navItem.name"
+          @click="routeName(navItem.route,navItem.name,); ">
+          {{navItem.name}}
+        </div>
+        <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+          <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+          <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+          <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+        </el-tabs> -->
+      </div>
+
+      <div class="user-login-info">
+
+        <el-input
+        style="width: 200px; height: 35px"
+          placeholder="请输入内容"
+          suffix-icon="el-icon-search"
+          v-model="inputValue">
+        </el-input>
+        
+        <div>
+          <div class="concern el-icon-star-off"> 
+            <span>关注</span>
+          </div>
+          <div class="account el-icon-user">
+            <span><a href="">登陆</a></span> | <span><a href="">注册</a></span>
+          </div>
+        </div>
+
+      </div>  
+    </header>
+    <router-view></router-view>
+    <FootMain></FootMain>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 // import HelloWorld from "@/components/HelloWorld.vue";
+import FootMain from "@/components/FootMain";
 export default {
   name: "home",
   components: {
-    // HelloWorld
+    FootMain
   },
   data() {
     return {
-      theme: "light",
+      activeName: '',
+      ctiveName: 'second',
+      inputValue: '',
       navList: [
-        {name: '首页', img: require('@/assets/logo.png'), route: '/main-content'},
-        {name: '直播', img: require('@/assets/logo.png'), route: '/lineplay'},
-        {name: '视频', img: require('@/assets/logo.png'), route: '/Video'},
-        {name: 'APP下载',img: require('@/assets/logo.png'), route: '/download-app'},
+        {name: '首页', route: '/main-content'},
+        {name: '直播', route: '/lineplay'},
+        {name: '视频', route: '/short-video'},
+        {name: 'APP下载', route: '/download-app'},
       ],
       // navIndex: 0,
     }
   },
+  mounted() {
+  },
+  methods: {
+    routeName(route, name) {
+      // console.log(this.$router.push(route));
+      this.activeName = name;
+      this.$router.push(route);
+      // this.$router.push({name: 'supplementary'})
+    },
+    handleClick(val){
+      console.log(val);
+      this.ctiveName = val;
+    }
+  }
 };
 </script>
+<style lang="scss">
+  @import "common.scss";
+  .activeClass {
+    border-bottom: 2px solid #409EFF;
+  }
+</style>

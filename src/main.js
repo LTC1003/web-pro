@@ -10,3 +10,11 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+
+router.beforeEach((to,from, next) => {
+  store.state.path = to.fullPath;
+  next();
+  // if(!localStorage.AccessToken) {
+  //   next('/');
+  // }
+})
