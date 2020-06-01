@@ -1,19 +1,22 @@
 html{
-  font-size: 12px;
+  font-size: 100px;
 }
 body{
+  margin: 0;
+  padding: 0;
+}
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
-div,p,table,span,h1,h2,h3,h4,h5,h6{
-  margin: 0;
-  padding: 0;
-}
-button,input,ul,ol,li{
+div,p,table,span,h1,h2,h3,h4,h5,h6,button,input,ul,ol,li{
   list-style: none;
-  margin: 0;
-  padding: 0;
+}
+img {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
 }
 i{
   text-decoration: none;
@@ -27,91 +30,6 @@ a{
   }
 }
 
-.header-top{
-  background: #ffffff;
-  color:333333;
-  .applogo{
-    display: inline-block;
-    width: 120px;
-    height: 38px;
-    margin: 11px 0;
-    border-radius: 5px;
-    background: url("../assets/logo.png") no-repeat;
-    background-size: cover;
-    vertical-align: middle;
-    // img{
-    //   height: 38px;
-    //   vertical-align: middle;
-    // }
-  }
-  .navList{
-    vertical-align: middle;
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-content: center;
-    width: 50%;
-    height: 60px;
-    .navtab{
-      flex:1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height : 38px;
-      font-size: 14px;
-      &:hover{
-        border-bottom: 2px solid #2D6FF9;
-        margin-bottom: -2px;
-        color: #FFA60C;
-      }
-      &:valid{
-      
-        color: #FFA60C;
-      }
-     
-    }
-  }
-  .user-login-info{
-    width: 30%;
-    height: 60px;
-    vertical-align: middle;
-    display: inline-flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    input{
-      width: 200px;
-      height: 35px;
-      line-height: 35px;
-      border-radius: 50px;
-      border-style: solid;
-      // border-color: #c3c3c3;
-      border-color: #6e7878;
-      border-width: 1px;
-    }
-    .concern, .account{
-      margin-left: 20px;
-      // width: 80px;
-      height:35px;
-      font-size:24px;
-      font-family:Microsoft YaHei;
-      font-weight:400;
-      line-height:35px;
-      display:inline-block;
-      color: #d9d9d9;
-      span{
-        font-size: 14px;
-        vertical-align: middle;
-        margin-left: 5px;
-        color:#dbdbdb;
-      }
-    }
-    .account{
-      margin-left: 20px;
-      height:35px;
-      font-size:24px;
-      font-family:Microsoft YaHei;
-      font-weight:400;
-      line-height:35px;
-      display:inline-block;
-    }
-  }
+.home{
+  font-family: "Microsoft YaHei";
 }

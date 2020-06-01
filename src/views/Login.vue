@@ -10,10 +10,10 @@
     },
     data () {
       return {
-      
+        text: "用户登录"
       }
     },
-    mounted() {
+    mounted() { 
       
     },
     methods: {
@@ -23,5 +23,5 @@
 </script>
 
 <style lang="scss" scoped>
- 
+
 </style> 

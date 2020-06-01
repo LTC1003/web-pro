@@ -1,0 +1,50 @@
+.header-parts{
+  height: 0.6rem;
+  width: 100%;
+  border: 1px solid #333333;
+  font-size: 0.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  opacity: 0.5;
+  .appLogo{
+    width: 120px;
+    height: 38px;
+  }
+  .menuList, .control-group{
+    display: inline-flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #3845da;
+    font-size: 0.14rem;
+  }
+  .menuList{
+    width: 33%;
+    color: #FFFFFF;
+    .item-tab{
+      padding: 5px;
+      
+      &.active{
+        color: #FFA60C;
+        border-bottom: 2px solid #FFA60C;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .control-group{
+    width: 34.22%;
+    color: #DBDBDB;
+    .search-type{
+      width: 200px;
+      height: 35px;
+      .el-input__inner{
+        height: 35px;
+        border-radius:18px;
+        background-color: #999999;
+      }
+    }
+    
+  }
+}
