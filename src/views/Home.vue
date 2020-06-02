@@ -1,15 +1,14 @@
 <template>
   <div class="home">
-    <HeaderParts />
-    <div>{{text}}</div>
+    <!-- <HeaderParts></HeaderParts> -->
     <router-view></router-view>
-    <FooterParts />
+    <FooterParts></FooterParts>
   </div>
 </template>
 
 <script>
-import FooterParts from "@/components/FooterParts";
 import HeaderParts from "@/components/HeaderParts";
+import FooterParts from "@/components/FooterParts";
 export default {
   name: "home",
   components: {
@@ -31,5 +30,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "common.scss";
+  @import "./common.scss";
 </style>

@@ -38,6 +38,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scope>
   @import "./index.scss";
 </style>

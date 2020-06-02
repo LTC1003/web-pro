@@ -1,8 +1,7 @@
 .header-parts{
   height: 0.6rem;
   width: 100%;
-  border: 1px solid #333333;
-  font-size: 0.1rem;
+  // border: 1px solid #333333;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +15,6 @@
     display: inline-flex;
     justify-content: space-around;
     align-items: center;
-    border: 1px solid #3845da;
     font-size: 0.14rem;
   }
   .menuList{

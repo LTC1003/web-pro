@@ -16,18 +16,17 @@ const routes = [
   {
     path: "/",
     name: "home",
-    // redirect: { name: 'home' },
+    redirect: { name: 'main-content' },
     component: Home, 
     children:[
-      {
-        path: "/login",
-        name: "login",
-        component: () => import("../views/Login.vue")
-      },
-
       {path: "main-content", name: 'main-content', component: MainContent},
       {path: "lineplay", name: "linepaly", component: Lineplay}
     ]
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("../views/Login.vue")
   },
 ];
 
