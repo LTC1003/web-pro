@@ -1,41 +1,33 @@
 <template>
   <div class="main-warpper">
-    
     <div class="warp_play">
       <HeaderParts id="apphead"></HeaderParts>
       <div class="media-play">
         <div class="player">
           <!-- <img src="../../assets/home/playimg.png" alt=""> -->
         </div>
-        <div class="activity">
-          <div class="item-order">1</div>
-          <div class="item-order">2</div>
-          <div class="item-order">3</div>
-          <div class="item-order">4</div>
-        </div>
+        <RecommendLive />
       </div>
     </div>
     <div class="theme">
-      <div class="theme-host">热门直播</div>
-      新闻
-
-
-      <div class="type1">
-        <div class="type2">
-          <div class="type4"></div>  
-        </div>  
-        <div class="type3"></div>  
-      </div> 
+      <div class="theme-type">
+        <div class="type-host"></div>
+      </div>
+      <div class="theme-type">
+        <div class="thrme-news">新闻</div>
+      </div>
     </div>
     {{text}}
   </div>
 </template>
 <script>
 import HeaderParts from "../../components/HeaderParts"
+import RecommendLive from "../../components/RecommendLive"
 export default {
   name: 'main-content',
   components: {
-    HeaderParts
+    HeaderParts,
+    RecommendLive
   },
   data () {
     return {

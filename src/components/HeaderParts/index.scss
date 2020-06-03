@@ -5,8 +5,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #000000;
-  opacity: 0.5;
+  background: rgba($color: #000000, $alpha: 0.5);
+  // opacity: 0.5;
   .appLogo{
     width: 120px;
     height: 38px;
@@ -40,7 +40,10 @@
       .el-input__inner{
         height: 35px;
         border-radius:18px;
-        background-color: #999999;
+        // background-color: #ABA4A3;
+      }
+      .el-input__icon{
+        line-height: 35px;
       }
     }
     
