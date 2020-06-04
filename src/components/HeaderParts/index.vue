@@ -12,8 +12,8 @@
     <div class="control-group">
       <el-input class="search-type" suffix-icon="el-icon-search" v-model="searchVal"></el-input>
       <div class="cont-follow">关注</div>
-      <div class="cont-user-group">
-        Signin | register
+      <div class="cont-user">
+        <span class="sign" @click="signClick()">Signin</span> | <span class="register" @click="registerClick()">register</span>
       </div>
     </div>
   </div>
@@ -32,8 +32,13 @@ export default {
   mounted() {
 
   },
-  methods: {
-
+  methods: {  
+    signClick(){
+      this.$router.push({name: 'login'});
+    },
+    registerClick(){
+      this.$router.push({name: 'register'});
+    }
   },
 };
 </script>

@@ -33,8 +33,116 @@
     }
   }
 
+  .theme{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #F4F5F8;
+    .theme-type{
+      width: 80%;
+      min-height: 200px;
+      background-color: rgb(241, 119, 139);
+      margin: 40px 0;
+    }
+
+  }
 }
 
+/*************/ 
+.theme-type{
+  .type-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #000;
+    .type-item-title{
+      height:37px;
+      font-size:26px;
+      font-family:PingFang SC;
+      font-weight:bold;
+      line-height:37px;
+      display: flex;
+      .title-icon{
+        width: 38px;
+        height: 38px;
+        background-color: #000000;
+        margin-right: 10px;
+      }
+      span{
+        color: #232323;
+      }
+    }
+    .type-item-more{
+      font-size:13px;
+      font-family:Source Han Sans;
+      font-weight:400;
+      color: #5C2500;
+    }
+  }
+  .type-cover{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    .item-cover{
+      justify-self: start;
+      justify-self: start;
+      width: 270px;
+      // width: 290px;
+      // min-height: 180px;
+      margin: 8px 7px;
+      .cover{
+        width: 100%;
+        height: 135px;
+        // height: 165px;
+        background-color: #4bb8b8;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+      .cover-info{
+        text-align: start;
+        background-color: #ffffff;
+        padding: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        .info-title{
+          font-size: 13px;
+          font-family:Source Han Sans;
+          font-weight:400;
+          line-height:17px;
+          color:rgba(35,35,35,1);
+        }
+        .info-user{
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: #999999;
+          margin-top: 10px;
+          .user-avatar{
+            display: flex;
+            justify-self: start;
+            align-items: center;
+            .avatar{
+              width:24px;
+              height:24px;
+              border-radius:50%;
+              background-color: rgb(110, 44, 197);
+              margin-right: 5px;
+            }
+          }
+          .user-link{
+            &:hover{
+              color: rgb(241, 119, 139);
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 @media screen and (min-width: 1200px){
 

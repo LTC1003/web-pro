@@ -46,6 +46,23 @@
         line-height: 35px;
       }
     }
-    
+    .cont-follow{
+      &:hover{
+        cursor: pointer;
+        color: #FFA60C;
+        transform:scale(1.5);
+        -webkit-transform:scale(1.5);  
+        -moz-transform:scale(1.5);
+      }
+    }
+    .cont-user{
+      .sign, .register{
+        &:hover{
+          cursor: pointer;
+          color: #FFA60C;
+        }
+        
+      }
+    }
   }
 }
