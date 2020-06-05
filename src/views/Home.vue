@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <!-- <HeaderParts></HeaderParts> -->
+    <HeaderParts></HeaderParts>
     <router-view></router-view>
     <FooterParts></FooterParts>
   </div>

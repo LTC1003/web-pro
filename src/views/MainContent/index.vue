@@ -2,7 +2,7 @@
   <div class="main-warpper">
     <div class="warp_play">
       <!-- 页头组件 -->
-      <HeaderParts id="apphead"></HeaderParts>
+      <!-- <HeaderParts id="apphead"></HeaderParts> -->
       <div class="media-play">
         <div class="player">
           <!-- <img src="../../assets/home/playimg.png" alt=""> -->

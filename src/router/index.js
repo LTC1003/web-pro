@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import MainContent from "../views/MainContent";
 import Lineplay from "../views/Lineplay";
+import Register from "./../views/register";
 
 
 
@@ -20,7 +21,8 @@ const routes = [
     component: Home, 
     children:[
       {path: "main-content", name: 'main-content', component: MainContent},
-      {path: "lineplay", name: "linepaly", component: Lineplay}
+      {path: "lineplay", name: "linepaly", component: Lineplay},
+      
     ]
   },
   {
@@ -28,6 +30,11 @@ const routes = [
     name: "login",
     component: () => import("../views/Login.vue")
   },
+  {
+    path: "/register",
+    name: 'register',
+    component: Register
+  }
 ];
 
 const originalPush = VueRouter.prototype.push

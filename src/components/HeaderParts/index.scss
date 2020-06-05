@@ -5,11 +5,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba($color: #000000, $alpha: 0.5);
+
   // opacity: 0.5;
   .appLogo{
     width: 120px;
     height: 38px;
+    display: grid;
   }
   .menuList, .control-group{
     display: inline-flex;
@@ -19,21 +20,33 @@
   }
   .menuList{
     width: 33%;
-    color: #FFFFFF;
+    // color: #FFFFFF;
+    color: #333333;
     .item-tab{
       padding: 5px;
-      
+      &:hover{
+        cursor: pointer;
+        // font-weight: bold;
+        color: #FFA60C;
+        transform: scale(1.2);
+        -webkit-transform:scale(1.2);  
+        -moz-transform:scale(1.2);
+      }
       &.active{
         color: #FFA60C;
         border-bottom: 2px solid #FFA60C;
         font-weight: bold;
+        transform: scale(1.2);
+        -webkit-transform:scale(1.2);  
+        -moz-transform:scale(1.2);
       }
     }
   }
 
   .control-group{
     width: 34.22%;
-    color: #DBDBDB;
+    // color: #DBDBDB;
+    color: #666666;
     .search-type{
       width: 200px;
       height: 35px;

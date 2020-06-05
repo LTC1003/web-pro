@@ -1,5 +1,6 @@
 <template>
   <div class="register">
+    {{text}}
   </div>
 </template>
 <script>
