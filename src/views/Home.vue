@@ -1,7 +1,8 @@
 <template>
-  <div class="home">
+  <div class="home" id="app">
     <HeaderParts></HeaderParts>
     <router-view></router-view>
+    <!-- <login /> -->
     <FooterParts></FooterParts>
   </div>
 </template>
@@ -9,6 +10,7 @@
 <script>
 import HeaderParts from "@/components/HeaderParts";
 import FooterParts from "@/components/FooterParts";
+// import login from "./Login"
 export default {
   name: "home",
   components: {

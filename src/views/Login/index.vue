@@ -18,7 +18,7 @@
             <el-input v-model="formLogin.verify" placeholder="验证码"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">登录</el-button>
+            <el-button type="primary" @click="onSubmit()">登录</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -45,7 +45,9 @@
       
     },
     methods: {
-      
+      onSubmit(){
+
+      }
     }
   }
 </script>
