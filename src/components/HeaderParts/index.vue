@@ -1,8 +1,5 @@
 <template>
   <div class="header-parts">
-    <!-- <div class="appLogo">
-      <img :src="require('@/assets/home/applogo.png')" alt="logo">
-    </div> -->
     <router-link class="appLogo" to="/home/main-content">
       <img :src="require('@/assets/home/applogo.png')" alt="logo">
     </router-link>
@@ -16,37 +13,58 @@
       <el-input class="search-type" suffix-icon="el-icon-search" v-model="searchVal"></el-input>
       <div class="cont-follow">关注</div>
       <div class="cont-user">
-        <span class="sign" @click="signClick()">Signin</span>|<span class="register" @click="registerClick()">register</span>
+        <span class="sign" @click="signClick('用户登录')">Signin</span>|<span class="register" @click="registerClick('/register')">register</span>
       </div>
     </div>
+    <Login :login="loginMsg" v-show="loginMsg.visibleState" @changeState="changeState()"></Login>
   </div>
 </template>
 
 <script>
-
+import Login from "../../views/Login"
 export default {
   name: "header-parts",
-  components: {},
+  components: {
+    Login
+  },
   data() { 
     return {
       text: "commont header parts",
       searchVal: '和平精英2.0v',
+      loginMsg: {
+        title: "",
+        visibleState: false,
+      },
+      a: 'aaaaa',
+      form: {
+        name: "terry",
+        region: ''
+      },
+      formLabelWidth: ""
     }
   },
-  mounted() {
-
-  },
-  methods: {  
-    signClick(){
-      this.$router.push({name: 'login'});
+  watch: {
+    a(val){
+      console.log(661)
     },
-    registerClick(){
-      this.$router.push({name: 'register'});
+  },
+  mounted() {
+  
+  },
+  methods: {
+    signClick(title){
+      this.loginMsg = {visibleState: true, title: title};
+    },
+    changeState(val){
+      this.loginMsg.visibleState =val
+    },
+    registerClick(path){
+      this.$router.push({name: path});
     },
     routePush(name){
       this.$router.push({name: name})
-    }
-  },
+    },
+  }
 };
 </script>
 

@@ -4,7 +4,6 @@ import Home from "../views/Home.vue";
 import MainContent from "../views/MainContent";
 import Lineplay from "../views/Lineplay";
 import Register from "./../views/Register";
-import Login from "./../views/Login"
 
 
 import ElementUI from 'element-ui';
@@ -20,7 +19,6 @@ const routes = [
     name: "home",
     component: Home,
     children: [
-      {path: "/home/login", name: "login", component: Login},
       {path: "main-content", name: 'main-content', component: MainContent},
       {path: "lineplay", name: "linepaly", component: Lineplay},
       {path: "register", name: 'register', component: Register},
@@ -31,11 +29,10 @@ const routes = [
     name: "home",
     component: Home, 
     children:[
-      /**login **/
       {
         path: "/",
         redirect: "home/main-content",
-        component: Login
+        component: MainContent
       }
     ]
   }

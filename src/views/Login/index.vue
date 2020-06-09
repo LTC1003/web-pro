@@ -2,8 +2,8 @@
   <div class="login">
     <div class="winlogin">
       <div class="loginhead">
-        <div class="title">login</div>
-        <div class="colse">关闭</div>
+        <div class="title">{{loginData.title}}</div>
+        <div class="close" @click="close">关闭</div>
       </div>
       <div class="loginbody">
         <el-form :model="formLogin" class="demo-form-inline">
@@ -11,10 +11,6 @@
             <el-input v-model="formLogin.moblie" placeholder="手机号"></el-input>
           </el-form-item>
           <el-form-item label="验证码">
-            <!-- <el-select v-model="formInline.region" placeholder="活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select> -->
             <el-input v-model="formLogin.verify" placeholder="验证码"></el-input>
           </el-form-item>
           <el-form-item>
@@ -23,7 +19,6 @@
         </el-form>
       </div>
     </div>
-    {{text}}
   </div>
 </template>
 <script>
@@ -34,19 +29,41 @@
     },
     data () {
       return {
-        text: "用户登录",
+        title: "title",
         formLogin: {
           moblie: '',
           verfiy: "",
+        },
+        
+        loginData: {
+          title: "用户",
+          visibleState: false,
+        }
+      }
+    },
+    props: [
+      "login",
+    ],
+    watch: {
+      login: {
+        handler(nval, oval){
+          console.log(887,nval,oval);
+          this.loginData = nval
         }
       }
     },
     mounted() { 
-      
+      // console.log(2223333, this.$props.login);
+      // this.loginData = this.$props.login
     },
     methods: {
+      close(){
+        this.loginData.visibleState = false;
+        console.log(2222, this.loginData.visibleState);
+        this.$emit('changeState', this.loginData.visibleState);
+      },
       onSubmit(){
-
+        this.$emit('changeState', this.loginData.visibleState);
       }
     }
   }
@@ -62,6 +79,13 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto 50px;
+    bottom: 0;
+    // display: none;
     .winlogin{
       background: #fff;
       width: 50%;
@@ -74,6 +98,13 @@
         line-height: 60px;
         padding:0 20px;
         border-bottom: 1px solid #333;
+        .close{
+          
+          &:hover{
+            cursor: pointer;
+            color: #674;
+          }
+        }
       }
       .loginbody{
 
