@@ -1,22 +1,36 @@
 <template>
   <div class="login">
-    <div class="winlogin">
-      <div class="loginhead">
-        <div class="title">{{loginData.title}}</div>
-        <div class="close" @click="close">关闭</div>
+    <div class="login-warp">
+      <div class="navs">
+        <!-- <div class="navs-note">短信登录</div>
+        <div class="navs-account">账号登录</div> -->
+        <div class="nav" :class="{active: isActive == index }" @click="clickActive(isActive = index )" v-for="(item, index) in navList" :key="index">{{item.name}}</div>
       </div>
-      <div class="loginbody">
-        <el-form :model="formLogin" class="demo-form-inline">
-          <el-form-item label="手机号">
-            <el-input v-model="formLogin.moblie" placeholder="手机号"></el-input>
+      <div v-show="!isShow">反向</div>
+      <div class="loginbody" v-show="isShow">
+        <el-form :model="formLogin" class="loginform">
+          <el-form-item >
+            <el-input v-model="formLogin.moblie" placeholder="手机号" icon="el-icon-my-close" suffix-icon="el-icon-my-close"></el-input>
           </el-form-item>
-          <el-form-item label="验证码">
-            <el-input v-model="formLogin.verify" placeholder="验证码"></el-input>
+          <el-form-item >
+            <el-input v-model="formLogin.verify" placeholder="验证码">
+              <i icon="el-icon-my-erase"  class="el-icon-my-erase el-input__icon"
+                slot="suffix"
+                @click="handleIconClick">
+              </i>  
+            </el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit()">登录</el-button>
-          </el-form-item>
+          <div class="btn-denger">登录</div>
         </el-form>
+        <div class="other"><span>忘记密码</span>|<span>注册</span></div>
+      </div>
+      <div class="partners">
+        <div class="masthead">第三方登录</div>
+        <div class="partother">
+          <div class="wxlogo"></div>
+          <div class="qqlogo"></div>
+          <div class="wblogo"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -29,10 +43,19 @@
     },
     data () {
       return {
+        isShow: true,
+        navList: [
+          {name: '短信登录'},
+          {name: '账号登录'}
+        ],
+        isActive: 0,
+        isClick: 'open',
+        showState: '',
         title: "title",
         formLogin: {
           moblie: '',
           verfiy: "",
+          tset: ''
         },
         
         loginData: {
@@ -64,51 +87,14 @@
       },
       onSubmit(){
         this.$emit('changeState', this.loginData.visibleState);
+      },
+      handleIconClick(ev){
+        console.log(ev, 11111);
       }
     }
   }
 </script>
 
-<style lang="scss" scoped>
-  .login{
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    height: inherit;
-    height: -webkit-fill-available;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    margin: 0 auto 50px;
-    bottom: 0;
-    // display: none;
-    .winlogin{
-      background: #fff;
-      width: 50%;
-      border-radius: 10px;
-      font-size: .14rem;
-      color: #333;
-      .loginhead{
-        display: flex;
-        justify-content: space-between;
-        line-height: 60px;
-        padding:0 20px;
-        border-bottom: 1px solid #333;
-        .close{
-          
-          &:hover{
-            cursor: pointer;
-            color: #674;
-          }
-        }
-      }
-      .loginbody{
-
-      }
-    }
-  }
+<style lang="scss">
+  @import './index.scss'
 </style> 
