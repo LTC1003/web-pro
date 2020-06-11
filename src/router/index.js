@@ -13,12 +13,14 @@ Vue.use(VueRouter);
 Vue.use(ElementUI);
 
 const routes = [
-
   {
     path: "/home",
     name: "home",
     component: Home,
     children: [
+      {path: "login", 
+        component: () => import('../views/Login')
+      },
       {path: "main-content", name: 'main-content', component: MainContent},
       {path: "lineplay", name: "linepaly", component: Lineplay},
       {path: "register", name: 'register', component: Register},

@@ -13,29 +13,32 @@
       <el-input class="search-type" suffix-icon="el-icon-search" v-model="searchVal"></el-input>
       <div class="cont-follow">关注</div>
       <div class="cont-user">
-        <span class="sign" @click="signClick('用户登录')">Signin</span>|<span class="register" @click="registerClick('/register')">register</span>
+        <span class="sign" @click="signClick('logon')">Signin</span>|<span class="register" @click="signClick('register')">register</span>
       </div>
-    </div>
-    <Login :login="loginMsg" v-show="loginMsg.visibleState" @changeState="changeState()"></Login>
+    </div>  
+    <Login :login="loginMsg" v-show="visibleState"
+      @changeState="getStateVal">
+    </Login>
+     
   </div>
 </template>
 
 <script>
 import Login from "../../views/Login"
+import Register from "../../views/Register"
 export default {
   name: "header-parts",
   components: {
-    Login
+    Login,
+    Register
   },
   data() { 
     return {
-      text: "commont header parts",
-      searchVal: '和平精英2.0v',
-      loginMsg: {
-        title: "",
-        visibleState: false,
-      },
-      a: 'aaaaa',
+      title: 'sss',
+      view: 'Register',
+      searchVal: '',
+      loginMsg: "",
+      visibleState: false,
       form: {
         name: "terry",
         region: ''
@@ -43,24 +46,20 @@ export default {
       formLabelWidth: ""
     }
   },
-  watch: {
-    a(val){
-      console.log(661)
-    },
-  },
   mounted() {
   
   },
   methods: {
-    signClick(title){
-      this.loginMsg = {visibleState: true, title: title};
+    signClick(name){
+      this.loginMsg = name;
+      this.visibleState = true;
     },
-    changeState(val){
-      this.loginMsg.visibleState =val
+    getStateVal(val){
+      this.visibleState =val
     },
-    registerClick(path){
-      this.$router.push({name: path});
-    },
+    // registerClick(path){
+    //   this.$router.push({name: path});
+    // },
     routePush(name){
       this.$router.push({name: name})
     },
