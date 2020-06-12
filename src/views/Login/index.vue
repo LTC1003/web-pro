@@ -16,9 +16,9 @@
         <div class="nav active">忘记密码</div>
       </div>
       <div class="loginbody" v-show="!isShow">
-        <el-form :model="formLogin" class="loginform">
+        <el-form :model="loginVerify" class="loginform">
           <el-form-item>
-            <el-input v-model="formLogin.moblie" placeholder="手机号">
+            <el-input v-model="loginVerify.moblie" placeholder="手机号">
               <i
                 icon="el-icon-my-close"  
                 class="el-icon-my-close el-input__icon"
@@ -27,7 +27,7 @@
             </el-input>
           </el-form-item>
           <el-form-item >
-            <el-input v-model="formLogin.verify" placeholder="验证码">
+            <el-input v-model="loginVerify.verify" placeholder="验证码">
               <i icon="el-icon-my-erase"  
                 class="el-icon-my-erase el-input__icon"
                 slot="suffix"
@@ -35,13 +35,13 @@
               </i>  
             </el-input>
           </el-form-item>
-          <div class="btn-denger" @click="onSubmit">登录</div>
+          <div class="btn-denger" @click="onSubmit('loginVerify')">登录</div>
         </el-form>
       </div>
       <div class="loginbody" v-show="isShow">
-        <el-form :model="formLogin" class="loginform">
+        <el-form :model="loginPaswd" class="loginform">
           <el-form-item>
-            <el-input v-model="formLogin.moblie" 
+            <el-input v-model="loginPaswd.moblie" 
             placeholder="手机号"
             @focus="headleFocus">
               <i
@@ -53,7 +53,7 @@
             </el-input>
           </el-form-item>
           <el-form-item >
-            <el-input v-model="formLogin.verify" placeholder="密码">
+            <el-input v-model="loginPaswd.password" placeholder="密码">
               <i icon="el-icon-my-erase"  
                 class="el-icon-my-erase el-input__icon"
                 slot="suffix"
@@ -61,7 +61,7 @@
               </i>  
             </el-input>
           </el-form-item>
-          <div class="btn-denger" @click="onSubmit">登录</div>
+          <div class="btn-denger" @click="onSubmit('loginPaswd')">登录</div>
         </el-form>
         <div class="other"><span>忘记密码</span>|<span>注册</span></div>
       </div>
@@ -98,12 +98,14 @@
         isClick: 'open',
         showState: '',
        
-        formLogin: {
+        loginVerify: {
           moblie: '',
           verfiy: "",
-          tset: ''
         },
-        
+        loginPaswd:{
+          moblie: '',
+          password: ''
+        },    
         loginData: ''
       }
     },
@@ -138,9 +140,57 @@
         // ev.preventDefault();
         this.$emit('changeState', val);
       },
-      onSubmit(ev){
-        this.$emit('changeState', false);
+      onSubmit(formName){
+        // 16732046756
+        // "BCF89B62B2D21E2116C51FC6476CF920"
+
+        var times = this.timestamp();
+
+        const reqObj = {}
+        if (formName == "loginPaswd") {
+          reqObj.userMobile = this.loginPaswd.moblie;
+          reqObj.userPassword = this.loginPaswd.userPassword;
+        }
+
+        this.$api.userInfo.userLoginPassword(reqObj).query({
+          timestamp: this.timestamp(),
+          appVersion: "1.0.1",
+          userAgent: "web",
+          // params obj 传入coolback回调
+          sign: this.addCode(reqObj)
+        }).then((data) => {
+          console.log(90000,data)
+        })
+
+        // console.log(this.$api);
+        // this.$emit('changeState', false);
       },
+
+
+      // sign+join md5(data)
+      addCode(params, coolback){
+        /***
+         * (Headers和Params 按字母a-z排序拼接参数,首字母相同按第二字母排序，依次类推，key值最后拼接,不参与排序) 
+         * 如: MD5(appVersion=1.0&timeStamp=123456&token=0f47c79af7e04dd&userAgent=ios&key=DN6AjdNsv6PZXYUoOxVmrVILB+S).toUpperCase() 
+         * 注：token为 Params参数 ;另Params参数为Object 其属性不参与sign签名
+        ***/ 
+
+       console.log(77787,params);
+        var commonHeadler = {
+          appVersion: "1.0.1",
+          userAgent: "web",
+          timestamp: this.timestamp(),
+        }
+        coolback = this.$md5();
+        return coolback
+      },
+      // 获取当前时间戳
+      timestamp(){
+        let timestamp = (new Date()).valueOf();
+        console.log(15715, timestamp) 
+        return timestamp
+      },
+
       handleIconClick(ev){
         console.log(ev)
       },

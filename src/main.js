@@ -2,8 +2,13 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import api from './server/api';
+
+const MD5 = require('js-md5');
 
 Vue.config.productionTip = false;
+Vue.prototype.$api = api;
+Vue.prototype.$md5 = MD5;
 
 new Vue({
   router,

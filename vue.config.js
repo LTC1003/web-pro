@@ -62,39 +62,21 @@ module.exports = {
         // 为开发环境修改配置... development
     }
   },
-  
-  // image-url url(./image.png) 会被翻译为 require('./image.png'); file-loader 用版本哈希值和正确的公共基础路径来决定最终的文件路径，再用 url-loader 将小于 4kb 的资源内联，以减少 HTTP 请求的数量。
-  // chainWebpack: config => {
-  //   config.module
-  //     .rule('images')
-  //       .use('url-loader')
-  //         .loader('url-loader')
-  //         .tap(options => Object.assign(options, { limit: 10240 }))
-  // },
-
   // webpack-dev-server 相关配置
-  devServer: { // 设置代理
-    host: '0.0.0.0', //ip地址
+  devServer: { // 本地
+    host: 'localhost', // 0.0.0.0   '127.0.0.1'
     port: 8080, //端口
     https: false, //false关闭https，true为开启
     hot: true, //热加载
     open: true, //自动打开浏览器
-    proxy: {
-      '/api': { //本地                                        
-        // target: 'http://192.168.102.13:8080/',
-        target: 'http://localhost:8081/', // <url>
-        // 如果要代理 websockets
-        ws: true,
+    proxy: { // 设置代理
+      '/api': {                                      
+        target: '10.12.88.215:8080',
+      },
+      '/test': {
+        target: 'http://10.12.88.215:8080',
+        ws: true, 
         changeOrigin: true
-      },
-      '/test': { //测试
-        target: 'http://172.0.0.0:8082/', // <other_url>
-      },
-      '/pre-release': {  //预发布
-        target: 'http://XXX.com/'
-      },
-      '/production': { //正式
-        target: 'http://XXX.com/'
       }
     }
   },
