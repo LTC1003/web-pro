@@ -1,17 +1,12 @@
-import Vue from 'vue'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
-
+import axios from 'axios';
 import config from './config';
+import cookies from "js-cookie";
+import router from '../router';
 import qs from 'qs';
 
-// import cookies from "js-cookie";
-
 // 使用vuex做全局loading时使用
-import router from '../router';
 import store from '@/store'
-
-Vue.use(VueAxios, axios)
+// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
@@ -24,18 +19,17 @@ export default function $axios(options) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {   
-        console.log(config.headers, 9777)
-        // let token = cookies.get('token')
+        let token = cookies.get('token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
         // console.log('准备发送请求...')
         // 2. 带上token
-        // if (token) {
-        //   config.headers.token = token
-        // } else {
-        //   // 重定向到登录页面
-        //   // router.push('/login')
-        // }
+        if (token) {
+          config.headers.token = token
+        } else {
+          // 重定向到登录页面
+          // router.push('/login')
+        }
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
           // if (config.data.__proto__ === FormData.prototype
@@ -44,14 +38,16 @@ export default function $axios(options) {
           //   || config.url.endsWith('patchs')
           // ){
           // }else{
+
           // }
           // console.log(config.headers, '查看methodl方法格式');
-          // console.log(config.data,'formdata', qs.stringify(config.data), 'str');
-          config.data = qs.stringify(config.data)
+          console.log(config.data,'formdata', qs.stringify(config.data), 'str');
+          config.data = qs.stringify(config.data);
           // console.log(config.data, 'qs模板转换后台可以接收参数格式formdata');
         }
         return config
       },
+
       error => {
         // 请求错误时
         console.log('request:', error)
@@ -73,6 +69,7 @@ export default function $axios(options) {
         return Promise.reject(error) // 在调用的那边可以拿到(catch)你想返回的错误信息
       }
     )
+
     // response 拦截器
     instance.interceptors.response.use(
       response => {
@@ -83,6 +80,7 @@ export default function $axios(options) {
         } else {
           data = response.data
         }
+
         // 根据返回的code值来做不同的处理
         switch (data.rc) {
           case 1:
@@ -98,6 +96,7 @@ export default function $axios(options) {
         // err.data = data
         // err.response = response
         // throw err
+
         return data
       },
       err => {
@@ -143,6 +142,7 @@ export default function $axios(options) {
         return Promise.reject(err) // 返回接口返回的错误信息
       }
     )
+
     // 请求处理
     instance(options).then(res => {
       resolve(res)

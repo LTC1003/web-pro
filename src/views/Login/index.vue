@@ -143,26 +143,39 @@
       onSubmit(formName){
         // 16732046756
         // "BCF89B62B2D21E2116C51FC6476CF920"
-
+        /**
+         * Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+         * */ 
         var times = this.timestamp();
 
-        const reqObj = {}
         if (formName == "loginPaswd") {
-          reqObj.userMobile = this.loginPaswd.moblie;
-          reqObj.userPassword = this.loginPaswd.userPassword;
+          
+          // debugger
         }
+        var reqHeadler = {
+          "userAgent": "web",
+          "timeStamp": this.timestamp(),
+          "appVersion": "1.0.1",
+        }
+        var soltArr ;
 
-        this.$api.userInfo.userLoginPassword(reqObj).query({
-          timestamp: this.timestamp(),
-          appVersion: "1.0.1",
-          userAgent: "web",
-          // params obj 传入coolback回调
-          sign: this.addCode(reqObj)
-        }).then((data) => {
-          console.log(90000,data)
+        reqHeadler.sign = this.addCode(reqHeadler);
+        
+        console.log(reqHeadler, reqHeadler.sign, 2111);
+        
+        this.$api.userInfo.userLoginPassword({
+          "userMobile" : this.loginPaswd.moblie,
+          "userPassword" : this.loginPaswd.password
         })
+        .then(
+          data => {
+          console.log(90000,data)
+          },
+          err => {
+            console.log(err, 4011);
+          }
+        )
 
-        // console.log(this.$api);
         // this.$emit('changeState', false);
       },
 
@@ -174,14 +187,14 @@
          * 如: MD5(appVersion=1.0&timeStamp=123456&token=0f47c79af7e04dd&userAgent=ios&key=DN6AjdNsv6PZXYUoOxVmrVILB+S).toUpperCase() 
          * 注：token为 Params参数 ;另Params参数为Object 其属性不参与sign签名
         ***/ 
-
-       console.log(77787,params);
-        var commonHeadler = {
-          appVersion: "1.0.1",
-          userAgent: "web",
-          timestamp: this.timestamp(),
+       var repeatArr = [];
+        console.log(77787,params);
+        for(var i in params){
+          console.log(i, params[i], 'res');
+          repeatArr.push({i: params[i]});
         }
-        coolback = this.$md5();
+       
+        coolback = this.$md5(params);
         return coolback
       },
       // 获取当前时间戳

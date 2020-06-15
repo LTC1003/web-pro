@@ -64,14 +64,14 @@ module.exports = {
   },
   // webpack-dev-server 相关配置
   devServer: { // 本地
-    host: 'localhost', // 0.0.0.0   '127.0.0.1'
+    host: '10.12.89.244', // 0.0.0.0   '127.0.0.1'
     port: 8080, //端口
     https: false, //false关闭https，true为开启
     hot: true, //热加载
     open: true, //自动打开浏览器
     proxy: { // 设置代理
       '/api': {                                      
-        target: '10.12.88.215:8080',
+        target: '10.12.89.237:8080',
       },
       '/test': {
         target: 'http://10.12.88.215:8080',
