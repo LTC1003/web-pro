@@ -1,7 +1,7 @@
 <template>
   <div class="header-parts">
     <router-link class="appLogo" to="/home/main-content">
-      <img :src="require('@/assets/home/applogo.png')" alt="logo">
+      <img style="width:40px;height:40px; font-size:16px" src="require('@assets/home/appLogo.png')" alt="logo">
     </router-link>
     <div class="menuList">
       <div class="item-tab active" @click="routePush('main-content')">首页</div>
@@ -34,6 +34,7 @@ export default {
   },
   data() { 
     return {
+      imgsrc: require('@/assets/home/appLogo.png'),
       title: 'sss',
       view: 'Register',
       searchVal: '',
