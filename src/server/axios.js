@@ -3,73 +3,117 @@ import config from './config';
 import cookies from "js-cookie";
 import router from '../router';
 import qs from 'qs';
-
+import MD5 from 'js-md5'
 // 使用vuex做全局loading时使用
 import store from '@/store'
-// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+
+// 全局的axios默认值
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
+    
+    // 自定义实例默认
     const instance = axios.create({
       baseURL: config.baseUrl,
       headers: config.headers,
-      timeout: config.timeout,
-      withCredentials: config.withCredentials
+      // timeout: config.timeout,
+      // withCredentials: config.withCredentials
     })
+
     // request 拦截器
     instance.interceptors.request.use(
-      config => {   
-        let token = cookies.get('token')
+      config => {
+        // let token = cookies.get('token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
         // console.log('准备发送请求...')
         // 2. 带上token
-        if (token) {
-          config.headers.token = token
-        } else {
-          // 重定向到登录页面
-          // router.push('/login')
-        }
+        // if (token) {
+        //   config.headers.token = token
+        // } else {
+        //   // 重定向到登录页面
+        //   // router.push('/login')
+        // }
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
-          // if (config.data.__proto__ === FormData.prototype
-          //   || config.url.endsWith('/pcapi/userLogin')
-          //   || config.url.endsWith('mark')
-          //   || config.url.endsWith('patchs')
-          // ){
-          // }else{
-
+          // config.headers
+          // if (config.url == '/api/user/userLoginPassword'){
+            // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+            var reqHead = {
+              userAgent: "web",
+              timeStamp: (new Date()).valueOf(),
+              appVersion: "1.0.1",
+            }
+            config.headers['timeStamp'] = reqHead.timeStamp;
+            config.headers['userAgent'] = reqHead.userAgent;
+            config.headers['appVersion'] = reqHead.appVersion;
+            config.headers['sign'] = addCode(config.data, reqHead);
+            console.log(config.headers['sign'],66665)
+  
+            console.log(11222, config.headers)
           // }
-          // console.log(config.headers, '查看methodl方法格式');
-          console.log(config.data,'formdata', qs.stringify(config.data), 'str');
+          
           config.data = qs.stringify(config.data);
-          // console.log(config.data, 'qs模板转换后台可以接收参数格式formdata');
         }
+
+        // md5 + UpperCase
+        function addCode(param1, param2, coolback){
+          /***
+           * (Headers和Params 按字母a-z排序拼接参数,首字母相同按第二字母排序，依次类推，key值最后拼接,不参与排序) 
+           * 如: MD5(appVersion=1.0&timeStamp=123456&token=0f47c79af7e04dd&userAgent=ios&key=DN6AjdNsv6PZXYUoOxVmrVILB+S).toUpperCase() 
+           * 注：token为 Params参数 ;另Params参数为Object 其属性不参与sign签名
+          ***/
+          console.log(param1,param2, 333);
+          var sortObj = Object.assign({}, param1, param2)
+          var sortArr = Object.keys(sortObj).sort();
+          var newData= [];
+          sortArr.forEach((val,k) => {
+            for (var v in sortObj){
+              if(val == v){
+                val = {};
+                val[v] = sortObj[v];
+                newData.push(val);
+                return;
+              }
+            }
+          })
+          // console.log(newData,677)
+          var str = JSON.stringify(newData)
+          str = str.replace(/:/g, '=');
+          str = str.replace(/,/g, '&');
+          str = str.replace(/[ \{ | \} | \' | \" | \[ | \] ]/g, '');
+          str += '&key=DN6AjdNsv6PZXYUoOxVmrVILB+S'
+          var perCase = MD5(str).toUpperCase();
+          console.log(str, perCase,'toupper');
+          coolback = perCase;
+          return coolback
+        }
+        // md5 + UpperCase
+        console.log(config, 'reqconfig')
         return config
       },
-
       error => {
         // 请求错误时
         console.log('request:', error)
         // 1. 判断请求超时
-        if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-          console.log('timeout请求超时')
-          // return service.request(originalRequest);// 再重复请求一次
-        }
+        // if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+        //   console.log('timeout请求超时')
+        //   // return service.request(originalRequest);// 再重复请求一次
+        // }
         // 2. 需要重定向到错误页面
-        const errorInfo = error.response
-        console.log(errorInfo)
-        if (errorInfo) {
-          error = errorInfo.data  // 页面那边catch的时候就能拿到详细的错误信息,看最下边的Promise.reject
-          const errorStatus = errorInfo.status; // 404 403 500 ...
-          router.push({
-            path: `/error/${errorStatus}`
-          })
-        }
-        return Promise.reject(error) // 在调用的那边可以拿到(catch)你想返回的错误信息
+        // const errorInfo = error.response
+        // if (errorInfo) {
+        //   error = errorInfo.data  // 页面那边catch的时候就能拿到详细的错误信息,看最下边的Promise.reject
+        //   const errorStatus = errorInfo.status; // 404 403 500 ...
+        //   router.push({
+        //     path: `/error/${errorStatus}`
+        //   })
+        // }
+        // return Promise.reject(error) // 在调用的那边可以拿到(catch)你想返回的错误信息
       }
     )
-
+    
     // response 拦截器
     instance.interceptors.response.use(
       response => {
@@ -138,10 +182,11 @@ export default function $axios(options) {
             default:
           }
         }
-        console.error(err)
         return Promise.reject(err) // 返回接口返回的错误信息
       }
     )
+
+    console.log(instance, 888);
 
     // 请求处理
     instance(options).then(res => {
