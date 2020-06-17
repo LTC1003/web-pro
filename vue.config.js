@@ -1,4 +1,3 @@
-const path = require('path')
 
 module.exports = {
   // publicPath: {Type: string, Default: '/'};
@@ -13,7 +12,7 @@ module.exports = {
   // indexPath: {Type: string, Default: 'index.html'};
 
   // filenameHashing: {Type: boolean, Default: true};
-  filenameHashing: false,
+  filenameHashing: true,
 
   // eslint-loader 是否在保存的时候检查 安装@vue/cli-plugin-eslint有效, lintOnSave: true; lintOnSave 是一个 truthy 的值时,开发和生产构都会被启用.在生产构建禁用
   // lintOnSave: process.env.NODE_ENV !== 'production',
@@ -85,6 +84,5 @@ module.exports = {
     // 'style-resources-loader': {
 		// 	preProcessor: 'scss', //声明类型
 		// }
-  },
-
+  }
 }

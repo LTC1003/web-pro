@@ -1,7 +1,7 @@
 <template>
   <div class="header-parts">
     <router-link class="appLogo" to="/home/main-content">
-      <img style="width:40px;height:40px; font-size:16px" :src="imgsrc" alt="logo">
+      <img :src="imgsrc" alt="logo">
     </router-link>
     <div class="menuList">
       <div class="item-tab active" @click="routePush('main-content')">首页</div>
@@ -26,6 +26,7 @@
 <script>
 import Login from "../../views/Login"
 import Register from "../../views/Register"
+import imgsrc from "../../assets/home/applogo.png"
 export default {
   name: "header-parts",
   components: {
@@ -34,7 +35,8 @@ export default {
   },
   data() { 
     return {
-      imgsrc: require('@/assets/home/appLogo.png'),
+      // imgsrc: require('@/assets/home/appLogo.png'),
+      imgsrc,
       title: 'sss',
       view: 'Register',
       searchVal: '',
