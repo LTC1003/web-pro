@@ -115,7 +115,7 @@
     watch: {
       login: {
         handler(nval, oval){
-          // console.log(nval,999)
+          console.log(nval,999)
           this.loginData = nval;
         
         },
@@ -123,16 +123,9 @@
       }
     },
     mounted() { 
-      /**
-       * Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
-       * */ 
-      // var reqHeadler = {
-      //   "userAgent": "web",
-      //   "timeStamp": this.timestamp(),
-      //   "appVersion": "1.0.1",
-      // }, 
-
-      // reqHeadler.sign = this.addCode(objtest, reqHeadler);
+      if (this.loginData == {}){
+        console.log(232);
+      }
     },
     methods: {
       headleFocus(ev){
@@ -142,25 +135,34 @@
       headleBlur(){
         this.isIconClose = false;
       },
-      /****/
       onClick(val){
         // console.log(val, ev,123123)
         // ev.preventDefault();
         this.$emit('changeState', val);
       },
-      /****/ 
       onSubmit(formName){
         // 16732046756
-        // if (formName == "loginPaswd") {
-        //   // debugger
-        // }
-        // var reqHeadler = {
-        //   "userAgent": "web",
-        //   "timeStamp": this.timestamp(),
-        //   "appVersion": "1.0.1",
-        // }
-        // reqHeadler['sign'] = this.addCode(this.loginPaswd, reqHeadler);
+        // "BCF89B62B2D21E2116C51FC6476CF920"
+        /**
+         * Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+         * */ 
+        var times = this.timestamp();
 
+        if (formName == "loginPaswd") {
+          
+          // debugger
+        }
+        var reqHeadler = {
+          "userAgent": "web",
+          "timeStamp": this.timestamp(),
+          "appVersion": "1.0.1",
+        }
+        var soltArr ;
+
+        reqHeadler.sign = this.addCode(reqHeadler);
+        
+        console.log(reqHeadler, reqHeadler.sign, 2111);
+        
         this.$api.userInfo.userLoginPassword({
           "userMobile" : this.loginPaswd.moblie,
           "userPassword" : this.loginPaswd.password
@@ -170,52 +172,35 @@
           console.log(90000,data)
           },
           err => {
-            // console.log(err, 4011);
+            console.log(err, 4011);
           }
         )
+
         // this.$emit('changeState', false);
       },
 
+
       // sign+join md5(data)
-      addCode(param1, param2, coolback){
+      addCode(params, coolback){
         /***
          * (Headers和Params 按字母a-z排序拼接参数,首字母相同按第二字母排序，依次类推，key值最后拼接,不参与排序) 
          * 如: MD5(appVersion=1.0&timeStamp=123456&token=0f47c79af7e04dd&userAgent=ios&key=DN6AjdNsv6PZXYUoOxVmrVILB+S).toUpperCase() 
          * 注：token为 Params参数 ;另Params参数为Object 其属性不参与sign签名
-        ***/
-        console.log(param1,param2, 333);
-        var sortObj = Object.assign({}, param1, param2)
-        console.log(77787, sortObj);
-        var sortArr = Object.keys(sortObj).sort();
-        var newData= [];
-        sortArr.forEach((val,k) => {
-          for (var v in sortObj){
-            // console.log(val, v,'hhh')            
-            if(val == v){
-              val = {};
-              val[v] = sortObj[v];
-              // newDataobj[val] = sortObj[v]
-              // console.log(val, 'sss')
-              newData.push(val);
-              return;
-            }
-          }
-        })
-        // console.log(newData,677)
-        var str = JSON.stringify(newData)
-        str = str.replace(/:/g, '=');
-        str = str.replace(/,/g, '&');
-        str = str.replace(/[ \{ | \} | \' | \" | \[ | \] ]/g, '');
-        str += '&key=DN6AjdNsv6PZXYUoOxVmrVILB+S'
-        var perCase =  this.$md5(str).toUpperCase();
-        console.log(str, perCase, 'toupper');
-        coolback = perCase;
+        ***/ 
+       var repeatArr = [];
+        console.log(77787,params);
+        for(var i in params){
+          console.log(i, params[i], 'res');
+          repeatArr.push({i: params[i]});
+        }
+       
+        coolback = this.$md5(params);
         return coolback
       },
-
       // 获取当前时间戳
       timestamp(){
         let timestamp = (new Date()).valueOf();
+        console.log(15715, timestamp) 
         return timestamp
       },
 
@@ -224,7 +209,7 @@
       },
       clickActive(val, index){
         this.isActive = index;
-        // console.log(val.name, 'haha')
+        console.log(val.name, 'haha')
         if (val.name == '账号登录') {
           this.isShow = true;
         } else {

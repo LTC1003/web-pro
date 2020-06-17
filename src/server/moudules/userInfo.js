@@ -20,7 +20,7 @@ export const forgetPaswd = (data) =>{
         "appVersion": "1.0.1",
         "timeStamp": "1562515200",
         "userAgent": "web",
-        "sign": "toUpperCase"
+        "sign": "BCF89B62B2D21E2116C51FC6476CF920"
       }
   })
 }
@@ -29,6 +29,12 @@ export const userLoginPassword = (data) =>{
   return axios({
       url: '/api/user/userLoginPassword',
       method: 'post',
-      data
+      data,
+      headers: {
+        "appVersion": "1.0.1",
+        "timeStamp": "1562515200",
+        "userAgent": "web",
+        "sign": "BCF89B62B2D21E2116C51FC6476CF920"
+      }
   })
 }
