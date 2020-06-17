@@ -3,6 +3,7 @@ import config from './config';
 import cookies from "js-cookie";
 import router from '../router';
 import qs from 'qs';
+import MD5 from 'js-md5';
 
 // 使用vuex做全局loading时使用
 import store from '@/store'
@@ -18,47 +19,34 @@ export default function $axios(options) {
     })
     // request 拦截器
     instance.interceptors.request.use(
-      config => {   
-        let token = cookies.get('token')
-        // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
-        // console.log(store.state.loading)
-        // console.log('准备发送请求...')
-        // 2. 带上token
-        if (token) {
-          config.headers.token = token
-        } else {
-          // 重定向到登录页面
-          // router.push('/login')
-        }
-        // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
+      config => {
+        // 1. 请求headers 添加公共参数
+        let reqParams = addCode(config.data);
+        config.headers.appVersion = reqParams.appVersion;
+        config.headers.timeStamp = reqParams.timeStamp;
+        config.headers.userAgent = reqParams.userAgent;
+        config.headers.sign = reqParams.sign;
+        // 2. 请求地址url
+        // if (config.url === '/api/user/userLoginPassword') {
+        //   // 根据API请求地址操作
+        // } 
+        // 3. 根据请求方法post，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
-          // if (config.data.__proto__ === FormData.prototype
-          //   || config.url.endsWith('/pcapi/userLogin')
-          //   || config.url.endsWith('mark')
-          //   || config.url.endsWith('patchs')
-          // ){
-          // }else{
-
-          // }
-          // console.log(config.headers, '查看methodl方法格式');
-          console.log(config.data,'formdata', qs.stringify(config.data), 'str');
+          // params使用qs json串转换requestString
           config.data = qs.stringify(config.data);
-          // console.log(config.data, 'qs模板转换后台可以接收参数格式formdata');
         }
         return config
       },
-
       error => {
         // 请求错误时
-        console.log('request:', error)
         // 1. 判断请求超时
+        console.log(error, '111111---requsrt');
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-          console.log('timeout请求超时')
+          // console.log('timeout请求超时')
           // return service.request(originalRequest);// 再重复请求一次
         }
         // 2. 需要重定向到错误页面
         const errorInfo = error.response
-        console.log(errorInfo)
         if (errorInfo) {
           error = errorInfo.data  // 页面那边catch的时候就能拿到详细的错误信息,看最下边的Promise.reject
           const errorStatus = errorInfo.status; // 404 403 500 ...
@@ -82,21 +70,20 @@ export default function $axios(options) {
         }
 
         // 根据返回的code值来做不同的处理
-        switch (data.rc) {
-          case 1:
-            console.log(data.desc)
-            break;
-          case 0:
-            store.commit('changeState')
-            // console.log('登录成功')
-          default:
-        }
+        // switch (data.rc) {
+        //   case 1:
+        //     console.log(data.desc)
+        //     break;
+        //   case 0:
+        //     store.commit('changeState')
+        //     // console.log('登录成功')
+        //   default:
+        // }
         // 若不是正确的返回code，且已经登录，就抛出错误
         // const err = new Error(data.desc)
         // err.data = data
         // err.response = response
         // throw err
-
         return data
       },
       err => {
@@ -138,10 +125,43 @@ export default function $axios(options) {
             default:
           }
         }
-        console.error(err)
         return Promise.reject(err) // 返回接口返回的错误信息
       }
     )
+    // sign+md5
+    function addCode(reqData, coolback){
+      /***
+       * (Headers和Params 按字母a-z排序拼接参数,首字母相同按第二字母排序，依次类推，key值最后拼接,不参与排序) 
+       * 如: MD5(appVersion=1.0&timeStamp=123456&token=0f47c79af7e04dd&userAgent=ios&key=DN6AjdNsv6PZXYUoOxVmrVILB+S).toUpperCase() 
+       * 注：token为 Params参数 ;另Params参数为Object 其属性不参与sign签名
+      ***/ 
+      let reqHead = {
+        userAgent: "web",
+        timeStamp: (new Date()).valueOf().toString(),
+        appVersion: "1.0.1",
+      };
+      let sortArr = [];
+      let mergeObj = Object.assign({},reqData,reqHead);
+      let newkeyArr = Object.keys(mergeObj).sort();
+      newkeyArr.forEach((val,k) => {
+        for(var v in mergeObj) {
+          if (val == v){
+            val = {}
+            k = v
+            val[k] = mergeObj[v]
+            sortArr.push(val);
+            return
+          }
+        }
+      })
+      let reapteData = JSON.stringify(sortArr).replace(/[\[|\]|\{|\}|\'|\"]/g, '');
+      reapteData = reapteData.replace(/[,]/g, '&');
+      reapteData = reapteData.replace(/[:]/g, '=');
+      reapteData += '&key=DN6AjdNsv6PZXYUoOxVmrVILB+S';
+      reqHead['sign'] = MD5(reapteData).toUpperCase();
+      coolback = reqHead;
+      return coolback
+    }
 
     // 请求处理
     instance(options).then(res => {

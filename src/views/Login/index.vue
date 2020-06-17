@@ -35,7 +35,7 @@
               </i>  
             </el-input>
           </el-form-item>
-          <div class="btn-denger" @click="onSubmit('loginVerify')">登录</div>
+          <div class="btn-denger" @click="onSubmit('loginVerify')">注册</div>
         </el-form>
       </div>
       <div class="loginbody" v-show="isShow">
@@ -123,9 +123,7 @@
       }
     },
     mounted() { 
-      if (this.loginData == {}){
-        console.log(232);
-      }
+      
     },
     methods: {
       headleFocus(ev){
@@ -140,70 +138,27 @@
         // ev.preventDefault();
         this.$emit('changeState', val);
       },
-      onSubmit(formName){
-        // 16732046756
-        // "BCF89B62B2D21E2116C51FC6476CF920"
-        /**
-         * Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
-         * */ 
-        var times = this.timestamp();
-
-        if (formName == "loginPaswd") {
-          
-          // debugger
-        }
-        var reqHeadler = {
-          "userAgent": "web",
-          "timeStamp": this.timestamp(),
-          "appVersion": "1.0.1",
-        }
-        var soltArr ;
-
-        reqHeadler.sign = this.addCode(reqHeadler);
-        
-        console.log(reqHeadler, reqHeadler.sign, 2111);
-        
+      // 获取短信
+      getCodeVerify(){
+        this.$api.userInfo.getLoginSendcode({
+          phone_number: this.loginPaswd.moblie
+        }).then(res => {
+          console.log(res, '900001')
+        },err => {console.log(err)})
+      },
+      onSubmit(formName){        
         this.$api.userInfo.userLoginPassword({
           "userMobile" : this.loginPaswd.moblie,
           "userPassword" : this.loginPaswd.password
-        })
-        .then(
-          data => {
-          console.log(90000,data)
+        }).then(data => {
+            console.log(90000,data)
           },
-          err => {
-            console.log(err, 4011);
-          }
-        )
+          error => {
+            console.log(error);
+          })
 
         // this.$emit('changeState', false);
       },
-
-
-      // sign+join md5(data)
-      addCode(params, coolback){
-        /***
-         * (Headers和Params 按字母a-z排序拼接参数,首字母相同按第二字母排序，依次类推，key值最后拼接,不参与排序) 
-         * 如: MD5(appVersion=1.0&timeStamp=123456&token=0f47c79af7e04dd&userAgent=ios&key=DN6AjdNsv6PZXYUoOxVmrVILB+S).toUpperCase() 
-         * 注：token为 Params参数 ;另Params参数为Object 其属性不参与sign签名
-        ***/ 
-       var repeatArr = [];
-        console.log(77787,params);
-        for(var i in params){
-          console.log(i, params[i], 'res');
-          repeatArr.push({i: params[i]});
-        }
-       
-        coolback = this.$md5(params);
-        return coolback
-      },
-      // 获取当前时间戳
-      timestamp(){
-        let timestamp = (new Date()).valueOf();
-        console.log(15715, timestamp) 
-        return timestamp
-      },
-
       handleIconClick(ev){
         console.log(ev)
       },
