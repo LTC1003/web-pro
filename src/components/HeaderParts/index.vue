@@ -26,7 +26,7 @@
 <script>
 import Login from "../../views/Login"
 import Register from "../../views/Register"
-import imgsrc from "../../assets/home/applogo.png"
+// import imgsrc from "../../assets/home/applogo.png"
 export default {
   name: "header-parts",
   components: {
@@ -35,8 +35,7 @@ export default {
   },
   data() { 
     return {
-      // imgsrc: require('@/assets/home/appLogo.png'),
-      imgsrc,
+      imgsrc: require('@/assets/home/appLogo.png'),
       title: 'sss',
       view: 'Register',
       searchVal: '',

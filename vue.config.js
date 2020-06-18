@@ -63,7 +63,7 @@ module.exports = {
   },
   // webpack-dev-server 相关配置
   devServer: { // 本地
-    host: '10.12.89.244', // 10.12.89.244   '127.0.0.1'
+    host: '127.0.0.1', // 10.12.89.244   '127.0.0.1'
     port: 8080, //端口
     https: false, //false关闭https，true为开启
     hot: true, //热加载
