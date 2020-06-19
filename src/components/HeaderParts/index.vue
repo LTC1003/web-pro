@@ -24,28 +24,19 @@
 </template>
 
 <script>
-import Login from "../../views/Login"
-import Register from "../../views/Register"
-// import imgsrc from "../../assets/home/applogo.png"
+import Login from "../Login"
 export default {
   name: "header-parts",
   components: {
     Login,
-    Register
+    // Register
   },
   data() { 
     return {
       imgsrc: require('@/assets/home/appLogo.png'),
-      title: 'sss',
-      view: 'Register',
       searchVal: '',
       loginMsg: "",
       visibleState: false,
-      form: {
-        name: "terry",
-        region: ''
-      },
-      formLabelWidth: ""
     }
   },
   mounted() {
@@ -59,9 +50,6 @@ export default {
     getStateVal(val){
       this.visibleState =val
     },
-    // registerClick(path){
-    //   this.$router.push({name: path});
-    // },
     routePush(name){
       this.$router.push({name: name})
     },

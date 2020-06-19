@@ -16,9 +16,7 @@ export const getLoginSendcode = (params) =>{
 // 用户手机登录/注册   
 export const userLoginMobile = (params) =>{
   return axios({
-      url: '/api/user/userLoginMobile/{mobile}',
-      method: 'get',
-      params,
+    url: '/api/user/userLoginMobile/' + params
   })
 }
 

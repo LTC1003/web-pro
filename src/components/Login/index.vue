@@ -1,47 +1,77 @@
 <template>
   <div class="login" @click.self="onClick(false)">
-    <div class="login-warp">
-      <div class="navs" v-if="loginData == 'logon'">
-        <div class="nav" 
+    <div class="login-warp" v-if="loginData == 'logon'">
+      <div class="navs">
+        <div class="nav"
         :class="{active: isActive == index }" 
         @click="clickActive(item,index)" 
         v-for="(item, index) in navList" 
         :key="index">{{item.name}}
         </div>
       </div>
-      <div class="navs" v-else-if="loginData == 'register'">
-        <div class="nav active">账号注册</div>
-      </div>
-      <div class="navs" v-else>
-        <div class="nav active">忘记密码</div>
+      <div class="loginbody" v-show="isShow">
+        <!-- 账号登录 -->
+        <el-form :model="loginPaswd" class="loginform">
+          <el-form-item>
+            <el-input v-model="loginPaswd.moblie" placeholder="手机号">
+              <i
+                icon="el-icon-my-close"  
+                class="el-icon-my-close el-input__icon"
+                slot="suffix"
+                @click="clearInputVal">
+              </i>
+            </el-input>
+          </el-form-item>
+          <el-form-item >
+            <el-input v-model="loginPaswd.verify" type="password" placeholder="密码">
+              <i icon="el-icon-my-erase"  
+                class="el-icon-my-erase el-input__icon"
+                slot="suffix"
+                @click.prevent="visibilityTab">
+              </i>  
+            </el-input>
+          </el-form-item>
+          <div class="btn-denger" @click="onSubmit('loginPaswd')">登录</div>
+        </el-form>
       </div>
       <div class="loginbody" v-show="!isShow">
+        <!-- 验证码 -->
         <el-form :model="loginVerify" class="loginform">
           <el-form-item>
             <el-input v-model="loginVerify.moblie" placeholder="手机号">
               <i
                 icon="el-icon-my-close"  
                 class="el-icon-my-close el-input__icon"
-                slot="suffix">
+                slot="suffix"
+                @click="clearInputVal">
               </i>
             </el-input>
           </el-form-item>
           <el-form-item >
-            <el-input v-model="loginVerify.verify" placeholder="验证码">
-              <i icon="el-icon-my-erase"  
-                class="el-icon-my-erase el-input__icon"
-                slot="suffix"
-                @click="handleIconClick">
-              </i>  
+            <el-input v-model="loginVerify.verIfy" placeholder="验证码">
+              <span slot="suffix" @click="getCodeVerify">获取验证码</span>
             </el-input>
           </el-form-item>
-          <div class="btn-denger" @click="onSubmit('loginVerify')">注册</div>
+          <div class="btn-denger" @click="submitVerify(loginVerify)">登录</div>
         </el-form>
       </div>
-      <div class="loginbody" v-show="isShow">
-        <el-form :model="loginPaswd" class="loginform">
+      <div class="partners">
+        <div class="masthead">第三方登录</div>
+        <div class="partother">
+          <div class="wxlogo"></div>
+          <div class="qqlogo"></div>
+          <div class="wblogo"></div>
+        </div>
+      </div>
+    </div>
+    <div class="register-warp" v-else-if="loginData == 'register'">
+      <div class="navs">
+        <div class="nav active">账号注册</div>
+      </div>
+      <div class="loginbody" >
+        <el-form :model="register" class="loginform">
           <el-form-item>
-            <el-input v-model="loginPaswd.moblie" 
+            <el-input v-model="register.moblie" 
             placeholder="手机号"
             @focus="headleFocus">
               <i
@@ -53,7 +83,7 @@
             </el-input>
           </el-form-item>
           <el-form-item >
-            <el-input v-model="loginPaswd.password" placeholder="密码">
+            <el-input v-model="register.password">
               <i icon="el-icon-my-erase"  
                 class="el-icon-my-erase el-input__icon"
                 slot="suffix"
@@ -61,33 +91,22 @@
               </i>  
             </el-input>
           </el-form-item>
-          <div class="btn-denger" @click="onSubmit('loginPaswd')">登录</div>
+          <div class="btn-denger" @click="clickRegister('register')">注册</div>
         </el-form>
         <div class="other"><span>忘记密码</span>|<span>注册</span></div>
       </div>
-      <div class="partners">
-        <div class="masthead">第三方登录</div>
-        <div class="partother">
-          <div class="wxlogo"></div>
-          <div class="qqlogo"></div>
-          <div class="wblogo"></div>
-        </div>
-      </div>
-    </div>
-    <div class="register-warp">
-
     </div>
   </div>
 </template>
 <script>
-
+  // import shutEye from "../../assets/login/login-shut-eye.png"
   export default {
-    name: 'login',
     components: {
 
     },
     data () {
       return {
+        shutEye: require("@/assets/login/login-shut-eye.png"),
         isShow: true,
         navList: [
           {name: '短信登录'},
@@ -117,7 +136,6 @@
         handler(nval, oval){
           console.log(nval,999)
           this.loginData = nval;
-        
         },
         deep:true
       }
@@ -126,6 +144,15 @@
       
     },
     methods: {
+      
+      // 清空输入框
+      clearInputVal(e){
+        this.loginPaswd.moblie = '';
+      },
+      // 密码可见和隐藏
+      visibilityTab(e){
+        console.log(e);
+      },
       headleFocus(ev){
         ev.preventDefault();
         this.isIconClose = true;
@@ -134,17 +161,31 @@
         this.isIconClose = false;
       },
       onClick(val){
-        // console.log(val, ev,123123)
         // ev.preventDefault();
         this.$emit('changeState', val);
       },
       // 获取短信
       getCodeVerify(){
         this.$api.userInfo.getLoginSendcode({
-          phone_number: this.loginPaswd.moblie
+          phone_number: this.loginVerify.moblie
         }).then(res => {
           console.log(res, '900001')
         },err => {console.log(err)})
+      },
+      // 短信登录
+      submitVerify(formData){
+        console.log(formData, 1231)
+        
+        console.log(formData.moblie, '----')
+        this.$api.userInfo.userLoginMobile(formData.moblie).then( res => {
+          console.log(res, 908);
+        })
+      },
+      // 注册 
+      clickRegister(formData){
+        this.$api.userInfo.userLoginMobile(formData.moblie).then( res => {
+          console.log(res, 908);
+        })
       },
       onSubmit(formName){        
         this.$api.userInfo.userLoginPassword({

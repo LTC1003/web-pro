@@ -18,9 +18,9 @@ const routes = [
     name: "home",
     component: Home,
     children: [
-      {path: "login", 
-        component: () => import('../views/Login')
-      },
+      // {path: "login", 
+      //   component: () => import('../components/Login')
+      // },
       {path: "main-content", name: 'main-content', component: MainContent},
       {path: "lineplay", name: "linepaly", component: Lineplay},
       {path: "register", name: 'register', component: Register},
