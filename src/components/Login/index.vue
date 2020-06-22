@@ -1,6 +1,6 @@
 <template>
   <div class="login" @click.self="onClick(false)">
-    <div class="login-warp" v-if="loginData == 'logon'">
+    <div class="login-warp" v-if="loginData == 'login'">
       <div class="navs">
         <div class="nav"
         :class="{active: isActive == index }" 
@@ -64,7 +64,7 @@
         </div>
       </div>
     </div>
-    <div class="register-warp" v-else-if="loginData == 'register'">
+    <div class="register-warp" v-if="loginData == 'register'">
       <div class="navs">
         <div class="nav active">账号注册</div>
       </div>
@@ -93,17 +93,16 @@
           </el-form-item>
           <div class="btn-denger" @click="clickRegister('register')">注册</div>
         </el-form>
-        <div class="other"><span>忘记密码</span>|<span>注册</span></div>
+        <div class="other"><span >
+          <router-link :to="{ name: 'retrieve-paswd'}">忘记密码</router-link></span> |
+          <span>注册</span></div>
       </div>
     </div>
   </div>
 </template>
 <script>
-  // import shutEye from "../../assets/login/login-shut-eye.png"
   export default {
-    components: {
-
-    },
+    name: 'login',
     data () {
       return {
         shutEye: require("@/assets/login/login-shut-eye.png"),
@@ -124,7 +123,12 @@
         loginPaswd:{
           moblie: '',
           password: ''
-        },    
+        }, 
+        register: {
+          moblie: '',
+          password: '',
+          aginPawd: ''
+        },
         loginData: ''
       }
     },

@@ -20,12 +20,17 @@ export default function $axios(options) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {
+        // http request 拦截器
+        const token = sessionStorage.getItem('token')
+        if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
+          config.headers.authorization = token  //请求头加上token
+        }
         // 1. 请求headers 添加公共参数
-        let reqParams = addCode(config.data);
-        config.headers.appVersion = reqParams.appVersion;
-        config.headers.timeStamp = reqParams.timeStamp;
-        config.headers.userAgent = reqParams.userAgent;
-        config.headers.sign = reqParams.sign;
+        const reqParams = addCode(config.data);
+        config.headers['appVersion'] = reqParams.appVersion;
+        config.headers['timeStamp'] = reqParams.timeStamp;
+        config.headers['userAgent'] = reqParams.userAgent;
+        config.headers['sign'] = reqParams.sign;
         // 2. 请求地址url
         // if (config.url === '/api/user/userLoginPassword') {
         //   // 根据API请求地址操作
@@ -37,7 +42,7 @@ export default function $axios(options) {
         }
         return config
       },
-      error => {
+      err => {
         // 请求错误时
         // 1. 判断请求超时
         console.log(error, '111111---requsrt');
@@ -54,7 +59,7 @@ export default function $axios(options) {
             path: `/error/${errorStatus}`
           })
         }
-        return Promise.reject(error) // 在调用的那边可以拿到(catch)你想返回的错误信息
+        return Promise.reject(err) // 在调用的那边可以拿到(catch)你想返回的错误信息
       }
     )
 

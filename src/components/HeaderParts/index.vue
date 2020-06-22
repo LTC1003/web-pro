@@ -13,7 +13,7 @@
       <el-input class="search-type" suffix-icon="el-icon-search" v-model="searchVal"></el-input>
       <div class="cont-follow">关注</div>
       <div class="cont-user">
-        <span class="sign" @click="signClick('logon')">Signin</span>|<span class="register" @click="signClick('register')">register</span>
+        <span class="sign" @click="signClick('login')">Signin</span>|<span class="register" @click="signClick('register')">register</span>
       </div>
     </div>  
     <Login :login="loginMsg" v-show="visibleState"
@@ -46,6 +46,7 @@ export default {
     signClick(name){
       this.loginMsg = name;
       this.visibleState = true;
+      // this.$router.push({name: name})
     },
     getStateVal(val){
       this.visibleState =val
