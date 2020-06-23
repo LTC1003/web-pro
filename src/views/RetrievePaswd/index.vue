@@ -8,9 +8,9 @@
   <div class="resetmain">
     <div class="resetCont">
       <div class="tabs">
-        <router-link class="active" :to="{path: '/'}">填写资料</router-link>
-        <router-link :to="{path: '/'}">重置密码</router-link>
-        <router-link :to="{path: '/'}">完成</router-link>
+        <router-link class="active" :to="{name: 'fillinfo'}">填写资料</router-link>
+        <router-link :to="{name: 'reset-paswd'}">重置密码</router-link>
+        <router-link :to="{name: 'reset-success'}">完成</router-link>
       </div>
       <router-view></router-view>
     </div>

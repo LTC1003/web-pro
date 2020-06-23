@@ -25,8 +25,16 @@ export default function $axios(options) {
         if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
           config.headers.authorization = token  //请求头加上token
         }
+        
         // 1. 请求headers 添加公共参数
-        const reqParams = addCode(config.data);
+        var reqData = {};
+        if (config.method === 'get') {
+          reqData = options.params
+        }else{
+          reqData = config.data
+        }
+        console.log(reqData,'ying ying ying');
+        const reqParams = addCode(reqData);
         config.headers['appVersion'] = reqParams.appVersion;
         config.headers['timeStamp'] = reqParams.timeStamp;
         config.headers['userAgent'] = reqParams.userAgent;
@@ -163,7 +171,9 @@ export default function $axios(options) {
       reapteData = reapteData.replace(/[,]/g, '&');
       reapteData = reapteData.replace(/[:]/g, '=');
       reapteData += '&key=DN6AjdNsv6PZXYUoOxVmrVILB+S';
+      // console.log(reapteData, 'sort sort bef');
       reqHead['sign'] = MD5(reapteData).toUpperCase();
+      // console.log(reqHead['sign'], 'sort aft');
       coolback = reqHead;
       return coolback
     }

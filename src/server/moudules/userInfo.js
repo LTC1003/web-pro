@@ -12,6 +12,15 @@ export const getLoginSendcode = (params) =>{
       params,
   })
 }
+// 验证短息
+// /api/code/login/check_code
+export const loginCheckCode = (data) =>{
+  return axios({
+      url: '/api/code/login/check_code',
+      method: 'post',
+      data,
+  })
+}
 
 // 用户手机登录/注册   
 export const userLoginMobile = (params) =>{

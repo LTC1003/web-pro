@@ -89,6 +89,12 @@
           color: #ffffff;
           margin: 10px 0;
         }
+        .contrlCode{
+          color: #479CDC;
+          &:hover{
+            cursor: pointer;
+          }
+        }
       }
       .other{
         text-align: right;

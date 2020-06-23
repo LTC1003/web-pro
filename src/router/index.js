@@ -42,12 +42,12 @@ const routes = [
             component: FillInfo,
           },
           {
-            path: "reset-paswd",
+            path: "/retrieve-paswd/reset-paswd",
             name: 'reset-paswd',
             component: ResetPaswd,
           },
           {
-            path: "reset-success",
+            path: "/retrieve-paswd/reset-success",
             name: 'reset-success',
             component: ResetSuccess,
           }
