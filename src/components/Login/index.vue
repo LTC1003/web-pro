@@ -56,7 +56,7 @@
           </el-form-item>
           <el-form-item prop="verify">
             <el-input v-model="loginVerify.verify" placeholder="验证码">
-              <span class="contrlCode" slot="suffix" @click="getCodeVerify()">获取验证码</span>
+              <el-button class="contrlCode" slot="suffix" @click="getCodeVerify(loginVerify.moblie)" :disabled="isDisabled">{{getCodeState}}</el-button>
             </el-input>
           </el-form-item>
           <div class="btn-denger" @click="submitVerify">登录</div>
@@ -152,6 +152,8 @@
         }
       };
       return {
+        isDisabled: false,
+        getCodeState: '获取验证码',
         shutEye: require("@/assets/login/login-shut-eye.png"),
         isShow: true,
         navList: [
@@ -262,20 +264,40 @@
         this.$emit('changeState', val);
       },
       // 获取短信
-      getCodeVerify(){
-        this.$refs.loginVerify.validate(
+      getCodeVerify(value){
+        if(/^1[3456789]\d{9}$/.test(value) == false){
+          this.$refs.loginVerify.validate( 
           (valid) => {
-            if (valid) {
-              this.$api.userInfo.getLoginSendcode({
-                phone_number: this.loginVerify.moblie
-              }).then(res => {
-                console.log(res, '900001')
-              },err => {console.log(err)})
+            return false;
+          });
+        } else {
+          this.isDisabled = true;
+          var count = null;
+          var seed = 60;
+          var num = seedCount => {
+            seed --;
+            if (seed < 1) {
+              clearInterval(count);
+              this.getCodeState = '重新发送';
+              this.isDisabled = false;
             } else {
-              return false;
+              // console.log(seed, '*_*');
+              this.getCodeState = `${seed} 重新发送`;
             }
-          }
-        );
+          };
+          count = setInterval(num, 1000);
+
+          this.$api.userInfo.getLoginSendcode({phone_number: value })
+          .then(
+            res => {
+              if (res.message === "success") {
+                // console.log(res.data.result, '900001') // {phoneNumber: "13022511993", code: "499866"}
+              }
+            },
+            err => {console.log(err)}
+          );
+        }
+        
       },
       // 验证短息和登录
       submitVerify(){
