@@ -35,10 +35,9 @@
         </el-form>
         <div class="other">
           <span  @click="toRessetPage()" >
-            <!-- <router-link :to="{ name: 'retrieve-paswd'}">忘记密码</router-link> -->
             忘记密码
           </span> |
-          <span @click="loginData =  'register'">注册</span>
+          <span @click="loginData ='register'">注册</span>
         </div>
       </div>
       <div class="loginbody" v-show="!isShow">
@@ -76,14 +75,14 @@
     </div>
     <div class="register-warp" v-if="loginData == 'register'">
       <div class="navs">
-        <div class="nav active">账号注册</div>
+        <div class="nav active">快速注册</div>
       </div>
       <div class="loginbody">
-        <el-form :model="register" ref="register" :rules="rulesRegis"class="loginform">
+        <el-form :model="register" ref="register" :rules="rulesRegis" class="loginform">
           <el-form-item prop="moblie">
             <el-input v-model="register.moblie" 
-            placeholder="手机号"
-            @focus="headleFocus">
+              placeholder="手机号"
+              @focus="headleFocus">
               <i
                 v-show="isIconClose"
                 icon="el-icon-my-close"  
@@ -93,19 +92,20 @@
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input v-model="register.password">
-              <i icon="el-icon-my-erase"  
-                class="el-icon-my-erase el-input__icon"
+            <el-input v-model="register.password" :type="inputPassType">
+              <i icon="el-icon-my-erase"
+                class=" el-input__icon"
+                :class="eyeClass"
                 slot="suffix"
+                style="border: 1px"
                 @click="handleIconClick">
-              </i>  
+              </i>
             </el-input>
           </el-form-item>
           <div class="btn-denger" @click="clickRegister('register')">注册</div>
         </el-form>
         <div class="other">
           <span @click="loginData = 'login'" >
-            <!-- <router-link :to="{ name: 'retrieve-paswd'}">忘记密码</router-link> -->
             返回账号登录<i class="el-icon-arrow-right"></i>
           </span>
         </div>
@@ -152,9 +152,11 @@
         }
       };
       return {
+        eyeClass: 'el-icon-my-shuteye', // el-icon-my-erase
+        inputPassType: 'password',  // 输入框类型值password 转换 text
         isDisabled: false,
         getCodeState: '获取验证码',
-        shutEye: require("@/assets/login/login-shut-eye.png"),
+        // shutEye: require("@/assets/login/login-shut-eye.png"),
         isShow: true,
         navList: [
           {name: '短信登录'},
@@ -241,7 +243,7 @@
     methods: {
       // 编程式路由跳转页面
       toRessetPage(){
-        this.$router.push({name:"retrieve-paswd"});
+        this.$router.push({name:"fillinfo"});
         this.$emit('changeState', false);
       },
       // 清空输入框
@@ -309,27 +311,19 @@
                 phone_number: this.loginVerify.moblie,
                 code: this.loginVerify.verify
               }
-              console.log(paramObj)
               this.$api.userInfo.loginCheckCode(paramObj).then( res => {
-                if (res.message === "success"){
+                if (res.code === "00001"){
+                  // code: "00001"
+                  // 短信认证成功
+                  console.log(res.message);
                   this.$api.userInfo.userLoginMobile(paramObj.phone_number)
                   .then( res => {
                     if(res.message === '注册成功') {
                       console.log(res.data.result, 909090);
-                      // result = {
-                      //   id: 86,
-                      //   passwordStatus: 1,
-                      //   role: 1,
-                      //   token: "fc2203160f3141f7a62dc87d2bfc07fd",
-                      //   userMobile: "17366006693",
-                      //   userName: "17366006693",
-                      //   userStatus: 1
-                      // }
                     }
                   });
                 } else {
-                  this.$message.error('验证码不正确');
-                  // this.$notify.success('验证码不正确');
+                  this.$message.error(res.message);
                 }
               });
             } else {
@@ -345,12 +339,17 @@
           console.log(res, 908);
         })
       },
+      // 账号密码登录
       onSubmit(formName){        
         this.$api.userInfo.userLoginPassword({
           "userMobile" : this.loginPaswd.moblie,
           "userPassword" : this.loginPaswd.password
-        }).then(data => {
-            console.log(90000,data)
+        }).then(res => {
+            console.log(90000,res)
+            if(res.code = "00001"){
+              // message: "操作成功"
+              this.$message.success(res.message);
+            }
           },
           error => {
             console.log(error);
@@ -359,7 +358,18 @@
         // this.$emit('changeState', false);
       },
       handleIconClick(ev){
-        console.log(ev)
+        if (this.inputPassType == 'password'){
+          setTimeout(() => {
+            this.inputPassType = 'text';
+            this.eyeClass = 'el-icon-my-erase'
+          }, 500)
+        } else {
+          setTimeout(() => {
+            this.inputPassType ='password';
+            this.eyeClass = 'el-icon-my-shuteye'
+          }, 300)
+        }
+        
       },
       clickActive(val, index){
         this.isActive = index;

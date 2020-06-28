@@ -62,6 +62,21 @@
           cursor: pointer;
         }
       }
+      .el-icon-my-shuteye{
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        background: url("../../assets/login/login-shut-eye.png") no-repeat;
+        background-size: cover;
+        &::before{
+          content: "站";
+          font-size: 12px;
+          visibility: hidden;
+        }
+        &:hover{
+          cursor: pointer;
+        }
+      }
       .el-icon-my-erase{
         width: 24px;
         height: 24px;
@@ -82,7 +97,7 @@
       }
       .loginform{
         .btn-denger{
-          background-color: #DF2E46;
+          background-color: #DF2E46; //#95C21F
           height:40px;
           line-height: 40px;
           border-radius: 5px;

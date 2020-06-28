@@ -21,8 +21,7 @@ export default {
     }
   },
   mounted() {
-  //  let vh = window.innerHeight;
-  //  console.log(vh, 443)
+    
   },
   methods: {
    

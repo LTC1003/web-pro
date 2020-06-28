@@ -33,7 +33,7 @@ export default function $axios(options) {
         }else{
           reqData = config.data
         }
-        console.log(reqData,'ying ying ying');
+        // console.log(reqData,'ying ying ying');
         const reqParams = addCode(reqData);
         config.headers['appVersion'] = reqParams.appVersion;
         config.headers['timeStamp'] = reqParams.timeStamp;

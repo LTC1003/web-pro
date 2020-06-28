@@ -1,18 +1,13 @@
 <template>
-  <!-- <div class="resetmain">
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-    <el-breadcrumb-item :to="{ path: '/' }">填写资料</el-breadcrumb-item>
-    <el-breadcrumb-item>重置密码</el-breadcrumb-item>
-    <el-breadcrumb-item>完成</el-breadcrumb-item>
-  </el-breadcrumb> -->
+
   <div class="resetmain">
     <div class="resetCont">
-      <div class="tabs">
-        <router-link class="active" :to="{name: 'fillinfo'}">填写资料</router-link>
-        <router-link :to="{name: 'reset-paswd'}">重置密码</router-link>
-        <router-link :to="{name: 'reset-success'}">完成</router-link>
-      </div>
-      <router-view></router-view>
+      <el-steps :active="pswdStepState" finish-status="success" process-status="wait" simple>
+          <el-step title="填写资料"></el-step>
+          <el-step title="重置密码"></el-step>
+          <el-step title="完成"></el-step>
+      </el-steps>
+      <router-view @goStepState="stepVal"></router-view>
     </div>
   </div>
 </template>
@@ -25,14 +20,18 @@
     },
     data() {
       return {
-
+        pswdStepState: 1,
+       
       }
     },
     mounted() {
-      console.log((960 / 1920));
+
     },
     methods: {
-
+      stepVal(val){
+        console.log(val);
+        this.pswdStepState = val;
+      },
     }
   }
 </script>
@@ -50,34 +49,34 @@
     background-color: #ffffff;
     height: 520px;
     width: 960px;
-    .tabs{
-      // width: 880px;
-      font-size: 18px;
-      margin: 26px 40px;
-      height: 40px;
-      line-height: 40px;
-      display: flex;
-      justify-content: space-evenly;
-      &>a{
-        display: inline-block;
-        flex: 1;
-      }
-      .active{
-        background: #95C21F;
-        color: #fff;
-        &:hover{
-          color:#ffffff;
-        }
-        &::after{
-          content: '';
-          width: 40px;
-          height: 40px;
-          background: #745;
-          backdrop-filter: 2px #745;
-          transform: rotate(45deg);
-          transform: translate( 40px);
-        }
-      }
-    }
+    // .tabs{
+    //   // width: 880px;
+    //   font-size: 18px;
+    //   margin: 26px 40px;
+    //   height: 40px;
+    //   line-height: 40px;
+    //   display: flex;
+    //   justify-content: space-evenly;
+    //   &>a{
+    //     display: inline-block;
+    //     flex: 1;
+    //   }
+    //   .active{
+    //     background: #95C21F;
+    //     color: #fff;
+    //     &:hover{
+    //       color:#ffffff;
+    //     }
+    //     &::after{
+    //       content: '';
+    //       width: 40px;
+    //       height: 40px;
+    //       background: #745;
+    //       backdrop-filter: 2px #745;
+    //       transform: rotate(45deg);
+    //       transform: translate( 40px);
+    //     }
+    //   }
+    // }
   }
 </style>

@@ -37,3 +37,23 @@ export const userLoginPassword = (data) =>{
       data,
   })
 }
+
+// 以旧换新修改密码
+// /api/user/changePassword
+export const changePassword = (data) =>{
+  return axios({
+      url: '/api/user/changePassword',
+      method: 'put',
+      data,
+  })
+}
+
+// 忘记密码手机短信认证修改密码
+// /api/user/forgetPassword
+export const forgetPassword = (data) =>{
+  return axios({
+      url: '/api/user/forgetPassword',
+      method: 'post',
+      data,
+  })
+}

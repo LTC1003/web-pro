@@ -40,10 +40,11 @@ export default {
     }
   },
   mounted() {
-  
+    
   },
   methods: {
     signClick(name){
+      console.log(name);
       this.loginMsg = name;
       this.visibleState = true;
       // this.$router.push({name: name})
@@ -54,7 +55,8 @@ export default {
     routePush(name){
       this.$router.push({name: name})
     },
-  }
+  },
+
 };
 </script>
 

@@ -63,7 +63,6 @@ export default {
     }
   },
   mounted() {
-    
   },
   methods: {
     handleClose(done) {
