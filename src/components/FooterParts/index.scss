@@ -1,102 +1,16 @@
 .footer-info{
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
-  font-size: 14px;
-  color: #666666;
-
-  .info-cooperation{
-    height: 248px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    .relation{
-      display: flex;
-      flex-direction: column;
-      .icon{
-        width: 48px;
-        height: 48px;
-        background-color: #000;
-        margin-right: 10px;
-      }
-      .docs{
-        text-align: left;
-        color: #999999;
-        font-size: 0.14rem;
-        h3{
-          font-size: 0.18rem;
-          font-weight: 400;
-          color: #232323;   
-        }
-      }
-      .relationWB, .relationGF{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .relationWB{
-        margin-bottom: 20px;
-      }
-    }
-    .ewcode{
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      align-items: center;
-      .item-ewcode{
-        &:nth-child(2){
-          margin: 0 60px;
-        }
-        .demonstration{
-          font-size: 0.16rem;
-          color: #232323;
-          display: block;
-          margin-bottom: 10px;
-        }
-        .ewcodeimg{
-          width: 90px;
-          height: 90px;
-          background-color: #000;
-        }
-      }
-    }
-    .Dj-help{
-      text-align: left;
-      &>span{
-        font-size: 0.16rem;
-        color: #333333;
-        line-height: 22px;
-      }
-      .helpList{
-        line-height: 30px;
-      }
-    }
-  }
-  .info-explain{
-    height: 161px;
-    border-top: 1px solid #cccccc; 
-    .relation-nav{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 22px 0;
-      .navlist{
-        &::after{
-          padding: 0 20px;
-          content: "|";
-        }
-        &:last-child{
-          &:after{
-            padding:0;
-            content: "";
-          }
-        }
-      }
-    }
-    .certificate{
-      font-size: 0.1rem;
-      font-weight:400;
-      line-height:18px;
-    }
+  // border-top: 1px solid #333;
+  // display: flex;
+  // align-content: flex-end;
+  // align-items: flex-end;
+  // justify-content: center;
+  width: 100%;
+  margin-bottom: 40px;
+  .official{
+    font-size:14px;
+    font-family:MicrosoftYaHei;
+    color:rgba(255,255,255,1);
+    line-height:24px; 
+    text-align: center;              
   }
 }

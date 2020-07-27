@@ -1,6 +1,13 @@
-.header-parts{
-  // background: rgba($color: #000000, $alpha: 0.5);
-  // position: absolute;
+.video-zone{
+  background-color: #f1f2f6;
+  height: 300px;
+  flex: 1;
+}
+.footer-info{
+  background-color: #ffffff;
+  .official{
+    color: #232323;
+  }
 }
 .main-warpper{
   width: 100%;

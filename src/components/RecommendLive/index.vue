@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "header-parts",
+  name: "header-cont",
   components: {},
   data() { 
     return {

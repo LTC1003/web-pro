@@ -32,4 +32,11 @@ a{
 
 .home{
   font-family: "Microsoft YaHei";
+  height: inherit;
+  background-image: url(../assets/img/bodyBGImg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
 }

@@ -22,14 +22,15 @@ Vue.use(ElementUI);
 const routes = [
   {
     path: "/",
+    name: 'home',
     component: Home,
+  },
+  {path: "/main-content", name: 'main-content', component: MainContent,
     children: [
       // {
       //   path: '/',
       //   redirect: 'redirect',
       // },
-      {path: "/", name: 'main-content', component: MainContent},
-      {path: "/lineplay", name: "linepaly", component: Lineplay},
       {path: "/register", name: 'register', component: Register},
       {
         path: '/retrieve-paswd',
@@ -53,9 +54,13 @@ const routes = [
           }
         ]
       },
-    ]
+    ],
   },
-  
+  { 
+    path: "/lineplay", 
+    name: "linepaly", 
+    component: Lineplay 
+  },
   {
     path: '/repository',
     name: 'repository',
