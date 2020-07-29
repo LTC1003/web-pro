@@ -1,20 +1,22 @@
 
 <template>
-  <div class="thmemList">
+  <div class="thmemList" v-model="cardItem">
     <div class="thead">
-      <div class="title">{{thmemList[0].title}}</div>
-      <div class="btn"> 更多 <span>></span></div>
+      <div class="title">{{cardItem.type}}</div>
+      <div class="btn"> 查看更多 <span>></span></div>
     </div>
     <div class="tbody">
-
-      <div class="cardList">
+      <div class="cardList" v-for="(item, index) in cardItem.cardList" :key="index">
         <div class="userCont">
-          <img :src="itemImgsrc" alt="" srcset="">
+          <img :src="item.imgUrl" alt="" srcset="">
         </div>
-        <div class="userDocs">贷款和剧时间卡络磺钠方科技</div>
+        <div class="userDocs">
+          <p> {{item.docs}} </p>
+          <p> {{item.userCont}} </p>
+        </div>
       </div>
-      
     </div>
+    
   </div>
 </template>
 
@@ -23,19 +25,20 @@ export default {
   name: "list_column",
   components: {
   },
+  props: [
+    'cardItem'
+  ],
   data() { 
     return {
-      itemImgsrc: require('@/assets/img/userWork.png'),
-      thmemList: [
-        { title: '最新视频' },
-        { title: '记录栏目' },
-        { title: '剧情视频' },
-        { title: '探路视频' },
-      ] 
+      // itemImgsrc: require('@/assets/img/userWork.png'),
+      cardData: function() {
+        return this.$props['cardItem']
+      }, 
     }
   },
   mounted() {
-    
+    // console.log(this.cardData(), 301);
+    // console.log(this.$props['cardItem'], 302);
   },
   methods: {
  

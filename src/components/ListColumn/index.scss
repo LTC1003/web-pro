@@ -1,6 +1,8 @@
 
 .thmemList{
-
+  width: 78%;
+  margin: 0 auto;
+  margin-bottom: 50px;
   .thead{
     font-family:PingFangSC-Regular,PingFang SC;  
     display: flex;
@@ -15,14 +17,19 @@
       height:20px;
       font-size:14px;
       font-weight:400;
-      color:rgba(71,156,220,1); // #479CDC
+      color: #479CDC;
       line-height:20px;
     }
   }
   .tbody{
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: -10px;
+    box-sizing: content-box;
     .cardList{
       width:264px;
-      border: 1px dashed #333333;
+      height: 188px;
+      margin: 10px;
       .userCont{
         img{
           height: 148px;
@@ -38,6 +45,8 @@
         color:rgba(51,51,51,1);
         line-height:40px;
         padding: 0 5px;
+        display: flex;
+        justify-content: space-between;
       }
     }
   }
