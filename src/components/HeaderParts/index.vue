@@ -5,9 +5,11 @@
         <div class="appLogo" @click="routePush('home')">
           <img :src="imgsrc" alt="logo">  
         </div>
-        <div class="item-tab active" @click="routePush('main-content')">视频专区</div>
+        <div class="item-tab active" @click="routePush('pages')">视频专区</div>
         <div class="item-tab" @click="routePush('linepaly')">直播专区</div>
-        <el-input class=" search-type" suffix-icon="el-icon-search" v-model="searchVal" placeholder="sadad"></el-input>
+        <el-input class="search-type" v-model="searchVal" placeholder="sadad">
+          <div style="width:30px, height: 30px" icon="el-icon-search"></div>
+        </el-input>
       </div>
       <div class="control-user">
         <el-avatar class="avatar" icon="el-icon-user-solid"></el-avatar>

@@ -1,6 +1,6 @@
 
 .thmemList{
-  width: 78%;
+  width: 74%;
   margin: 0 auto;
   margin-bottom: 50px;
   .thead{
@@ -17,8 +17,13 @@
       height:20px;
       font-size:14px;
       font-weight:400;
-      color: #479CDC;
+      color: #666666;
       line-height:20px;
+      margin-right: 10px;
+      &:hover{
+        cursor: pointer;
+        color: #479CDC;
+      }
     }
   }
   .tbody{

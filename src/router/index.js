@@ -1,11 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import MainContent from "../views/MainContent";
+import Pages from "../views/Pages";
+import VideoZone from "../views/VideoZone";
 import Lineplay from "../views/Lineplay";
 import Register from "./../views/Register";
 import Login from "../components/Login"
 import Repository from "../views/repository";
+import SearchInfoList from "../views/SearchInfoList";
 
 /**修改密码**/
 import RetrievePaswd from "../views/RetrievePaswd";
@@ -25,42 +27,66 @@ const routes = [
     name: 'home',
     component: Home,
   },
-  {path: "/main-content", name: 'main-content', component: MainContent,
+  {
+    path: '/pages',
+    name: 'pages',
+    component: Pages,
+    // 重定项
+    // redirect: '/pages/video-zone',
+    redirect: { name: 'video-zone' },
     children: [
-      // {
-      //   path: '/',
-      //   redirect: 'redirect',
-      // },
-      {path: "/register", name: 'register', component: Register},
+      // 视频专区
       {
-        path: '/retrieve-paswd',
-        name: 'retrieve-paswd',
-        component: RetrievePaswd,
-        children: [
-          {
-            path: "/retrieve-paswd/",
-            name: 'fillinfo',
-            component: FillInfo,
-          },
-          {
-            path: "/retrieve-paswd/reset-paswd",
-            name: 'reset-paswd',
-            component: ResetPaswd,
-          },
-          {
-            path: "/retrieve-paswd/reset-success",
-            name: 'reset-success',
-            component: ResetSuccess,
-          }
-        ]
+        path: "/pages/video-zone", 
+        name: 'video-zone',
+        component: VideoZone,
+        children: []
       },
-    ],
+      // 主播专区
+      { 
+        path: "/lineplay", 
+        name: "linepaly", 
+        component: Lineplay 
+      },
+      // 搜索专区
+      {
+        path: "search-info-list",
+        name: "search-info-list",
+        component: SearchInfoList,
+      },
+      // 用户专区
+      // {
+      //   path:"user ",
+      //   name: "user ",
+      //   component: user
+      // },
+      // 注册登录
+      // {path: "/register", name: 'register', component: Register},
+      // {
+      //   path: '/retrieve-paswd',
+      //   name: 'retrieve-paswd',
+      //   component: RetrievePaswd,
+      //   children: [
+      //     {
+      //       path: "/retrieve-paswd/",
+      //       name: 'fillinfo',
+      //       component: FillInfo,
+      //     },
+      //     {
+      //       path: "/retrieve-paswd/reset-paswd",
+      //       name: 'reset-paswd',
+      //       component: ResetPaswd,
+      //     },
+      //     {
+      //       path: "/retrieve-paswd/reset-success",
+      //       name: 'reset-success',
+      //       component: ResetSuccess,
+      //     },
+      //   ]
+      // },
+    ]
   },
-  { 
-    path: "/lineplay", 
-    name: "linepaly", 
-    component: Lineplay 
-  },
+
   {
     path: '/repository',
     name: 'repository',
