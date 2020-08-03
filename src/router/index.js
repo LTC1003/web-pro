@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "../views/Home";
 import Pages from "../views/Pages";
 import VideoZone from "../views/VideoZone";
 import Lineplay from "../views/Lineplay";

@@ -7,6 +7,21 @@
         </div>
         <div class="item-tab active" @click="routePush('pages')">视频专区</div>
         <div class="item-tab" @click="routePush('linepaly')">直播专区</div>
+        <el-dropdown>
+          <span class=".el-dropdown-link item-tab">
+            下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>ISU</el-dropdown-item>
+            <el-dropdown-item>记录</el-dropdown-item>
+            <el-dropdown-item>剧情</el-dropdown-item>
+            <el-dropdown-item>TALK</el-dropdown-item>
+            <el-dropdown-item>探路</el-dropdown-item>
+            <el-dropdown-item>推荐</el-dropdown-item>
+            <!-- <el-dropdown-item disabled>双皮奶</el-dropdown-item>
+            <el-dropdown-item divided>蚵仔煎</el-dropdown-item> -->
+          </el-dropdown-menu>
+        </el-dropdown>
         <el-input class="search-type" v-model="searchVal" placeholder="sadad">
           <div style="width:30px, height: 30px" icon="el-icon-search"></div>
         </el-input>
@@ -67,4 +82,7 @@ export default {
 
 <style lang="scss">
   @import "./index.scss";
+  .el-dropdown-link{
+    color: #DF2E47;
+  }
 </style>

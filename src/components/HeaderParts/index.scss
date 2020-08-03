@@ -7,14 +7,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ffffff;
     .menuList, .control-user{
       display: inline-flex;
       justify-content: space-around;
       align-items: center;
     }
     .menuList{
-      // color: #ffffff;
       color: #333333;
       font-size:18px;
       line-height: 25px;  
@@ -22,7 +20,7 @@
         margin-left: 0.6rem;
         &:hover{
           cursor: pointer;
-          color: #FFA60C;
+          color: #DF2E47;
           transform: scale(1.2);
           -webkit-transform:scale(1.2);  
           -moz-transform:scale(1.2);
