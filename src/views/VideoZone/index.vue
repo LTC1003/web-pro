@@ -1,7 +1,7 @@
 <template>
   <div >
     <div class="video-zone">
-      <div  v-for="(item, index) in dataList" :key="index">
+      <div v-for="(item, index) in dataList" :key="index">
         <ListColumn v-bind:cardItem="item" ></ListColumn>
       </div>
     </div>
@@ -11,7 +11,7 @@
 import ListColumn from "../../components/ListColumn"
 // import RecommendLive from "../../components/RecommendLive"
 export default {
-  // name: 'video-zone',
+  name: 'video-zone',
   components: {
     ListColumn,
     // RecommendLive,
@@ -22,6 +22,7 @@ export default {
       cardItem: '',
       dataList: [
         { type: '记录栏目', 
+          id: 1,
           cardList: [
             { userCont: 'user1', docs: '123123', imgUrl: require('@/assets/img/userWork.png') },
             { userCont: 'user2', docs: '22222', imgUrl: "../../assets/img/bodyBGImg.png" },
@@ -33,6 +34,7 @@ export default {
           ]
         },
         { type: '剧情视频', 
+          id: 2,
           cardList: [
             { userCont: 'user1', docs: '123123', imgUrl: require('@/assets/img/bodyBGImg.png') },
             { userCont: 'user2', docs: '22222', imgUrl: require('@/assets/img/userWork.png') },
@@ -40,7 +42,8 @@ export default {
             { userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/userWork.png') },
           ]
         },
-        { type: '探路视频', 
+        { type: '探路视频',
+          id: 4,
           cardList: [
             { userCont: 'user1', docs: '123123', imgUrl: require('@/assets/img/userWork.png') },
             { userCont: 'user2', docs: '22222', imgUrl: require('@/assets/img/userWork.png') },
@@ -53,6 +56,11 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$route, '887')
+    // this.$route.fullPath
+    // this.$route.hash
+    // this.$route.params
+    this.$route.query
   },
   methods: {
 

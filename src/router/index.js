@@ -5,7 +5,7 @@ import Pages from "../views/Pages";
 import VideoZone from "../views/VideoZone";
 import Lineplay from "../views/Lineplay";
 import Register from "./../views/Register";
-import Login from "../components/Login"
+import Login from "../components/Login";
 import Repository from "../views/repository";
 import SearchInfoList from "../views/SearchInfoList";
 
@@ -32,15 +32,13 @@ const routes = [
     name: 'pages',
     component: Pages,
     // 重定项
-    // redirect: '/pages/video-zone',
     redirect: { name: 'video-zone' },
     children: [
       // 视频专区
       {
-        path: "/pages/video-zone", 
+        path: "video-zone", 
         name: 'video-zone',
         component: VideoZone,
-        children: []
       },
       // 主播专区
       { 
@@ -86,7 +84,6 @@ const routes = [
       // },
     ]
   },
-
   {
     path: '/repository',
     name: 'repository',

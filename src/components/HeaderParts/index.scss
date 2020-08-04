@@ -41,6 +41,10 @@
           line-height: 35px;
         }
       }
+
+      .el-dropdown-link{
+        color: #DF2E47;
+      }
     }
     .control-user{
       font-size: 0.14rem;
@@ -52,5 +56,13 @@
         color: #999999;
       }
     }
+  }
+}
+
+// 下拉列样式
+.el-dropdown-menu{
+  .dropdown_column{
+    color: #DF2E47;
+    font-size: 0.14rem;
   }
 }

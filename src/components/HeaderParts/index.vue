@@ -5,23 +5,18 @@
         <div class="appLogo" @click="routePush('home')">
           <img :src="imgsrc" alt="logo">  
         </div>
-        <div class="item-tab active" @click="routePush('pages')">视频专区</div>
-        <div class="item-tab" @click="routePush('linepaly')">直播专区</div>
         <el-dropdown>
           <span class=".el-dropdown-link item-tab">
-            下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+            视频专区<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>ISU</el-dropdown-item>
-            <el-dropdown-item>记录</el-dropdown-item>
-            <el-dropdown-item>剧情</el-dropdown-item>
-            <el-dropdown-item>TALK</el-dropdown-item>
-            <el-dropdown-item>探路</el-dropdown-item>
-            <el-dropdown-item>推荐</el-dropdown-item>
-            <!-- <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-            <el-dropdown-item divided>蚵仔煎</el-dropdown-item> -->
+            <el-dropdown-item v-for="(columnItem, index) in columnList" :key="index">
+              <div class="dropdown_column" @click="getColumn(index)">{{columnItem.columnName}}</div>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+         <!-- <div class="item-tab active" @click="routePush('pages')">视频专区</div> -->
+        <div class="item-tab" @click="routePush('linepaly')">直播专区</div>
         <el-input class="search-type" v-model="searchVal" placeholder="sadad">
           <div style="width:30px, height: 30px" icon="el-icon-search"></div>
         </el-input>
@@ -48,15 +43,20 @@ export default {
   },
   data() { 
     return {
-      // imgsrc: require('@/assets/home/appLogo.png'),
-      // imgsrc: require('@/assets/img/toSeeLogo.png'),
       imgsrc: require('@/assets/img/toSeeBlackLogo.png'),
       searchVal: '',
       loginMsg: "",
       visibleState: false,
       user: {
         name: "你大爷干啥"
-      }
+      },
+      columnList: [
+        {columnName: 'ISU'},
+        {columnName: '记录'},
+        {columnName: '剧情'},
+        {columnName: '探路'},
+        {columnName: '推荐'},
+      ]
     }
   },
   mounted() {
@@ -75,6 +75,11 @@ export default {
     routePush(name){
       this.$router.push({name: name})
     },
+    // 视频专区选项展示
+    getColumn(index){
+      console.log(index, 999)
+      this.$router.push({name: 'video-zone', query: {type: index}});
+    }
   },
 
 };
@@ -82,7 +87,4 @@ export default {
 
 <style lang="scss">
   @import "./index.scss";
-  .el-dropdown-link{
-    color: #DF2E47;
-  }
 </style>
