@@ -11,6 +11,7 @@
       display: inline-flex;
       justify-content: space-around;
       align-items: center;
+      
     }
     .menuList{
       color: #333333;
@@ -41,16 +42,21 @@
           line-height: 35px;
         }
       }
-
-      .el-dropdown-link{
-        color: #DF2E47;
+      .el-dropdown{
+        &:hover{
+          cursor: pointer;
+          color: #DF2E47;
+        }
       }
     }
     .control-user{
       font-size: 0.14rem;
       color: #333333;
-      .avatar{
-        margin-right: 10px;
+      .el-avatar{
+        vertical-align: middle;
+        &:hover{
+          cursor: pointer;
+        }
       }
       .el-icon-caret-bottom{
         color: #999999;
@@ -62,7 +68,14 @@
 // 下拉列样式
 .el-dropdown-menu{
   .dropdown_column{
-    color: #DF2E47;
+    color: #333333;
     font-size: 0.14rem;
+    &:hover{
+      cursor: pointer;
+      color: #DF2E47;
+    }
+  }
+  .el-dropdown-menu__item {
+    
   }
 }

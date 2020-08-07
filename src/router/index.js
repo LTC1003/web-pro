@@ -4,10 +4,20 @@ import Home from "../views/Home";
 import Pages from "../views/Pages";
 import VideoZone from "../views/VideoZone";
 import Lineplay from "../views/Lineplay";
-import Register from "./../views/Register";
+
+import SearchInfoList from "../views/SearchInfoList";
 import Login from "../components/Login";
 import Repository from "../views/repository";
-import SearchInfoList from "../views/SearchInfoList";
+import Register from "./../views/Register";
+
+/**个人资料**/
+import UserInfo from "../views/UserInfo";
+import History from "../views/UserInfo/History";
+import Messages from "../views/UserInfo/Messages";
+import Personal from "../views/UserInfo/Personal";
+import Audience from "../views/UserInfo/Audience";
+import Upload from "../views/UserInfo/Upload";
+/**个人资料**/
 
 /**修改密码**/
 import RetrievePaswd from "../views/RetrievePaswd";
@@ -53,11 +63,18 @@ const routes = [
         component: SearchInfoList,
       },
       // 用户专区
-      // {
-      //   path:"user ",
-      //   name: "user ",
-      //   component: user
-      // },
+      {
+        path:"userinfo",
+        name: "userinfo",
+        component: UserInfo,
+        children: [
+          { path:"history", name: "history", component: History },
+          { path: "personal", name: "personal", component: Personal },
+          { path: "messages", name: "messages", component: Messages },
+          { path: "upload", name: "upload", component: Upload },
+          { path: "audience", name: "audience", component: Audience },
+        ],
+      },
       // 注册登录
       // {path: "/register", name: 'register', component: Register},
       // {
@@ -84,6 +101,7 @@ const routes = [
       // },
     ]
   },
+
   {
     path: '/repository',
     name: 'repository',

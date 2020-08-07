@@ -56,14 +56,16 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route, '887')
+    console.log(this.$route, '887', this.getVideoType())
     // this.$route.fullPath
     // this.$route.hash
     // this.$route.params
     this.$route.query
   },
   methods: {
-
+    getVideoType(){
+      this.$api.findService.getVideoTypeList().then(res => console.log(res, 6645))
+    }
   }
 }
 </script>

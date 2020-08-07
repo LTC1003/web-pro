@@ -1,0 +1,24 @@
+.userinfo{
+  width: 74%;
+  margin: 0 auto;
+  display: flex;
+  .user-menu{
+    width: 200px;
+    background: #ffffff;
+    .menu-item{
+      line-height: 60px;
+      text-align: center;
+      border-bottom: 1px solid #eeeeee;
+      &:hover{
+        cursor: pointer;
+        color: #DF2E47;
+        border-bottom: 1px solid #DF2E47;
+      }
+    }
+  }
+  .item-container{
+    flex: 1;
+    margin-left: 20px;
+    background: #ffffff;
+  }
+}

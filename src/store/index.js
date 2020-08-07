@@ -9,7 +9,8 @@ export default new Vuex.Store({
   },
   mutations: {
     increment(state){
-      state.count++
+      state.count++,
+      state.path
     }
   },
   actions: {},

@@ -11,6 +11,8 @@ import * as userInfo from './moudules/userInfo';
 // import * as payInfo from './moudules/payInfo';
 // import * as anchorRoom from './moudules/anchorRoom'
 // 默认全部导出
+import * as findService from './moudules/findService';
 export default {
   userInfo,
+  findService,
 }
