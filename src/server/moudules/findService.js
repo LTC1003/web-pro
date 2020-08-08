@@ -11,11 +11,11 @@ export const getVideoList = (data) =>{
       data,
   })
 }
-// 栏目列表 默认热门推荐
-export const getVideolistDefault = (data) => {
-  return axios({
-    url: '/api/findservice/video/getChildVideoList',
-    method: 'post',
-    data,
-  })
-}
+// // 栏目列表 默认热门推荐
+// export const getVideolistDefault = (data) => {
+//   return axios({
+//     url: '/api/findservice/video/getChildVideoList',
+//     method: 'post',
+//     data,
+//   })
+// }

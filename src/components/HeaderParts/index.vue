@@ -10,8 +10,8 @@
             视频专区<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(columnItem, index) in columnList" :key="index">
-              <div class="dropdown_column" @click="getColumn(index)">{{columnItem}}</div>
+            <el-dropdown-item v-for="(item, index) in videoCategory" :key="index">
+              <div class="dropdown_column" @click="getColumn(item.typeId)">{{item.type}}</div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -66,12 +66,8 @@ export default {
       user: {
         name: "你大爷干啥"
       },
-      columnList: [
-        // {columnName: 'ISU'},
-        // {columnName: '记录'},
-        // {columnName: '剧情'},
-        // {columnName: '探路'},
-        // {columnName: '推荐'},
+      videoCategory: [
+        // {type: '记录', typeId: 1},
       ],
       userList: [
         {name: '个人',pathName: 'personal'},
@@ -84,9 +80,9 @@ export default {
   },
   mounted() {
     var reData = {
-      "token":"ffed1db5de614796aece86e4a387001c",
+      "token":"",
       "videoClassifyId":"",
-      "userId":78,
+      "userId": "",
       "type": "",
       "page":1,
       "limit":10,
@@ -94,13 +90,17 @@ export default {
     }
     this.$api.findService.getVideoList(reData).then(
       (res) => {
-        console.log(res.data.result,777)
-        let newData = [];
-        res.data.result.forEach(val => {
-          this.columnList.push(val.cateName)
-        });
+        if(res.message === "操作成功"){
+          res.data.result.forEach(val => {
+            let newData = {};
+            newData['type'] = val.cateName
+            newData['typeId'] = val.id
+            this.videoCategory.push(newData);
+          });
+        }
       }
     )
+    this.getColumn();
   },
   methods: {
     signClick(name){
@@ -117,9 +117,9 @@ export default {
       this.$router.push({name: name, query: optionId});
     },
     // 视频专区选项展示
-    getColumn(index){
-      console.log(index, 999)
-      this.$router.push({name: 'video-zone', query: {type: index}});
+    getColumn(typeId){
+      console.log(typeId, 'headPage');
+      this.$router.push({name: 'video-zone', query: {type: typeId}});
     }
   },
 

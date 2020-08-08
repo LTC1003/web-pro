@@ -1,6 +1,7 @@
 <template>
   <div >
     <div class="video-zone">
+      <div class="askjshfabsdfhj">{{hostVideo}}</div>
       <div v-for="(item, index) in dataList" :key="index">
         <ListColumn v-bind:cardItem="item" ></ListColumn>
       </div>
@@ -20,55 +21,47 @@ export default {
     return {
       // text: '视频专区',
       cardItem: '',
-      dataList: [
-        { type: '记录栏目', 
-          id: 1,
-          cardList: [
-            { userCont: 'user1', docs: '123123', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user2', docs: '22222', imgUrl: "../../assets/img/bodyBGImg.png" },
-            { userCont: 'user3', docs: '3333', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/userWork.png') },
-          ]
-        },
-        { type: '剧情视频', 
-          id: 2,
-          cardList: [
-            { userCont: 'user1', docs: '123123', imgUrl: require('@/assets/img/bodyBGImg.png') },
-            { userCont: 'user2', docs: '22222', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user3', docs: '3333', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/userWork.png') },
-          ]
-        },
-        { type: '探路视频',
-          id: 4,
-          cardList: [
-            { userCont: 'user1', docs: '123123', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user2', docs: '22222', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user3', docs: '3333', imgUrl: require('@/assets/img/userWork.png') },
-            { userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/bodyBGImg.png')},
-          ]
-        },
-      ],
+      dataList: [],
+      hostVideo:"热播",
 
     }
   },
   mounted() {
-    console.log(this.$route, '887', this.getVideoType())
-    // this.$route.fullPath
-    // this.$route.hash
-    // this.$route.params
-    this.$route.query
+    console.log(this.$route.query, 33444);
+    this.getVideoType(this.$route.query.type);
   },
   methods: {
-    getVideoType(){
-      this.$api.findService.getVideoTypeList().then(res => console.log(res, 6645))
+    getVideoType(type){
+      var reData = {
+        "token":"",
+        "videoClassifyId": type,
+        "userId": '',
+        "type": "",
+        "page": 1,
+        "limit": 10,
+        "isTourist":1
+      }
+      this.$api.findService.getVideoList(reData).then(
+        (res) => {
+            console.log(res.data.result.length, 666);
+          let newData;
+          if(res.data.result.length > 0 && res.data.result.length < 2){
+            this.dataList = res.data.result[0].childList
+            console.log(res.data.result[0].childList, 611);
+            
+          }
+         
+        }
+      );
     }
   }
 }
 </script>
 <style lang="scss">
   @import './index.scss';
+  .askjshfabsdfhj{
+    background: olive;
+    width: 100%;
+    height: 300px;
+  }
 </style>

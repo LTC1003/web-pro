@@ -2,17 +2,19 @@
 <template>
   <div class="thmemList" v-model="cardItem">
     <div class="thead">
-      <div class="title">{{cardItem.type}}</div>
+      <div class="title">{{cardItem.cateName}}</div>
       <div class="btn"> 查看更多 <span>></span></div>
     </div>
     <div class="tbody">
-      <div class="cardList" v-for="(item, index) in cardItem.cardList" :key="index">
+      <div class="cardList" v-for="(item, index) in list.childVideoList" :key="index">
         <div class="userCont">
-          <img :src="item.imgUrl" alt="" srcset="">
+          <img :src="item.thumb" alt="" srcset="">
         </div>
         <div class="userDocs">
-          <p> {{item.docs}} </p>
-          <p> {{item.userCont}} </p>
+          <p> {{item.userName}} </p>
+          <p> {{item.title}} </p>
+          <!-- <p> {{item.docs}} </p>
+          <p> {{item.userCont}} </p> -->
         </div>
       </div>
     </div>  
@@ -33,11 +35,14 @@ export default {
       cardData: function() {
         return this.$props['cardItem']
       }, 
+      list: [],
     }
   },
   mounted() {
     // console.log(this.cardData(), 301);
-    // console.log(this.$props['cardItem'], 302);
+   
+    this.list = this.$props['cardItem'];
+    console.log(this.list, 302);
   },
   methods: {
  

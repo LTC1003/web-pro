@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
       }
   }
   else {
-    console.log(to, '入口文件')
+    // console.log(to, '入口文件')
       next();
   }
 })
