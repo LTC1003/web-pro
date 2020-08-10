@@ -340,21 +340,28 @@
         })
       },
       // 账号密码登录
-      onSubmit(formName){        
-        this.$api.userInfo.userLoginPassword({
-          "userMobile" : this.loginPaswd.moblie,
-          "userPassword" : this.loginPaswd.password
-        }).then(res => {
-            console.log(90000,res)
-            if(res.code = "00001"){
-              // message: "操作成功"
-              this.$message.success(res.message);
-            }
-          },
-          error => {
-            console.log(error);
-          })
+      onSubmit(formName){   
+        // var lastLoginTime = '2020-08-10 15:15:20';
+        // var lastLoginIp = '10.12.88.215';
 
+        // this.$refs[formName].validate((valid) => {
+        //   if(valid){
+            this.$api.userInfo.userLoginPassword({
+              // userMobile : this.loginPaswd.moblie,
+              // userPassword : this.loginPaswd.password,
+              "userMobile" : 18651676666,
+              "userPassword" : 123456,
+              "lastLoginTime": '2020-08-10 15:15:20',
+              "lastLoginIp": '10.12.88.215'
+            }).then(res => {
+              if(res.code == "00001" && res.message == "操作成功"){
+                this.$message.success(res.message);
+              }
+            }, reorr => {
+              // console.log(reorr, "NoNo");
+            })
+        //   }
+        // }); 
         // this.$emit('changeState', false);
       },
       handleIconClick(ev){

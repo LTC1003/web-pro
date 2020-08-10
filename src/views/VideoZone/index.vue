@@ -34,7 +34,7 @@ export default {
     getVideoType(type){
       var reData = {
         "token":"",
-        "videoClassifyId": type,
+        "videoClassifyId": "",
         "userId": '',
         "type": "",
         "page": 1,

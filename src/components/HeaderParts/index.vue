@@ -33,7 +33,7 @@
             <el-dropdown-item v-for="(item, index) in userList" :key="index">
               <div class="dropdown_column" @click="routePush(item.pathName, index+1)">
                 {{item.name}}
-              </div>
+              </div>s
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -81,11 +81,11 @@ export default {
   mounted() {
     var reData = {
       "token":"",
-      "videoClassifyId":"",
-      "userId": "",
+      "videoClassifyId": "",
+      "userId": '',
       "type": "",
-      "page":1,
-      "limit":10,
+      "page": 1,
+      "limit": 10,
       "isTourist":1
     }
     this.$api.findService.getVideoList(reData).then(
@@ -104,10 +104,9 @@ export default {
   },
   methods: {
     signClick(name){
-      console.log(name);
+      console.log(name, '用户登录注册');
       this.loginMsg = name;
       this.visibleState = true;
-      // this.$router.push({name: name})
     },
     getStateVal(val){
       this.visibleState =val
