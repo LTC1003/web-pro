@@ -24,7 +24,7 @@
       <div class="control-user">
         <!-- <el-avatar class="el-avatar" @click="routePush('userInfo')" icon="el-icon-user-solid"></el-avatar> -->
         <!-- <div>{{user.name}} <span class="el-icon-caret-bottom"> </span></div> -->
-        <el-dropdown>
+        <el-dropdown v-if="islogin">
           <span class="el-dropdown-link">
             <el-avatar class="el-avatar" icon="el-icon-user-solid"></el-avatar>
             <i class="el-icon-caret-bottom el-icon--right"></i>
@@ -33,11 +33,11 @@
             <el-dropdown-item v-for="(item, index) in userList" :key="index">
               <div class="dropdown_column" @click="routePush(item.pathName, index+1)">
                 {{item.name}}
-              </div>s
+              </div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <div class="loginbtngurop" >
+        <div class="loginbtngurop" v-else-if="!islogin">
           <span class="sign" @click="signClick('login')">Signin</span> |
           <span class="register" @click="signClick('register')">register</span>
         </div>
@@ -62,13 +62,16 @@ export default {
       imgsrc: require('@/assets/img/toSeeBlackLogo.png'),
       searchVal: '',
       loginMsg: "",
-      visibleState: false,
+      
       user: {
         name: "你大爷干啥"
       },
       videoCategory: [
-        // {type: '记录', typeId: 1},
-      ],
+        {type: '记录', typeId: 1},
+        {type: '探索', typeId: 2},
+        {type: '美食', typeId: 3},
+        {type: '旅游', typeId: 4},
+        ],
       userList: [
         {name: '个人',pathName: 'personal'},
         {name: '历史',pathName: 'history'},
@@ -76,6 +79,8 @@ export default {
         {name: '观众',pathName: 'audience'},
         {name: '消息',pathName: 'messages'},
       ],
+      islogin: 0, // 用户未登陆状态
+      visibleState: 0, // 显示登陆弹窗
     }
   },
   mounted() {
@@ -97,10 +102,10 @@ export default {
             newData['typeId'] = val.id
             this.videoCategory.push(newData);
           });
+          console.log(this.videoCategory, 3456);
         }
       }
     )
-    this.getColumn();
   },
   methods: {
     signClick(name){
@@ -109,11 +114,21 @@ export default {
       this.visibleState = true;
     },
     getStateVal(val){
-      this.visibleState =val
+      console.log(val, 776)
+      this.visibleState = val.isShow
+      if (val.isLogin){
+        // 用户登陆成功切换头像
+        this.islogin = val.isLogin;
+
+      } else {
+        // 用户为登陆
+        this.islogin = 0;
+      }
+      // this.visibleState =val
     },
-    routePush(name, optionId){
-      console.log(name, 433322)
-      this.$router.push({name: name, query: optionId});
+    routePush(name){
+      console.log(name, "头部导航路由跳转")
+      this.$router.push({name: name});
     },
     // 视频专区选项展示
     getColumn(typeId){

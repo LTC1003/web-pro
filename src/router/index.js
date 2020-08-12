@@ -44,9 +44,10 @@ const routes = [
     // 重定项
     redirect: { name: 'video-zone' },
     children: [
+    
       // 视频专区
       {
-        path: "video-zone", 
+        path: "/video-zone", 
         name: 'video-zone',
         component: VideoZone,
       },
@@ -58,7 +59,7 @@ const routes = [
       },
       // 搜索专区
       {
-        path: "search-info-list",
+        path: "/search-info-list",
         name: "search-info-list",
         component: SearchInfoList,
       },
@@ -100,22 +101,7 @@ const routes = [
       //   ]
       // },
     ]
-  },
-
-  {
-    path: '/repository',
-    name: 'repository',
-    meta: {
-        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-    },
-    component: Repository
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: Login
   }
-
 ];
 
 const originalPush = VueRouter.prototype.push

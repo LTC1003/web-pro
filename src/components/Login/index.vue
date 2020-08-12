@@ -340,29 +340,29 @@
         })
       },
       // 账号密码登录
-      onSubmit(formName){   
+      onSubmit(formName){ 
         // var lastLoginTime = '2020-08-10 15:15:20';
         // var lastLoginIp = '10.12.88.215';
 
         // this.$refs[formName].validate((valid) => {
         //   if(valid){
-            this.$api.userInfo.userLoginPassword({
-              // userMobile : this.loginPaswd.moblie,
-              // userPassword : this.loginPaswd.password,
-              "userMobile" : 18651676666,
-              "userPassword" : 123456,
-              "lastLoginTime": '2020-08-10 15:15:20',
-              "lastLoginIp": '10.12.88.215'
-            }).then(res => {
-              if(res.code == "00001" && res.message == "操作成功"){
-                this.$message.success(res.message);
-              }
-            }, reorr => {
-              // console.log(reorr, "NoNo");
-            })
+            // this.$api.userInfo.userLoginPassword({
+            //   // userMobile : this.loginPaswd.moblie,
+            //   // userPassword : this.loginPaswd.password,
+            //   "userMobile" : 18651676666,
+            //   "userPassword" : 123456,
+            //   "lastLoginTime": '2020-08-10 15:15:20',
+            //   "lastLoginIp": '10.12.88.215'
+            // }).then(res => {
+            //   if(res.code == "00001" && res.message == "操作成功"){
+            //     this.$message.success(res.message);
+            //   }
+            // }, reorr => {
+            //   console.log(reorr, "NoNo");
+            // })
         //   }
         // }); 
-        // this.$emit('changeState', false);
+        this.$emit('changeState', {isLogin: 1, isShow: 0});
       },
       handleIconClick(ev){
         if (this.inputPassType == 'password'){

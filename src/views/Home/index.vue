@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <HeaderParts></HeaderParts>
-    <!-- <router-view></router-view> -->
     <div class="sitewarp">
       <div class="title">ToSee</div>
       <div class="docs-text">move yuor mood</div>

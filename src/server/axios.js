@@ -43,10 +43,10 @@ export default function $axios(options) {
         // if (config.url === '/api/user/userLoginPassword') {
         //   // 根据API请求地址操作
         // } 
-        console.log(reqParams, 95555);
+        // console.log(reqParams, 95555);
         // 3. 根据请求方法post，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
-          console.log(config.data, 956666);
+          // console.log(config.data, 956666);
           // params使用qs json串转换requestString
           config.data = qs.stringify(config.data);
         }
@@ -170,14 +170,14 @@ export default function $axios(options) {
           }
         }
       })
-      console.log(sortArr, 'newArr');
+      // console.log(sortArr, 'newArr');
       
       let reapteData = JSON.stringify(sortArr).replace(/[\[|\]|\{|\}|\'|\"]/g, '');
-      console.log(reapteData, 78374873);
+      // console.log(reapteData, 78374873);
       reapteData = reapteData.replace(/[,]/g, '&');
       reapteData = reapteData.replace(/[:]/g, '=');
       reapteData += '&key=DN6AjdNsv6PZXYUoOxVmrVILB+S';
-      console.log(reapteData, 'sort sort bef');
+      // console.log(reapteData, 'sort sort bef');
       reqHead['sign'] = MD5(reapteData).toUpperCase();
       // console.log(reqHead['sign'], 'sort aft');
       coolback = reqHead;

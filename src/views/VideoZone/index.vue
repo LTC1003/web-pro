@@ -27,7 +27,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.query, 33444);
+    // console.log(this.$route.query, 33444);
     this.getVideoType(this.$route.query.type);
   },
   methods: {
@@ -36,7 +36,7 @@ export default {
         "token":"",
         "videoClassifyId": "",
         "userId": '',
-        "type": "",
+        type,
         "page": 1,
         "limit": 10,
         "isTourist":1

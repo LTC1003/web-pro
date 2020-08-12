@@ -1,0 +1,19 @@
+.history{
+  padding: 0 0.2rem;
+  .caption{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #333;
+    font-size: 0.18rem;
+    // line-height: 25px;
+    color: #333333;
+    // padding-bottom: 20px;
+    border-bottom: 1px solid #E5E5E5;
+    .tabs{
+      display: flex;
+    }
+  }
+  .typeContent{
+
+  }
+}
