@@ -10,8 +10,8 @@
             视频专区<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(item, index) in videoCategory" :key="index">
-              <div class="dropdown_column" @click="getColumn(item.typeId)">{{item.type}}</div>
+            <el-dropdown-item v-for="(item, index) in typeList" :key="index">
+              <div class="dropdown_column" @click="getColumn(item.id)">{{item.cateName}}</div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -57,6 +57,9 @@ export default {
     Login,
     // Register
   },
+  props: [
+    'typeList'
+  ],
   data() { 
     return {
       imgsrc: require('@/assets/img/toSeeBlackLogo.png'),
@@ -66,12 +69,11 @@ export default {
       user: {
         name: "你大爷干啥"
       },
-      videoCategory: [
-        {type: '记录', typeId: 1},
-        {type: '探索', typeId: 2},
-        {type: '美食', typeId: 3},
-        {type: '旅游', typeId: 4},
-        ],
+      // videoCategory: [
+      //   {cateName: "热推",id: 16,type: 1},
+      //   {cateName: "热推",id: 17,type: 2},
+      //   {cateName: "热推",id: 18,type: 3},
+      // ],
       userList: [
         {name: '个人',pathName: 'personal'},
         {name: '历史',pathName: 'history'},
@@ -84,28 +86,7 @@ export default {
     }
   },
   mounted() {
-    var reData = {
-      "token":"",
-      "videoClassifyId": "",
-      "userId": '',
-      "type": "",
-      "page": 1,
-      "limit": 10,
-      "isTourist":1
-    }
-    this.$api.findService.getVideoList(reData).then(
-      (res) => {
-        if(res.message === "操作成功"){
-          res.data.result.forEach(val => {
-            let newData = {};
-            newData['type'] = val.cateName
-            newData['typeId'] = val.id
-            this.videoCategory.push(newData);
-          });
-          console.log(this.videoCategory, 3456);
-        }
-      }
-    )
+    
   },
   methods: {
     signClick(name){
@@ -133,7 +114,7 @@ export default {
     // 视频专区选项展示
     getColumn(typeId){
       console.log(typeId, 'headPage');
-      this.$router.push({name: 'video-zone', query: {type: typeId}});
+      this.$router.push({name: 'video-zone', query: {id: typeId}});
     }
   },
 

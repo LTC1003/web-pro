@@ -1,6 +1,6 @@
 <template>
   <div class="pages">
-    <HeaderParts> </HeaderParts>
+    <HeaderParts :typeList="videoTypeList"> </HeaderParts>
     <div class="page-contnet">
       <router-view ></router-view>
     </div>
@@ -19,10 +19,22 @@ export default {
   },
   data() {
     return {
+      typeList: '', // 子组件变量
+      videoTypeList: [], // 视频类型
+      videoCategory: [], 
     }
   },
   mounted() {
-
+    this.$api.findService.getVideoClassifyList({token:'',isTourist: 1}).then(
+      (res) => {
+        if(res.message === "操作成功"){
+          this.videoTypeList = res.data.result;
+        }
+        // else if (res.code !== '10001') {
+        //   console.log(err.data, "栏目类型获取失败")
+        // }
+      }
+    )
   },
   methods: {
    

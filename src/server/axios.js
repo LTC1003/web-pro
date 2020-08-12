@@ -55,7 +55,6 @@ export default function $axios(options) {
       err => {
         // 请求错误时
         // 1. 判断请求超时
-        console.log(error, '111111---requsrt');
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
           // console.log('timeout请求超时')
           // return service.request(originalRequest);// 再重复请求一次
@@ -81,7 +80,6 @@ export default function $axios(options) {
         if (response.data == undefined) {
           data = JSON.parse(response.request.responseText)
         } else {
-          console.log('resData111', data);
           data = response.data
         }
 

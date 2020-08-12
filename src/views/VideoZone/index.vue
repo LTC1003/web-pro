@@ -1,9 +1,32 @@
 <template>
   <div >
     <div class="video-zone">
-      <div class="askjshfabsdfhj">{{hostVideo}}</div>
+      <!-- 视频热推 广告 -->
+      <div class="hotVideo">
+        <div class="thead">
+          <div class="title">hdbsbd</div>
+          <div class="btn"> 查看更多<span> > </span></div>
+        </div>
+        <div class="hot-warp">
+          <el-carousel class="banner">
+            <el-carousel-item v-for="item, index in bannerList" :key="index">
+              <h3 class="small banner_title">{{item.title}}</h3>
+              <img :src="item.img" alt="">
+            </el-carousel-item>
+          </el-carousel>
+          <div class="hot-video">
+            <div class="userCard" v-for="(item, index) in previousList" :key="index">
+              <div class="userCont">
+                <img :src=" item.thumb">
+              </div>
+              <!-- <div class="userDocs">{{item.title}}</div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 栏目组件 -->
       <div v-for="(item, index) in dataList" :key="index">
-        <ListColumn v-bind:cardItem="item" ></ListColumn>
+        <ListColumn :cardItem="item"></ListColumn>
       </div>
     </div>
   </div>
@@ -19,49 +42,71 @@ export default {
   },
   data () {
     return {
-      // text: '视频专区',
-      cardItem: '',
       dataList: [],
-      hostVideo:"热播",
-
+      typeId: 1,
+      bannerList: [],
+      previousList: [
+        // thumb: "http://qiniu.jyddnw.com/images/timg(27).jpg",
+        // title: "南京DNA航拍",
+        // user_id: 78,
+        // video_duration
+      ],
     }
   },
   mounted() {
-    // console.log(this.$route.query, 33444);
-    this.getVideoType(this.$route.query.type);
+    this.typeId =this.$route.query.id
+    this.getHotBanner();
+    this.getHotPrevious();
   },
   methods: {
-    getVideoType(type){
-      var reData = {
-        "token":"",
-        "videoClassifyId": "",
-        "userId": '',
-        type,
-        "page": 1,
-        "limit": 10,
-        "isTourist":1
+    // 推荐
+    getHotBanner(){
+      let type = 1;
+      this.$api.findService.hotBanner({type}).then((res, err) => {
+        if(res.message === "success"){
+          this.bannerList = res.data.result;
+        } else {
+          console.log(err, 'banner/err');
+        }
+      });
+    },
+    getHotPrevious(){
+      this.$api.findService.hotPrevious({offset:1, type: 5}).then((res, err) => {
+        if(res.message === "success"){
+          this.previousList = res.data.result;
+        } else {
+          console.log(err, 'banner/err');
+        }
+      });
+    },
+    getVideoType(videoClassifyId){
+      var reqObj = {
+        token: '',
+        videoClassifyId,
+        userId: '',
+        isTourist: 1, 
+        page: 1,
+        limit: 10
       }
-      this.$api.findService.getVideoList(reData).then(
+      this.$api.findService.getAllVideoListWeb(reqObj).then(
         (res) => {
-            console.log(res.data.result.length, 666);
-          let newData;
-          if(res.data.result.length > 0 && res.data.result.length < 2){
-            this.dataList = res.data.result[0].childList
-            console.log(res.data.result[0].childList, 611);
-            
-          }
-         
+          this.dataList = res.data.result;
+          console.log(this.dataList, 666);
         }
       );
     }
-  }
+  },
+  watch: {
+    $route(){
+      this.typeId = this.$route.query.id
+    },
+    typeId(n,o){
+      console.log(n,1111111111);
+      this.getVideoType(n);
+    }
+  },
 }
 </script>
 <style lang="scss">
   @import './index.scss';
-  .askjshfabsdfhj{
-    background: olive;
-    width: 100%;
-    height: 300px;
-  }
 </style>
