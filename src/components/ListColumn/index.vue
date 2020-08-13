@@ -24,13 +24,15 @@
         <div class="btn"> 查看更多<span> > </span></div>
       </div>
       <div class="tbody">
-        <div class="cardList" v-for="(item, index) in item.childVideoList" :key="index">
+        <div class="cardList"
+          v-for="(item, index) in item.childVideoList" :key="index"
+          @click="goToVideoDetail('video-detail', {userId: item.userId, videoId: item.id})">
           <div class="userCont">
             <img :src="item.thumb" alt="" srcset="">
           </div>
           <div class="userDocs">
-            <p> {{item.userName}} </p>
-            <p> {{item.title}} </p>
+            <p class="username"> {{item.userName}} </p>
+            <p class="usertitle"> {{item.title}} </p>
           </div>
         </div>
         <div v-if="!item.childVideoList">{{'空空如也>>>>...'}}</div>
@@ -55,15 +57,23 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$props['cardItem'], 302);
+    // console.log(this.$props['cardItem'], 302);
     this.videoData = this.$props['cardItem'];
-    if(this.videoData.length === 1){
-      this.jihe = 0;
-      this.videoData.childList
-    }
+    // if(this.videoData.length === 1){
+    //   this.jihe = 0;
+    //   this.videoData.childList
+    // }
   },
   methods: {
-
+    goToVideoDetail(name, obj){
+      //判断用户是否登录
+      if (istoken) { 
+        // 有token跳转详情调接口。
+        this.$router.push({name: name, params: obj});
+      } else{
+        // 没有token就不调详情接口,弹框提示用户登录
+      }
+    }
   },
   watch: {
     cardItem(n,o){

@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import ListColumn from "../../components/ListColumn"
+import ListColumn from "@/components/ListColumn";
 // import RecommendLive from "../../components/RecommendLive"
 export default {
   name: 'video-zone',

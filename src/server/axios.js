@@ -33,20 +33,19 @@ export default function $axios(options) {
         }else{
           reqData = config.data
         }
-        // console.log(reqData,'ying ying ying');
+        // console.log(reqData,'获取请求参数');
         const reqParams = addCode(reqData);
         config.headers['appVersion'] = reqParams.appVersion;
         config.headers['timeStamp'] = reqParams.timeStamp;
         config.headers['userAgent'] = reqParams.userAgent;
         config.headers['sign'] = reqParams.sign;
         // 2. 请求地址url
-        // if (config.url === '/api/user/userLoginPassword') {
+        // if (config.url === '/api:id') {
         //   // 根据API请求地址操作
         // } 
-        // console.log(reqParams, 95555);
         // 3. 根据请求方法post，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
-          // console.log(config.data, 956666);
+          // console.log(config.data, 'post_request_string');
           // params使用qs json串转换requestString
           config.data = qs.stringify(config.data);
         }
@@ -56,7 +55,6 @@ export default function $axios(options) {
         // 请求错误时
         // 1. 判断请求超时
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-          // console.log('timeout请求超时')
           // return service.request(originalRequest);// 再重复请求一次
         }
         // 2. 需要重定向到错误页面
@@ -71,7 +69,6 @@ export default function $axios(options) {
         return Promise.reject(err) // 在调用的那边可以拿到(catch)你想返回的错误信息
       }
     )
-
     // response 拦截器
     instance.interceptors.response.use(
       response => {
@@ -82,7 +79,6 @@ export default function $axios(options) {
         } else {
           data = response.data
         }
-
         // 根据返回的code值来做不同的处理
         // switch (data.rc) {
         //   case 1:
@@ -154,34 +150,31 @@ export default function $axios(options) {
         timeStamp: (new Date()).valueOf().toString(),
         appVersion: "1.0.1",
       };
-      let sortArr = [];
-      let mergeObj = Object.assign({},reqData,reqHead);
-      let newkeyArr = Object.keys(mergeObj).sort();
-      newkeyArr.forEach((val,k) => {
-        for(var v in mergeObj) {
-          if (val == v){
-            val = {}
-            k = v
-            val[k] = mergeObj[v]
-            sortArr.push(val);
-            return
-          }
-        }
-      })
-      // console.log(sortArr, 'newArr');
       
-      let reapteData = JSON.stringify(sortArr).replace(/[\[|\]|\{|\}|\'|\"]/g, '');
-      // console.log(reapteData, 78374873);
-      reapteData = reapteData.replace(/[,]/g, '&');
-      reapteData = reapteData.replace(/[:]/g, '=');
+      let mergeObj = Object.assign({},reqData,reqHead);
+      let sortObj = {};
+      let newkeyArr = Object.keys(mergeObj).sort();      
+      newkeyArr.forEach((val,k) => {
+        Object.keys(mergeObj).forEach((v) => {
+          if(val === v){
+            sortObj[v] = mergeObj[v];
+          }
+        })
+        // 方法同上
+        // for(var v in mergeObj) {
+        //   if (val == v){
+        //   sortObj[v] = mergeObj[v];
+        //   }
+        // }
+      })
+      let reapteData = decodeURIComponent(qs.stringify(sortObj));
+      // console.log(reapteData, 77899);
+      // debugger
       reapteData += '&key=DN6AjdNsv6PZXYUoOxVmrVILB+S';
-      // console.log(reapteData, 'sort sort bef');
       reqHead['sign'] = MD5(reapteData).toUpperCase();
-      // console.log(reqHead['sign'], 'sort aft');
       coolback = reqHead;
       return coolback
     }
-
     // 请求处理
     instance(options).then(res => {
       resolve(res)

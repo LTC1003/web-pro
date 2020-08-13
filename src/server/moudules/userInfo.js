@@ -29,7 +29,7 @@ export const userLoginMobile = (params) =>{
   })
 }
 
-// 用户密码登录
+// 用户密码登录 userMobile/userPassword/lastLoginTime/lastLoginIp
 export const userLoginPassword = (data) =>{
   return axios({
       url: '/api/user/userLoginPassword',

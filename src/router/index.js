@@ -2,14 +2,15 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home";
 import Pages from "../views/Pages";
-import VideoZone from "../views/VideoZone";
-import Lineplay from "../views/Lineplay";
-
+import VideoZone from "../views/Pages/VideoZone";
+import Lineplay from "../views/Pages/Lineplay";
 import SearchInfoList from "../views/SearchInfoList";
+
 import Login from "../components/Login";
 import Repository from "../views/repository";
-import Register from "./../views/Register";
+import Register from "../views/Register";
 
+import VideoDetail from "../views/Pages/VideoDetail";
 /**个人资料**/
 import UserInfo from "../views/UserInfo";
 import History from "../views/UserInfo/History";
@@ -44,12 +45,16 @@ const routes = [
     // 重定项
     redirect: { name: 'video-zone' },
     children: [
-    
       // 视频专区
       {
         path: "/video-zone", 
         name: 'video-zone',
         component: VideoZone,
+      },
+      {
+        path: "/video-detail", 
+        name: 'video-detail',
+        component: VideoDetail,
       },
       // 主播专区
       { 

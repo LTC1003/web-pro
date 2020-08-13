@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     signClick(name){
-      console.log(name, '用户登录注册');
+      // console.log(name, '用户登录注册');
       this.loginMsg = name;
       this.visibleState = true;
     },

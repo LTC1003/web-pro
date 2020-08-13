@@ -48,10 +48,25 @@
         border-radius:0px 0px 4px 4px;
         font-size:14px;
         color:rgba(51,51,51,1);
-        line-height:40px;
         padding: 0 5px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        .usertitle{
+          flex: 1; // 宽度无所谓
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;  // 行数（整数）
+          overflow: hidden;
+          // white-space: nowrap;
+          // text-overflow: ellipsis;
+        }
+        .username{
+          width: 80px; // 宽度无所谓
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        } 
       }
     }
   }

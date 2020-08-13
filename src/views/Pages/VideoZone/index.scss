@@ -38,7 +38,7 @@
       .banner{
         width: 548px;
         height: 316px;
-        // border: 1px solid #345;
+        margin-right: 20px;
         .el-carousel__container{
           height: inherit;
           
@@ -56,6 +56,9 @@
       .hot-video{
         flex: 1;
         margin: -10px;
+        display: inline-flex;
+        flex-wrap: wrap;
+        border: #343434;
         .userCard{
           width: 264px;
           height: 148px;
