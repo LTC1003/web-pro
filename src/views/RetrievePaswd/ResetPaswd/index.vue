@@ -1,11 +1,14 @@
 <template>
-  <div>
+  <div class="reset-paswd">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" >
-      <h5>验证码将发送到 {{ruleForm.moblie}}</h5>
+      <el-form-item>
+        <h5>验证码将发送到 {{ruleForm.moblie}}</h5>
+      </el-form-item>
       <el-form-item prop="verify">
         <el-input v-model="ruleForm.verify" placeholder="请输入验证码">
-          <el-button type="success" slot="append" @click="getVerifyCode">获取验证码</el-button>
-          <!-- <template slot="append">获取验证码</template> -->
+          <template>
+            <el-button type="success" slot="append" @click="getVerifyCode">获取验证码</el-button>
+          </template>
         </el-input>
       </el-form-item>
       <el-form-item prop="pass">
@@ -15,8 +18,10 @@
         <el-input v-model="ruleForm.againPass" placeholder="请再次输入"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="goStepPage(1)">上一步</el-button>
-        <el-button type="danger" @click="goStepPage(3)">下一步</el-button>
+        <div class="button-group">
+          <el-button type="primary" size="small" @click="goStepPage(1)">上一步</el-button>
+          <el-button type="danger" size="small" @click="goStepPage(3)">下一步</el-button>
+        </div>
       </el-form-item>
     </el-form>
   </div>
@@ -132,5 +137,20 @@
   }
 </script>
 <style lang="scss">
-
+  .reset-paswd{
+    width: 320px;
+    margin: 0 auto;
+    margin-top: 70px;
+    .el-input-group__append button.el-button{
+      background-color: #95C21F;
+      color: #ffffff;
+      border-radius: 3px;
+    }
+    .button-group{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 </style>

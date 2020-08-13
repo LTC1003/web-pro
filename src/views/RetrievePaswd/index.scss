@@ -1,0 +1,13 @@
+.resetmain{
+  background-color: #f4f4f4;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  .resetCont{
+    background-color: #ffffff;
+    height: 520px;
+    width: 960px;
+  }
+}

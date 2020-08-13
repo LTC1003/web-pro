@@ -25,7 +25,8 @@ export const loginCheckCode = (data) =>{
 // 用户手机登录/注册   
 export const userLoginMobile = (params) =>{
   return axios({
-    url: '/api/user/userLoginMobile/' + params
+    url: '/api/user/userLoginMobile/' + params.moblie,
+    params
   })
 }
 

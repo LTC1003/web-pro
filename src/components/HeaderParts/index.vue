@@ -26,7 +26,7 @@
         <!-- <div>{{user.name}} <span class="el-icon-caret-bottom"> </span></div> -->
         <el-dropdown v-if="islogin">
           <span class="el-dropdown-link">
-            <el-avatar class="el-avatar" icon="el-icon-user-solid"></el-avatar>
+            <el-avatar class="el-avatar" :src="avatarImg" icon="el-icon-user-solid"></el-avatar>
             <i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -63,9 +63,9 @@ export default {
   data() { 
     return {
       imgsrc: require('@/assets/img/toSeeBlackLogo.png'),
+      avatarImg: '',
       searchVal: '',
       loginMsg: "",
-      
       user: {
         name: "你大爷干啥"
       },
@@ -100,7 +100,22 @@ export default {
       if (val.isLogin){
         // 用户登陆成功切换头像
         this.islogin = val.isLogin;
-
+        this.avatarImg = val.successData.avatar
+        /**
+         * successData:
+          avatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png"
+          bgimg: "http://qiniu.jyddnw.com/images/jpg(8).jpg"
+          icon: "http://qiniu.jyddnw.com/images/6666ef0f7905dcadc7e4eeec625992b4.png"
+          id: 84
+          isRealName: 1
+          passwordStatus: 1
+          role: 1
+          token: "862a3492e5374600b8aa5e117d82b424"
+          userMobile: "13022511993"
+          userName: "13022511993"
+          userRole: -1
+          userStatus: 1
+         * **/ 
       } else {
         // 用户为登陆
         this.islogin = 0;

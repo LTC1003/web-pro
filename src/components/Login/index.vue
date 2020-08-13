@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="loginbody" v-show="!isShow">
-        <!-- 验证码 -->
+        <!-- 短信-验证码 -->
         <el-form :model="loginVerify" ref="loginVerify" :rules="rulesVerify" class="loginform">
           <el-form-item prop="moblie">
             <el-input v-model="loginVerify.moblie" placeholder="手机号">
@@ -92,14 +92,15 @@
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input v-model="register.password" :type="inputPassType">
-              <i icon="el-icon-my-erase"
+            <el-input v-model="register.verifyCode" placeholder="输入获取的验证码">
+              <!-- <i icon="el-icon-my-erase"
                 class=" el-input__icon"
                 :class="eyeClass"
                 slot="suffix"
                 style="border: 1px"
                 @click="handleIconClick">
-              </i>
+              </i> -->
+              <el-button class="contrlCode" slot="suffix" @click="getCodeVerify(register.moblie)" :disabled="isDisabled">{{getCodeState}}</el-button>
             </el-input>
           </el-form-item>
           <div class="btn-denger" @click="clickRegister('register')">注册</div>
@@ -164,9 +165,9 @@
         ],
         isIconClose: false,
         isActive: 1,
-
         // isClick: 'open',
         // showState: '',
+        collregisterData: '',
         loginPaswd:{
           moblie: '',
           password: ''
@@ -177,10 +178,8 @@
         },
         register: {
           moblie: '',
-          password: '',
-          aginPawd: ''
+          verifyCode: '',
         },
-
         loginData: '',
         rulesPswd: {
           moblie: [
@@ -215,13 +214,17 @@
             { required: true, message: '必填', trigger: 'blur' },
             { validator: validMoblie, trigger: 'blur' }
           ],
-          password: [
-            { required: true, message: '必填', trigger: 'blur' },
-            { validator: validPawd, trigger: 'blur' }
-          ],
-          aginPawd: [
-            { required: true, message: '必填', trigger: 'blur' },
-          ],
+          verify: [
+            { required: true, message: '必填'},
+            { validator: validVer, trigger: 'blur'}
+          ]
+          // password: [
+          //   { required: true, message: '必填', trigger: 'blur' },
+          //   { validator: validPawd, trigger: 'blur' }
+          // ],
+          // aginPawd: [
+          //   { required: true, message: '必填', trigger: 'blur' },
+          // ],
         }
       }
     },
@@ -243,7 +246,7 @@
     methods: {
       // 编程式路由跳转页面
       toRessetPage(){
-        this.$router.push({name:"fillinfo"});
+        this.$router.push({name:"retrieve-paswd"});
         this.$emit('changeState', false);
       },
       // 清空输入框
@@ -334,9 +337,41 @@
       },
       // 注册 
       clickRegister(formData){
-        this.$api.userInfo.userLoginMobile(formData.moblie).then( res => {
-          console.log(res, 908);
-        })
+        let objData = {
+          phoneType: '-',
+          channel: '-',
+          lastLoginTime: (new Date()).valueOf().toString(),
+          lastLoginIp: '10.12.88.103',
+        }
+        objData['moblie'] = this.register.moblie;
+        objData['verifyCode'] = this.register.verifyCode;
+        this.$api.userInfo.userLoginMobile(objData).then( res => {
+          /***
+           * code: "00001"
+            data: {
+              result: {
+              avatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png"
+              bgimg: "http://qiniu.jyddnw.com/images/jpg(8).jpg"
+              icon: "http://qiniu.jyddnw.com/images/6666ef0f7905dcadc7e4eeec625992b4.png"
+              id: 84
+              isRealName: 1
+              passwordStatus: 1
+              role: 1
+              token: "740e95dd862a4566a26b21a5fa147697"
+              userMobile: "13022511993"
+              userName: "13022511993"
+              userRole: -1
+              userStatus: 1
+              }
+            }
+            message: "操作成功"
+           * ****/ 
+          if(res.message === "操作成功"){
+            this.collregisterData = res.data.result;
+            // this.loginData = 'login' // 切换到登录
+            this.$emit('changeState', {isLogin: 1, isShow: 0, successData: res.data.result}) // 退出弹框
+          }
+        });
       },
       // 账号密码登录
       onSubmit(formName){ 
@@ -353,8 +388,9 @@
             }).then(res => {
               if(res.code == "00001" && res.message == "操作成功"){
                 this.$message.success(res.message);
-              } else if (res.code == "4106" && message == "密码未设置"){
-                // console.log("密码未设置");
+              } else if (res.code == "4106" && res.message == "密码未设置"){
+                console.log("密码未设置");
+                this.toRessetPage()
               }
             })
         //   }

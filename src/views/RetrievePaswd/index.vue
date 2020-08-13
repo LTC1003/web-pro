@@ -1,5 +1,4 @@
 <template>
-
   <div class="resetmain">
     <div class="resetCont">
       <el-steps :active="pswdStepState" finish-status="success" process-status="wait" simple>
@@ -15,13 +14,10 @@
 <script>
   export default {
     name: 'retrieve-paswd',
-    components: {
-
-    },
+    components: {},
     data() {
       return {
         pswdStepState: 1,
-       
       }
     },
     mounted() {
@@ -36,19 +32,7 @@
   }
 </script>
 <style lang="scss">
-  .resetmain{
-    background-color: #f4f4f4;
-    height: 600px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 14px;
-    
-  }
-  .resetCont{
-    background-color: #ffffff;
-    height: 520px;
-    width: 960px;
+  @import './index.scss'
     // .tabs{
     //   // width: 880px;
     //   font-size: 18px;
@@ -78,5 +62,4 @@
     //     }
     //   }
     // }
-  }
 </style>

@@ -68,6 +68,32 @@ const routes = [
         name: "search-info-list",
         component: SearchInfoList,
       },
+      // 注册登录
+      {path: "/register", name: 'register', component: Register},
+      // 修改密码
+      {
+        path: '/retrieve-paswd',
+        name: 'retrieve-paswd',
+        component: RetrievePaswd,
+        redirect: { name: 'fillinfo' },
+        children: [
+          {
+            path: "/fillinfo",
+            name: 'fillinfo',
+            component: FillInfo,
+          },
+          {
+            path: "/reset-paswd",
+            name: 'reset-paswd',
+            component: ResetPaswd,
+          },
+          {
+            path: "/reset-success",
+            name: 'reset-success',
+            component: ResetSuccess,
+          },
+        ]
+      },
       // 用户专区
       {
         path:"userinfo",
@@ -81,30 +107,6 @@ const routes = [
           { path: "audience", name: "audience", component: Audience },
         ],
       },
-      // 注册登录
-      // {path: "/register", name: 'register', component: Register},
-      // {
-      //   path: '/retrieve-paswd',
-      //   name: 'retrieve-paswd',
-      //   component: RetrievePaswd,
-      //   children: [
-      //     {
-      //       path: "/retrieve-paswd/",
-      //       name: 'fillinfo',
-      //       component: FillInfo,
-      //     },
-      //     {
-      //       path: "/retrieve-paswd/reset-paswd",
-      //       name: 'reset-paswd',
-      //       component: ResetPaswd,
-      //     },
-      //     {
-      //       path: "/retrieve-paswd/reset-success",
-      //       name: 'reset-success',
-      //       component: ResetSuccess,
-      //     },
-      //   ]
-      // },
     ]
   }
 ];

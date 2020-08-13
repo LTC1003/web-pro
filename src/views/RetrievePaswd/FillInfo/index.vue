@@ -1,14 +1,11 @@
 <template>
-  <div class="demo-ruleForm">
+  <div class="fillinfo">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" >
-      <!-- <el-form-item prop="phone">
-        <el-input v-model="ruleForm.phone" placeholder="手机号" autocomplete="off"></el-input>
-      </el-form-item> -->
       <el-form-item prop="phone">
         <el-input v-model="ruleForm.phone" placeholder="手机号"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="danger" @click="goStepPage(2)">下一步</el-button>
+        <el-button type="danger" size="small" style="width: 100%"  @click="goStepPage(2)">下一步</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -17,9 +14,7 @@
 <script>
   export default {
     name: 'fillinfo',
-    components: {
-      
-    },
+    components: {},
     data() {
       return {
         ruleForm: {
@@ -41,7 +36,6 @@
     },
     mounted() {
       if (localStorage.phone !== this.ruleForm.phone) {
-        // console.log(this.ruleForm.phone, typeof(this.ruleForm.phone),'hnh')
         if(this.ruleForm.phone === undefined || this.ruleForm.phone === ''){
           this.ruleForm.phone = localStorage.phone;
         }
@@ -66,7 +60,7 @@
   }
 </script>
 <style lang="scss">
-  .demo-ruleForm{
+  .fillinfo{
     width: 320px;
     margin: 0 auto;
     margin-top: 70px;
