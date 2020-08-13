@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HeaderParts></HeaderParts>
+    <HeaderParts :typeList="videoTypeList"></HeaderParts>
     <div class="sitewarp">
       <div class="title">ToSee</div>
       <div class="docs-text">move yuor mood</div>
@@ -31,13 +31,25 @@ export default {
   },
   data() {
     return {
-      text: '首页',
+      // text: '首页',
+      videoTypeList: [],
     }
   },
   mounted() {
     const Height = this.findDimensions()
     const AppHeight = document.getElementById('app');
     AppHeight.style.height = Height + "px";
+    // 视频栏目
+    this.$api.findService.getVideoClassifyList({token:'',isTourist: 1}).then(
+      (res) => {
+        if(res.message === "操作成功"){
+          this.videoTypeList = res.data.result;
+        }
+        // else if (res.code !== '10001') {
+        //   console.log(err.data, "栏目类型获取失败")
+        // }
+      }
+    )
   },
   methods: {
     findDimensions() {

@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      typeList: '', // 子组件变量
+      // typeList: '', // 子组件变量
       videoTypeList: [], // 视频类型
       videoCategory: [], 
     }

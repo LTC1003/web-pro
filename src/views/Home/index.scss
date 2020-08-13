@@ -8,11 +8,13 @@
   flex-direction: column;
   align-content: space-between;
   .header{
-    // background-color: rgba(255,255,255,0.1);
     background: none;
     .menuList, .control-user{
       color: #ffffff;
       .el-icon-caret-bottom{
+        color: #ffffff;
+      }
+      .el-dropdown{
         color: #ffffff;
       }
     }
@@ -23,7 +25,7 @@
   }
 /** 首页页面内容样式**/ 
   .sitewarp{
-    width: 78%;
+    width: 74%;
     margin: auto;
     flex: 1;
     margin-top: 2rem;

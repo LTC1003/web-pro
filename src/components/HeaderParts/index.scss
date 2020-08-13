@@ -43,6 +43,7 @@
         }
       }
       .el-dropdown{
+        font-size: 0.18rem;
         &:hover{
           cursor: pointer;
           color: #DF2E47;
@@ -67,15 +68,14 @@
 
 // 下拉列样式
 .el-dropdown-menu{
-  .dropdown_column{
-    color: #333333;
-    font-size: 0.14rem;
-    &:hover{
-      cursor: pointer;
-      color: #DF2E47;
-    }
-  }
   .el-dropdown-menu__item {
-    
+    .dropdown_column{
+      color: #333333;
+      font-size: 0.14rem;
+      &:hover{
+        cursor: pointer;
+        color: #DF2E47;
+      }
+    }
   }
 }
