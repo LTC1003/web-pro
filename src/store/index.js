@@ -5,13 +5,24 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    videoTypeId:''
+    videoTypeId: '',
+    SET_TOKEN: '',
+    USER_STATE: 0,
+    LoginUserInfo: {},
+    count: 0,
+  },
+  getters: {
+
   },
   mutations: {
     increment(state){
-      state.count++,
-      state.path
-    }
+      state.SET_TOKEN,
+      state.videoTypeId,
+      state.USER_STATE,
+      LoginUserInfo,
+      state.count++
+    },
+
   },
   actions: {},
   modules: {}

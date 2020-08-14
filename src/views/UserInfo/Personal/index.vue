@@ -6,12 +6,12 @@
         <!-- <div class="label"></div> -->
         <el-form ref="form" :model="form" 
           label-width="80px" 
-          style=" ">
+          style="">
           <el-form-item label="头像">
-            <el-avatar class="avatar"></el-avatar>
+            <el-avatar class="avatar" :src="form.userAvatar"></el-avatar>
           </el-form-item>
           <el-form-item label="身份">
-            <el-button round plain type="warning" size="mini">旅行家</el-button>
+            <el-button round plain type="warning" size="mini">{{form.roleName}}</el-button>
           </el-form-item>
           <el-form-item label="昵称">
             <el-input class="inputmini" v-model="form.name"></el-input>
@@ -53,7 +53,7 @@
         </el-form>
       </div>
       <div class="control-btn">
-        <el-button style="background: #479cdc; color: #fff">修改身份</el-button>
+        <el-button style="background: #479cdc; color: #fff" @click="mutateRole()">修改身份</el-button>
       </div>
     </div>
     <h2 class="caption">账号设置</h2>
@@ -85,6 +85,8 @@ export default {
         name: '吗快没电',
         motto: '',
         desc: '',
+        userRole: '',
+        roleName: '未获取身份',
         region: {
           value: 'tianjin',
         },
@@ -96,9 +98,22 @@ export default {
         {setType: '微博', setState: 0, setbtn: '绑定'},
         {setType: '密码', setState: 4, setbtn: '设置密码'},
       ],
+      userInfoDate: '',
     }
   },
   mounted() {
+    if(localStorage && localStorage.loginUserInfo){
+      this.userInfoDate = JSON.parse(localStorage.loginUserInfo)
+      this.form.userAvatar = this.userInfoDate.avatar;
+      this.form.name = this.userInfoDate.userName;
+      this.form.motto = this.userInfoDate.userCard;
+      this.form.desc = this.userInfoDate.userSignature;
+      this.form.userRole = this.userInfoDate.userRole; // 兴趣爱好
+      this.form.province = this.userInfoDate.province; // 省
+      this.form.city = this.userInfoDate.city; // 市
+      this.form.country = this.userInfoDate.country; //乡镇
+      // this.setDataRow = this.userInfoDate.userMobile;
+    }
   },
   methods: {
     handleClose(tag) {
@@ -122,6 +137,13 @@ export default {
     },
     onSubmit(){
 
+    },
+    // 兴趣
+    mutateRole(){
+      console.log(this.userInfoDate.token, 'kkkkk')
+      this.$api.userinfo.setRoleList(this.userInfoDate.token).then(res => {
+        console.log(res.data, 'role')
+      })
     },
   }
 };

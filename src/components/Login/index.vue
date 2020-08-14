@@ -167,7 +167,6 @@
         isActive: 1,
         // isClick: 'open',
         // showState: '',
-        collregisterData: '',
         loginPaswd:{
           moblie: '',
           password: ''
@@ -367,9 +366,12 @@
             message: "操作成功"
            * ****/ 
           if(res.message === "操作成功"){
-            this.collregisterData = res.data.result;
-            // this.loginData = 'login' // 切换到登录
-            this.$emit('changeState', {isLogin: 1, isShow: 0, successData: res.data.result}) // 退出弹框
+            localStorage.loginUserInfo = JSON.stringify(res.data.result);
+            localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
+            this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
+            // let delete = localStorage.removeItem('LoginUserInfo'); // 移除
+            // let clear = localStorage.clear(); // 清除所有
+            this.$emit('changeState', {isShow: 0}) // 退出弹框
           }
         });
       },

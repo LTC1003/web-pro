@@ -52,10 +52,10 @@ export default function $axios(options) {
         return config
       },
       err => {
-        // 请求错误时
+        // 对请求错误做些什么
         // 1. 判断请求超时
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-          // return service.request(originalRequest);// 再重复请求一次
+          return service.request(originalRequest);// 再重复请求一次
         }
         // 2. 需要重定向到错误页面
         const errorInfo = error.response
@@ -79,6 +79,7 @@ export default function $axios(options) {
         } else {
           data = response.data
         }
+        console.log(data, '请求成功返回的数据，去做用户登录判断')
         // 根据返回的code值来做不同的处理
         // switch (data.rc) {
         //   case 1:
@@ -149,7 +150,7 @@ export default function $axios(options) {
         userAgent: "web",
         timeStamp: (new Date()).valueOf().toString(),
         appVersion: "1.0.1",
-      };
+      };  
       
       let mergeObj = Object.assign({},reqData,reqHead);
       let sortObj = {};

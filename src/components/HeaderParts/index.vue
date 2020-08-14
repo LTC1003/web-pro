@@ -86,7 +86,15 @@ export default {
     }
   },
   mounted() {
-    
+    console.log(JSON.parse(localStorage.getItem('loginUserInfo')),"mmm");
+    if (localStorage.getItem('STORAGE_STATE')){
+      // 用户登陆成功切换头像
+      this.islogin = 1; 
+      this.avatarImg = JSON.parse(localStorage.getItem('loginUserInfo')).avatar;
+    } else {
+      // 用户为登陆
+      this.islogin = 0;
+    }
   },
   methods: {
     signClick(name){
@@ -97,29 +105,6 @@ export default {
     getStateVal(val){
       console.log(val, 776)
       this.visibleState = val.isShow
-      if (val.isLogin){
-        // 用户登陆成功切换头像
-        this.islogin = val.isLogin;
-        this.avatarImg = val.successData.avatar
-        /**
-         * successData:
-          avatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png"
-          bgimg: "http://qiniu.jyddnw.com/images/jpg(8).jpg"
-          icon: "http://qiniu.jyddnw.com/images/6666ef0f7905dcadc7e4eeec625992b4.png"
-          id: 84
-          isRealName: 1
-          passwordStatus: 1
-          role: 1
-          token: "862a3492e5374600b8aa5e117d82b424"
-          userMobile: "13022511993"
-          userName: "13022511993"
-          userRole: -1
-          userStatus: 1
-         * **/ 
-      } else {
-        // 用户为登陆
-        this.islogin = 0;
-      }
       // this.visibleState =val
     },
     routePush(name){

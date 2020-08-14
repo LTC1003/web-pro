@@ -58,3 +58,16 @@ export const forgetPassword = (data) =>{
       data,
   })
 }
+
+
+/**
+ * 个人中心 用户身份信息
+**/ 
+// 修改身份角色
+export const setRoleList = (params) =>{
+  return axios({
+      url: '/api/userservice/roleList',
+      method: 'get',
+      params,
+  })
+}
