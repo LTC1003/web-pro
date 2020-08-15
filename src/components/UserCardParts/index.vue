@@ -8,8 +8,7 @@
 <script>
 export default {
   name: "user-card-parts",
-  components: {
-  },
+  components: { },
   props: [
     'cardItem'
   ],

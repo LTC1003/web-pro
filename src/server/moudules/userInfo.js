@@ -59,14 +59,21 @@ export const forgetPassword = (data) =>{
   })
 }
 
-
 /**
  * 个人中心 用户身份信息
 **/ 
-// 修改身份角色
+// 身份角色
 export const setRoleList = (params) =>{
   return axios({
       url: '/api/userservice/roleList',
+      method: 'get',
+      params,
+  })
+}
+// 兴趣标签
+export const tagsList = (params) =>{
+  return axios({
+      url: '/api/userservice/labelList',
       method: 'get',
       params,
   })

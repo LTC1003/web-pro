@@ -10,7 +10,7 @@
 <script>
 export default {
   name: "header-cont",
-  components: {},
+  props: [],
   data() { 
     return {
       text: "推荐视频，推荐活动",

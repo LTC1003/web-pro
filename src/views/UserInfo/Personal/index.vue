@@ -30,30 +30,18 @@
           </el-form-item>
           <el-form-item label="兴趣爱好">
             <el-tag
-              :key="tag"
-              v-for="(tag,index) in dynamicTags" :color="colorArr[index]">
+              v-for="tag in tagList" :key="tag">
               {{tag}}
             </el-tag>
-            <el-input
-              class="input-new-tag"
-              v-if="inputVisible"
-              v-model="inputValue"
-              ref="saveTagInput"
-              size="small"
-              @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
-              >
-            </el-input>
-            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-
+            <el-button class="addtag" @click="getTagsList()">+Tag</el-button>
           </el-form-item>
           <el-form-item style="text-align: center">
-            <el-button round size="small" style="width: 130px; margin-left: -80px" type="danger" @click="onSubmit">保持</el-button>
+            <el-button round size="small" style="width: 130px; margin-left: -80px" type="danger" @click="onSubmit">保存</el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="control-btn">
-        <el-button style="background: #479cdc; color: #fff" @click="mutateRole()">修改身份</el-button>
+        <el-button style="background: #479cdc; color: #fff" @click="setRole()">修改身份</el-button>
       </div>
     </div>
     <h2 class="caption">账号设置</h2>
@@ -64,22 +52,28 @@
         <el-button class="setbtn">{{item.setbtn}}</el-button>
       </div>
     </div>
+    <!-- 引用弹出组件 -->
+    <PopupWin :popData="popData" @onFromPopData="getPopData" v-show="showType"></PopupWin>
   </div>
 </template>
 
 <script>
-
+import PopupWin from "@/components/PopupWin"
 export default {
   name: "personal",
   components: {
-
+    PopupWin,
   },
   data() {
     return {
+      showType: false,
+      visibleType:'',
+      popData: {
+        type: 1,
+        data: []
+      },
       colorArr: ['#FFC0CB','#4169E1','#00BFFF','#DC143C','#C71585','#7B68EE','#00FA9A','#FFD700'],
-      dynamicTags: ['名胜古迹','野外垂钓','毕摩登感'],
-      inputVisible: false,
-      inputValue: '',
+      tagList: ['名胜古迹','野外垂钓','毕摩登感'],
       form: {
         userAvatar: '',
         name: '吗快没电',
@@ -116,35 +110,59 @@ export default {
     }
   },
   methods: {
-    handleClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-    },
+    // handleClose(tag) {
+    //   this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+    // },
 
-    showInput() {
-      this.inputVisible = true;
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
-    },
+    // showInput() {
+    //   this.inputVisible = true;
+    //   this.$nextTick(_ => {
+    //     this.$refs.saveTagInput.$refs.input.focus();
+    //   });
+    // },
 
-    handleInputConfirm() {
-      let inputValue = this.inputValue;
-      if (inputValue) {
-        this.dynamicTags.push(inputValue);
-      }
-      this.inputVisible = false;
-      this.inputValue = '';
-    },
+    // handleInputConfirm() {
+    //   let inputValue = this.inputValue;
+    //   if (inputValue) {
+    //     this.dynamicTags.push(inputValue);
+    //   }
+    //   this.inputVisible = false;
+    //   this.inputValue = '';
+    // },
+
     onSubmit(){
 
     },
-    // 兴趣
-    mutateRole(){
-      console.log(this.userInfoDate.token, 'kkkkk')
-      this.$api.userinfo.setRoleList(this.userInfoDate.token).then(res => {
-        console.log(res.data, 'role')
+    // 身份角色
+    setRole(){
+      // token: c897553fa9914dfdb0d5e7ad5907042b
+      this.showType = true;
+      this.$api.userInfo.setRoleList({token: this.userInfoDate.token}).then(res => {
+        console.log(res.data.result, 'role')
+        this.popData.type = 1;
+        this.popData.data= res.data.result;
       })
     },
+    // 兴趣标签
+    getTagsList(){
+      this.showType = true;
+      this.$api.userInfo.tagsList({token: this.userInfoDate.token}).then(
+        res => {
+          // id name icon
+          console.log(res.data.result, 'tags');
+          this.popData.type = 2;
+          this.popData.data= res.data.result;
+        }
+      )
+    },
+    // parent dispatch child
+    getPopData(popVal){
+      console.log(popVal, 'parentData');
+      //roleVal: "探索者"
+      // showType: false
+      this.form.roleName = popVal.roleVal;
+      this.showType = popVal.showType;
+    }
   }
 };
 </script>

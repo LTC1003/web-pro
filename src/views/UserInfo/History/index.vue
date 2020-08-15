@@ -34,7 +34,6 @@ export default {
   },
   methods: {
     onClickTab(i){
-      // http://127.0.0.1:8080/pages/userinfo/history
       console.log(i, this.items[i].tabName);
       
     }
