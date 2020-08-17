@@ -266,7 +266,21 @@
       onClick(val){
         this.$emit('changeState', val);
       },
-      // 获取短信
+      // 手机短线验证结果
+      getPhoneCode(moblie, verify){
+        let paramObj = {
+          phone_number: moblie,
+          code: verify
+        }
+        this.$api.userInfo.loginCheckCode(paramObj).then( res => {
+          if (res.code === "00001"){
+            console.log(res.message);
+            return true;
+          } else {
+            return false;
+          }
+        });
+      },
       getCodeVerify(value){
         if(/^1[3456789]\d{9}$/.test(value) == false){
           this.$refs.loginVerify.validate( 
@@ -302,30 +316,16 @@
         }
         
       },
-      // 验证短息和登录
+      // 短息登录
       submitVerify(){
         this.$refs.loginVerify.validate( 
           (valid) => {
             if (valid) {
-              // 验证短息
-              let paramObj = {
-                phone_number: this.loginVerify.moblie,
-                code: this.loginVerify.verify
-              }
-              this.$api.userInfo.loginCheckCode(paramObj).then( res => {
-                if (res.code === "00001"){
-                  // code: "00001"
-                  // 短信认证成功
-                  console.log(res.message);
-                  this.$api.userInfo.userLoginMobile(paramObj.phone_number)
-                  .then( res => {
-                    if(res.message === '注册成功') {
-                      console.log(res.data.result, 909090);
-                    }
-                  });
-                } else {
-                  this.$message.error(res.message);
-                }
+              // 调用短信验证共用fun
+              this.getPhoneCode(this.loginVerify.moblie, this.loginVerify.verify)
+              this.$api.userInfo.userLoginMobile({phone_number: this.loginVerify.moblie})
+              .then( res => {
+                  console.log(res.data, '用户短信登陆');
               });
             } else {
               return false;
@@ -336,44 +336,54 @@
       },
       // 注册 
       clickRegister(formData){
-        let objData = {
-          phoneType: '-',
-          channel: '-',
-          lastLoginTime: (new Date()).valueOf().toString(),
-          lastLoginIp: '10.12.88.103',
-        }
-        objData['moblie'] = this.register.moblie;
-        objData['verifyCode'] = this.register.verifyCode;
-        this.$api.userInfo.userLoginMobile(objData).then( res => {
-          /***
-           * code: "00001"
-            data: {
-              result: {
-              avatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png"
-              bgimg: "http://qiniu.jyddnw.com/images/jpg(8).jpg"
-              icon: "http://qiniu.jyddnw.com/images/6666ef0f7905dcadc7e4eeec625992b4.png"
-              id: 84
-              isRealName: 1
-              passwordStatus: 1
-              role: 1
-              token: "740e95dd862a4566a26b21a5fa147697"
-              userMobile: "13022511993"
-              userName: "13022511993"
-              userRole: -1
-              userStatus: 1
+        this.$refs.register.validate( 
+          valid => {
+            if (valid) {
+              this.getPhoneCode(this.register.moblie, this.register.verifyCode);
+
+              let objData = {
+                phoneType: '-',
+                channel: '-',
+                lastLoginTime: (new Date()).valueOf().toString(),
+                lastLoginIp: '10.12.88.103',
               }
+              objData['moblie'] = this.register.moblie;
+              objData['verifyCode'] = this.register.verifyCode;
+              this.$api.userInfo.userLoginMobile(objData).then( res => {
+                /***
+                 * code: "00001"
+                  data: {
+                    result: {
+                    avatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png"
+                    bgimg: "http://qiniu.jyddnw.com/images/jpg(8).jpg"
+                    icon: "http://qiniu.jyddnw.com/images/6666ef0f7905dcadc7e4eeec625992b4.png"
+                    id: 84
+                    isRealName: 1
+                    passwordStatus: 1
+                    role: 1
+                    token: "740e95dd862a4566a26b21a5fa147697"
+                    userMobile: "13022511993"
+                    userName: "13022511993"
+                    userRole: -1
+                    userStatus: 1
+                    }
+                  }
+                  message: "操作成功"
+                * ****/ 
+                if(res.message === "操作成功"){
+                  localStorage.loginUserInfo = JSON.stringify(res.data.result);
+                  localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
+                  this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
+                  // let delete = localStorage.removeItem('LoginUserInfo'); // 移除
+                  // let clear = localStorage.clear(); // 清除所有
+                  this.$emit('changeState', {isShow: 0}) // 退出弹框
+                }
+              });
+            }else{
+              // 表单效验失败
             }
-            message: "操作成功"
-           * ****/ 
-          if(res.message === "操作成功"){
-            localStorage.loginUserInfo = JSON.stringify(res.data.result);
-            localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
-            this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
-            // let delete = localStorage.removeItem('LoginUserInfo'); // 移除
-            // let clear = localStorage.clear(); // 清除所有
-            this.$emit('changeState', {isShow: 0}) // 退出弹框
           }
-        });
+        )
       },
       // 账号密码登录
       onSubmit(formName){ 

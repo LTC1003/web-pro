@@ -13,7 +13,7 @@ export const getLoginSendcode = (params) =>{
   })
 }
 // 验证短息
-// /api/code/login/check_code
+// phone_number code
 export const loginCheckCode = (data) =>{
   return axios({
       url: '/api/code/login/check_code',
