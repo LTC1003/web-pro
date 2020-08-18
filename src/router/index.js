@@ -14,6 +14,8 @@ import VideoDetail from "../views/Pages/VideoDetail";
 /**个人资料**/
 import UserInfo from "../views/UserInfo";
 import History from "../views/UserInfo/History";
+import HistoryLive from "../views/UserInfo/History/HistoryLive"
+import HistoryVideo from "../views/UserInfo/History/HistoryVideo"
 import Messages from "../views/UserInfo/Messages";
 import Personal from "../views/UserInfo/Personal";
 import Audience from "../views/UserInfo/Audience";
@@ -57,7 +59,7 @@ const routes = [
         component: VideoDetail,
       },
       // 主播专区
-      { 
+      {
         path: "/lineplay", 
         name: "linepaly", 
         component: Lineplay 
@@ -96,11 +98,17 @@ const routes = [
       },
       // 用户专区
       {
-        path:"userinfo",
+        path:"/userinfo",
         name: "userinfo",
         component: UserInfo,
         children: [
-          { path:"history", name: "history", component: History },
+          { path:"history", name: "history", component: History,
+            redirect: { name: 'history-video' },
+            children: [
+              {path: 'history-video', name: 'history-video', component: HistoryVideo},
+              {path: 'history-live', name: 'history-live', component: HistoryLive},
+            ]
+          },
           { path: "personal", name: "personal", component: Personal },
           { path: "messages", name: "messages", component: Messages },
           { path: "upload", name: "upload", component: Upload },

@@ -53,7 +53,7 @@
       </div>
     </div>
     <!-- 引用弹出组件 -->
-    <PopupWin :popData="popData" @onFromPopData="getPopData" v-show="showType"></PopupWin>
+    <PopupWin :popData="popData" @onFromPopData="getPopData" v-show="popData.showType"></PopupWin>
   </div>
 </template>
 
@@ -66,11 +66,12 @@ export default {
   },
   data() {
     return {
-      showType: false,
+      
       visibleType:'',
       popData: {
-        type: 1,
-        data: []
+        type: 0,
+        data: [],
+        showType: false,
       },
       colorArr: ['#FFC0CB','#4169E1','#00BFFF','#DC143C','#C71585','#7B68EE','#00FA9A','#FFD700'],
       tagList: ['名胜古迹','野外垂钓','毕摩登感'],
@@ -136,20 +137,20 @@ export default {
     // 身份角色
     setRole(){
       // token: c897553fa9914dfdb0d5e7ad5907042b
-      this.showType = true;
       this.$api.userInfo.setRoleList({token: this.userInfoDate.token}).then(res => {
         console.log(res.data.result, 'role')
+        this.popData.showType = true;
         this.popData.type = 1;
         this.popData.data= res.data.result;
       })
     },
     // 兴趣标签
-    getTagsList(){
-      this.showType = true;
+    getTagsList(){ 
       this.$api.userInfo.tagsList({token: this.userInfoDate.token}).then(
         res => {
           // id name icon
           console.log(res.data.result, 'tags');
+          this.popData.showType = true;
           this.popData.type = 2;
           this.popData.data= res.data.result;
         }
@@ -161,7 +162,7 @@ export default {
       //roleVal: "探索者"
       // showType: false
       this.form.roleName = popVal.roleVal;
-      this.showType = popVal.showType;
+      this.popData.showType = popVal.showType;
     }
   }
 };

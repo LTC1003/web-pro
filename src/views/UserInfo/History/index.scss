@@ -3,17 +3,46 @@
   .caption{
     display: flex;
     justify-content: space-between;
-    border: 1px solid #333;
-    font-size: 0.18rem;
-    // line-height: 25px;
-    color: #333333;
-    // padding-bottom: 20px;
     border-bottom: 1px solid #E5E5E5;
+    margin-top: 20px;
     .tabs{
       display: flex;
+      font-size: 18px;
+      color: #333333;
+      .tab{
+        padding-bottom: 15px;
+        margin-right: 20px;
+        &.isActive{
+          border-bottom: 1px solid #DF2E47;
+          color: #DF2E47;
+        }
+        &:hover{
+          color: #DF2E47;
+        }
+      }
+    }
+    .managebtn{
+      margin-top: -5px;
+      width:72px;
+      height:30px;
+      border-radius:15px;
+      font-size: 14px;
+      line-height:30px;
+      text-align: center;
+      background-color: #ffffff;
+      color: #333333;
+      border: 1px solid #cccccc;
+      &:hover{
+        cursor: pointer;
+        background:rgba(223,46,71,1);
+        color: #ffffff;
+        border: 1px solid #DF2E47;
+      }
     }
   }
   .typeContent{
-
+    background-color: #745;
+    width: 100%;
+    min-height: 300px;
   }
 }

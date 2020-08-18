@@ -2,14 +2,17 @@
   <div class="history"> 
     <div class="caption">
       <div class="tabs">
-        <div v-for="(item, index) in items" :key="index" @click="onClickTab(item.historyType)">{{item.tabName}}</div>
+        <div class="tab" :class="[tabItem.tabName == activeTab ? 'isActive' : '']" 
+          v-for="(tabItem, index) in tabsDate" :key="index" 
+          :name ="tabItem.tabName" 
+          @click="onClickTab(tabItem.historyType, tabItem.tabName)">
+          {{tabItem.tabName}}
+        </div>
       </div>
-      <el-button type="danger" round size="mini">管理</el-button>
-    </div>
-        
-      
+      <div class='managebtn'>管理</div>
+    </div>  
     <div class="typeContent">
-      
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -23,19 +26,21 @@ export default {
   },
   data() {
     return {
-      items: [
-        {tabName: '视频历史', historyType: "historyVideo"}, 
-        {tabName: '直播历史', historyType:'historyLive'}
+      activeTab: '',
+      tabsDate: [
+        {tabName: '视频历史', historyType: 'history-video'}, 
+        {tabName: '直播历史', historyType:'history-live'}
       ],
     }
   },
   mounted() {
-
+    this.activeTab = '视频历史';
   },
   methods: {
-    onClickTab(i){
-      console.log(i, this.items[i].tabName);
-      
+    onClickTab(pathName,name){
+      this.activeTab = name;
+      console.log(pathName)
+      this.$router.push({name: pathName});
     }
    
   }

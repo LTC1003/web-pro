@@ -38,6 +38,14 @@ export const userLoginPassword = (data) =>{
       data,
   })
 }
+// 退出登录
+export const outUsers = (params) =>{
+  return axios({
+    url: '/api/user/loginOut',
+    method: 'get',
+    params
+  })
+}
 
 // 以旧换新修改密码
 // /api/user/changePassword

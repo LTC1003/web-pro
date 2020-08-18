@@ -15,15 +15,12 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-         <!-- <div class="item-tab active" @click="routePush('pages')">视频专区</div> -->
         <div class="item-tab" @click="routePush('linepaly')">直播专区</div>
         <el-input class="search-type" v-model="searchVal" placeholder="sadad">
           <div style="width:30px, height: 30px" icon="el-icon-search"></div>
         </el-input>
       </div>
       <div class="control-user">
-        <!-- <el-avatar class="el-avatar" @click="routePush('userInfo')" icon="el-icon-user-solid"></el-avatar> -->
-        <!-- <div>{{user.name}} <span class="el-icon-caret-bottom"> </span></div> -->
         <el-dropdown v-if="islogin">
           <span class="el-dropdown-link">
             <el-avatar class="el-avatar" :src="avatarImg" icon="el-icon-user-solid"></el-avatar>
@@ -31,7 +28,7 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="(item, index) in userList" :key="index">
-              <div class="dropdown_column" @click="routePush(item.pathName, index+1)">
+              <div class="dropdown_column" @click="routePush(item.pathName)">
                 {{item.name}}
               </div>
             </el-dropdown-item>
@@ -45,23 +42,30 @@
       <Login :login="loginMsg" v-show="visibleState"
         @changeState="getStateVal">
       </Login>
+      <PopupWin :popData="userOut" @onFromPopData="outuser" v-show="userOut.showType"></PopupWin>
     </div>
   </div>
 </template>
 
 <script>
-import Login from "../Login"
+import Login from "@/components/Login";
+import PopupWin from "@/components/PopupWin";
 export default {
   name: "header-cont",
   components: {
     Login,
-    // Register
+    PopupWin,
   },
   props: [
     'typeList'
   ],
   data() { 
     return {
+      userOut: {
+        type: 3,
+        docs: '确定要退出当前用户?',
+        showType: false,
+      },
       imgsrc: require('@/assets/img/toSeeBlackLogo.png'),
       avatarImg: '',
       searchVal: '',
@@ -80,6 +84,7 @@ export default {
         {name: '上传',pathName: 'upload'},
         {name: '观众',pathName: 'audience'},
         {name: '消息',pathName: 'messages'},
+        {name: '退出',pathName: 'outUsers'},
       ],
       islogin: 0, // 用户未登陆状态
       visibleState: 0, // 显示登陆弹窗
@@ -108,13 +113,21 @@ export default {
       // this.visibleState =val
     },
     routePush(name){
-      console.log(name, "头部导航路由跳转")
-      this.$router.push({name: name});
+      if (name === "outUsers"){ // 退出
+        this.userOut.showType = true;
+      } else {
+        this.$router.push({name: name});
+      }
     },
     // 视频专区选项展示
     getColumn(typeId){
       console.log(typeId, 'headPage');
       this.$router.push({name: 'video-zone', query: {id: typeId}});
+    },
+    outuser(val){
+      console.log(val, 'outlogin');
+      this.userOut.showType = val.showType;
+      this.islogin = val.islogin;
     }
   },
 

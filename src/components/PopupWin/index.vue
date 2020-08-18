@@ -7,7 +7,7 @@
         <div class="closebtn el-icon-close" @click="onClose()"></div>
       </div>
       <div class="popbody">
-        <div class="selectair" v-show="1">
+        <div class="selectair" v-show="popData.type == 1">
           <el-select class="el-select" v-model="selectValue" placeholder="请选择" v-show="1">
             <el-option
               v-for="item in defaultData"
@@ -19,7 +19,7 @@
           <button class="setbutton" @click="setClick()">确认修改</button>
         </div>
         <!-- 2区 -->
-        <div class="tags" v-show="2">
+        <div class="tags" v-show="popData.type == 2">
           <el-tag
             v-for="tag in tags"
             :key="tag.id"
@@ -27,6 +27,10 @@
             >
             {{tag.name}}
           </el-tag>
+        </div>
+        <div class="outUser" v-show="popData.type == 3">
+          <div>你确定要退出当前账号？</div>
+          <button class="setbutton" @click="outRight">确认</button>
         </div>
       </div>
     </div>
@@ -78,7 +82,19 @@ export default {
         this.$emit('onFromPopData', {showType: false, roleVal: this.selectValue});
       }
     },
-    // 
+    // 确定退出调接口
+    outRight(){
+      console.log(JSON.parse(localStorage.loginUserInfo).token);
+      this.$api.userInfo.outUsers({token: JSON.parse(localStorage.loginUserInfo).token}).then(
+        res => {
+          if(res.message === "操作成功") {
+            this.$emit('onFromPopData', {showType: false, islogin: 0});
+            localStorage.clear();
+          }
+        }
+      )
+    },
+    // 选择颜色
     optionTags(keyId){
       // 点击单数选择改变颜色，点击双数放弃回复颜色
       console.log(keyId);
@@ -87,12 +103,19 @@ export default {
   watch: {
     popData: {
       handler(n, o){
+        console.log(n, 'pop');
         switch (n.type) {
           case 1:    
-          this.defaultData = n.data;         
+          this.defaultData = n.data;
+          this.defTitle = '修改身份'   
             break; 
           case 2:    
-          this.tags = n.data;        
+          this.tags = n.data;
+          this.defTitle = '添加兴趣'       
+            break;
+          case 3:    
+          this.defTitle = n.docs
+          this.defTitle = '退出'   
             break;           
           default: 
           console.log(n.data);
