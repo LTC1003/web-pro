@@ -7,9 +7,7 @@ import Lineplay from "../views/Pages/Lineplay";
 import SearchInfoList from "../views/SearchInfoList";
 
 import Login from "../components/Login";
-import Repository from "../views/repository";
-import Register from "../views/Register";
-
+import Repository from "../views/repository";  //404模板
 import VideoDetail from "../views/Pages/VideoDetail";
 /**个人资料**/
 import UserInfo from "../views/UserInfo";
@@ -18,6 +16,9 @@ import HistoryLive from "../views/UserInfo/History/HistoryLive"
 import HistoryVideo from "../views/UserInfo/History/HistoryVideo"
 import Messages from "../views/UserInfo/Messages";
 import Personal from "../views/UserInfo/Personal";
+import Userdata from "../views/UserInfo/Personal/Userdata"
+import PasswordFirst from "../views/UserInfo/Personal/PasswordFirst"
+
 import Audience from "../views/UserInfo/Audience";
 import Upload from "../views/UserInfo/Upload";
 /**个人资料**/
@@ -70,8 +71,6 @@ const routes = [
         name: "search-info-list",
         component: SearchInfoList,
       },
-      // 注册登录
-      {path: "/register", name: 'register', component: Register},
       // 修改密码
       {
         path: '/retrieve-paswd',
@@ -105,11 +104,17 @@ const routes = [
           { path:"history", name: "history", component: History,
             redirect: { name: 'history-video' },
             children: [
-              {path: 'history-video', name: 'history-video', component: HistoryVideo},
-              {path: 'history-live', name: 'history-live', component: HistoryLive},
+              { path: 'history-video', name: 'history-video', component: HistoryVideo},
+              { path: 'history-live', name: 'history-live', component: HistoryLive},
             ]
           },
-          { path: "personal", name: "personal", component: Personal },
+          { path: "personal", name: "personal", component: Personal,
+            redirect: { name: 'userdata' },
+            children: [
+              { path: 'userdata', name: 'userdata', component: Userdata},
+              { path: 'password-firs', name: 'password-first', component: PasswordFirst},
+            ]
+          },
           { path: "messages", name: "messages", component: Messages },
           { path: "upload", name: "upload", component: Upload },
           { path: "audience", name: "audience", component: Audience },

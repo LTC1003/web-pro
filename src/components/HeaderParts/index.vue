@@ -67,6 +67,7 @@ export default {
         showType: false,
       },
       imgsrc: require('@/assets/img/toSeeBlackLogo.png'),
+      // reuserData: {},
       avatarImg: '',
       searchVal: '',
       loginMsg: "",
@@ -87,18 +88,19 @@ export default {
         {name: '退出',pathName: 'outUsers'},
       ],
       islogin: 0, // 用户未登陆状态
-      visibleState: 0, // 显示登陆弹窗
+      visibleState: false, // 显示登陆弹窗
     }
   },
   mounted() {
-    console.log(JSON.parse(localStorage.getItem('loginUserInfo')),"mmm");
-    if (localStorage.getItem('STORAGE_STATE')){
-      // 用户登陆成功切换头像
-      this.islogin = 1; 
-      this.avatarImg = JSON.parse(localStorage.getItem('loginUserInfo')).avatar;
-    } else {
-      // 用户为登陆
-      this.islogin = 0;
+    if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token) {
+      this.avatarImg = JSON.parse(localStorage.loginUserInfo).avatar;
+      this.islogin = 1;
+      // this.reuserData = JSON.parse(localStorage.loginUserInfo);
+      // console.log(this.reuserData, 223);
+    }else{
+      console.log(2222);
+      // 用户未登陆
+      // this.islogin = 0;
     }
   },
   methods: {
@@ -107,10 +109,12 @@ export default {
       this.loginMsg = name;
       this.visibleState = true;
     },
+    // 登录子组件传值
     getStateVal(val){
       console.log(val, 776)
-      this.visibleState = val.isShow
-      // this.visibleState =val
+      this.visibleState = val.isShow;
+      this.islogin = val.isLogin;
+      this.avatarImg = val.userData.avatar;
     },
     routePush(name){
       if (name === "outUsers"){ // 退出
@@ -124,13 +128,12 @@ export default {
       console.log(typeId, 'headPage');
       this.$router.push({name: 'video-zone', query: {id: typeId}});
     },
+    // 退出登录子组件传值
     outuser(val){
-      console.log(val, 'outlogin');
-      this.userOut.showType = val.showType;
-      this.islogin = val.islogin;
+      this.userOut.showType = val.showType; // false   
+      this.islogin = val.islogin; // 0
     }
   },
-
 };
 </script>
 

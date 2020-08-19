@@ -53,12 +53,12 @@
               </i>
             </el-input>
           </el-form-item>
-          <el-form-item prop="verify">
-            <el-input v-model="loginVerify.verify" placeholder="验证码">
+          <el-form-item prop="verifyCode">
+            <el-input v-model="loginVerify.verifyCode" placeholder="验证码">
               <el-button class="contrlCode" slot="suffix" @click="getCodeVerify(loginVerify.moblie)" :disabled="isDisabled">{{getCodeState}}</el-button>
             </el-input>
           </el-form-item>
-          <div class="btn-denger" @click="submitVerify">登录</div>
+          <div class="btn-denger" @click="submitVerify('loginVerify')">登录</div>
         </el-form>
         <div class="other">
           <span @click="loginData ='register'">注册</span>
@@ -131,9 +131,6 @@
         if(/^1[3456789]\d{9}$/.test(value) == false){
           return callback(new Error("11位手机号不正确"));
         } else {
-          // if (this.loginVerify.moblie !== '') {
-          //   this.$refs.loginVerify.validateField('moblie');
-          // }
           callback();
         }
       };
@@ -165,15 +162,13 @@
         ],
         isIconClose: false,
         isActive: 1,
-        // isClick: 'open',
-        // showState: '',
         loginPaswd:{
           moblie: '',
           password: ''
-        }, 
+        },
         loginVerify: {
           moblie: '',
-          verify: '',
+          verifyCode: '',
         },
         register: {
           moblie: '',
@@ -191,21 +186,13 @@
           ]
         },
         rulesVerify: {
-          moblie: [
-            { required: true, message: '不能为空'},
-            { validator: validMoblie, trigger: 'change' }
+           moblie: [
+            { required: true, message: '必填', trigger: 'blur' },
+            { validator: validMoblie, trigger: 'blur' }
           ],
-          verify: [
+          verifyCode: [
             { required: true, message: '必填'},
-            { validator: (rule, value, callback) => {
-                if(/^(\d){6}$/.test(value) == false) {
-                  return callback(new Error("6位数字失效"));
-                } else {
-                  callback();
-                }
-            },
-              trigger: 'blur'
-            }
+            { validator: validVer, trigger: 'blur'}
           ]
         },
         rulesRegis:{
@@ -268,23 +255,18 @@
         this.$emit('changeState', val);
       },
       // 手机短线验证结果/同步请求(async await)
-      async getPhoneCode(moblie, verify, verCodeState){
+      async getPhoneCode(moblie, verify){
         let paramObj = {
           phone_number: moblie,
           code: verify
         }
         try {
           let res = await this.$api.userInfo.loginCheckCode(paramObj).then();
-          // if(res.message === "success"){
-          //   verCodeState = true
-          // } else {
-          //   verCodeState = false
-          // }
+          return res.message === "success"
         } catch (err) {
           console.log(err)
           alert('请求出错！')
         }
-        return res.message === "success"
       },
       getCodeVerify(value){
         if(/^1[3456789]\d{9}$/.test(value) == false){
@@ -319,29 +301,34 @@
             err => {console.log(err)}
           );
         }
-        
       },
-      // 短息登录
+      // 短信验证登录
       submitVerify(){
-        this.$refs.loginVerify.validate( 
-          (valid) => {
-            if (valid) {
-              // 调用短信验证共用fun
-              this.vCodeState = this.getPhoneCode(this.loginVerify.moblie, this.loginVerify.verify)
-              if (this.vCodeState){
-                console.log('短信验证成功')
+        this.$refs.loginVerify.validate(valid => {
+          if (valid) {
+            this.getPhoneCode(this.loginVerify.moblie, this.loginVerify.verifyCode).then(res =>{
+              if (res){
+                let objData = {
+                  phoneType: '-',
+                  channel: '-',
+                  lastLoginTime: (new Date()).valueOf().toString(),
+                  lastLoginIp: '10.12.88.103',
+                }
+                objData['moblie'] = this.loginVerify.moblie;
+                this.$api.userInfo.userLoginMobile(objData).then( res => {
+                  if(res.message === "操作成功"){
+                    localStorage.loginUserInfo = JSON.stringify(res.data.result);
+                    localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
+                    this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
+                    this.$emit('changeState', {isShow : false, isLogin: 1, userData: JSON.parse(localStorage.loginUserInfo)}) // 退出弹框
+                  }
+                });
               }
-              
-              this.$api.userInfo.userLoginMobile({phone_number: this.loginVerify.moblie})
-              .then( res => {
-                  console.log(res.data, '用户短信登陆');
-              });
-            } else {
-              return false;
-            }
+            })
+          }else{
+            return false
           }
-        );
-        
+        });
       },
       // 注册 
       clickRegister(){
@@ -349,29 +336,27 @@
           valid => {
             if (valid) {
               // 调用短信验证共用fun
-              this.vCodeState = this.getPhoneCode(this.register.moblie, this.register.verifyCode)
-              console.log(this.vCodeState,'cnm');
-              if (this.vCodeState === "success"){
-                let objData = {
-                  phoneType: '-',
-                  channel: '-',
-                  lastLoginTime: (new Date()).valueOf().toString(),
-                  lastLoginIp: '10.12.88.103',
-                }
-                objData['moblie'] = this.register.moblie;
-                // objData['verifyCode'] = this.register.verifyCode;
-                this.$api.userInfo.userLoginMobile(objData).then( res => {
-                  if(res.message === "操作成功"){
-                    localStorage.loginUserInfo = JSON.stringify(res.data.result);
-                    localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
-                    this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
-                    // let delete = localStorage.removeItem('LoginUserInfo'); // 移除
-                    this.$emit('changeState', {isShow: 0}) // 退出弹框
+              this.getPhoneCode(this.register.moblie, this.register.verifyCode).then(res =>{
+                if (res){
+                  let objData = {
+                    phoneType: '-',
+                    channel: '-',
+                    lastLoginTime: (new Date()).valueOf().toString(),
+                    lastLoginIp: '10.12.88.103',
                   }
-                });
-              } else {
-                return;
-              }
+                  objData['moblie'] = this.register.moblie;
+                  // objData['verifyCode'] = this.register.verifyCode;
+                  this.$api.userInfo.userLoginMobile(objData).then( res => {
+                    if(res.message === "操作成功"){
+                      localStorage.loginUserInfo = JSON.stringify(res.data.result);
+                      localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
+                      this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
+                      // let delete = localStorage.removeItem('LoginUserInfo'); // 移除
+                      this.$emit('changeState', {isShow : false, isLogin: 1}) // 退出弹框
+                    }
+                  });
+                }
+              })
             }else{
               // 表单效验失败
             }

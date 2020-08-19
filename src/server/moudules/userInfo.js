@@ -46,6 +46,14 @@ export const outUsers = (params) =>{
     params
   })
 }
+// 首次修改密码
+export const changePasdfirst = (data) =>{
+  return axios({
+      url: '/api/user/changePasswordFirst',
+      method: 'post',
+      data,
+  })
+}
 
 // 以旧换新修改密码
 // /api/user/changePassword
