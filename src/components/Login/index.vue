@@ -204,13 +204,6 @@
             { required: true, message: '必填'},
             { validator: validVer, trigger: 'blur'}
           ]
-          // password: [
-          //   { required: true, message: '必填', trigger: 'blur' },
-          //   { validator: validPawd, trigger: 'blur' }
-          // ],
-          // aginPawd: [
-          //   { required: true, message: '必填', trigger: 'blur' },
-          // ],
         },
         vCodeState: Boolean,
       }
@@ -270,36 +263,28 @@
       },
       getCodeVerify(value){
         if(/^1[3456789]\d{9}$/.test(value) == false){
-          this.$refs.loginVerify.validate( 
-          (valid) => {
-            return false;
-          });
+          return this.$message.error("11位手机号不正确");
         } else {
-          this.isDisabled = true;
-          var count = null;
-          var seed = 60;
-          var num = seedCount => {
-            seed --;
-            if (seed < 1) {
-              clearInterval(count);
-              this.getCodeState = '重新发送';
-              this.isDisabled = false;
-            } else {
-              // console.log(seed, '*_*');
-              this.getCodeState = `${seed} 重新发送`;
+          this.$api.userInfo.getLoginSendcode({phone_number: value }).then(res => {
+            if (res.message === "success") {
+              
             }
-          };
-          count = setInterval(num, 1000);
-
-          this.$api.userInfo.getLoginSendcode({phone_number: value })
-          .then(
-            res => {
-              if (res.message === "success") {
-                // console.log(res.data.result, '900001') // {phoneNumber: "13022511993", code: "499866"}
+          })
+          if(!this.isDisabled){
+            let seed = 60;
+            let num = seedCount => {
+              seed --;
+              if (seed < 1) {
+                clearInterval(count);
+                this.getCodeState = '重新发送';
+                this.isDisabled = false;
+              } else {
+                this.isDisabled = true;
+                this.getCodeState = `倒计时${seed}`;
               }
-            },
-            err => {console.log(err)}
-          );
+            };
+            let count = setInterval(num, 1000);
+          }
         }
       },
       // 短信验证登录
@@ -318,8 +303,8 @@
                 this.$api.userInfo.userLoginMobile(objData).then( res => {
                   if(res.message === "操作成功"){
                     localStorage.loginUserInfo = JSON.stringify(res.data.result);
-                    localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
-                    this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
+                    // localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
+                    // this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
                     this.$emit('changeState', {isShow : false, isLogin: 1, userData: JSON.parse(localStorage.loginUserInfo)}) // 退出弹框
                   }
                 });
@@ -349,8 +334,8 @@
                   this.$api.userInfo.userLoginMobile(objData).then( res => {
                     if(res.message === "操作成功"){
                       localStorage.loginUserInfo = JSON.stringify(res.data.result);
-                      localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
-                      this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
+                      // localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
+                      // this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
                       // let delete = localStorage.removeItem('LoginUserInfo'); // 移除
                       this.$emit('changeState', {isShow : false, isLogin: 1}) // 退出弹框
                     }
@@ -366,26 +351,26 @@
       // 账号密码登录
       onSubmit(formName){ 
         // userMobile/userPassword/lastLoginTime/lastLoginIp
-        // this.$refs[formName].validate((valid) => {
-        //   if(valid){
+        this.$refs[formName].validate((valid) => {
+          if(valid){
             this.$api.userInfo.userLoginPassword({
-              // userMobile : this.loginPaswd.moblie,
-              // userPassword : this.loginPaswd.password,
-              "userMobile" : 17366006693,
-              "userPassword" : 123456,
-              "lastLoginTime": '2020-08-10 15:15:20',
-              "lastLoginIp": '10.12.88.215'
+              userMobile : this.loginPaswd.moblie,
+              userPassword : this.loginPaswd.password,
+              "lastLoginTime": (new Date()).valueOf().toString(),
+              "lastLoginIp": '10.12.88.103'
             }).then(res => {
-              if(res.code == "00001" && res.message == "操作成功"){
+              console.log(res)
+              if(res.message === "操作成功"){
                 this.$message.success(res.message);
-              } else if (res.code == "4106" && res.message == "密码未设置"){
-                console.log("密码未设置");
-                this.toRessetPage()
+                localStorage.loginUserInfo = JSON.stringify(res.data.result);
+                this.$emit('changeState', {isShow : false, isLogin: 1, userData: JSON.parse(localStorage.loginUserInfo)}) // 退出弹框
+              } else{
+                this.$message.error(res.message);
               }
             })
-        //   }
-        // }); 
-        // this.$emit('changeState', {isLogin: 1, isShow: 0});
+          }
+        }); 
+        
       },
       handleIconClick(ev){
         if (this.inputPassType == 'password'){

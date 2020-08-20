@@ -16,8 +16,10 @@ import HistoryLive from "../views/UserInfo/History/HistoryLive"
 import HistoryVideo from "../views/UserInfo/History/HistoryVideo"
 import Messages from "../views/UserInfo/Messages";
 import Personal from "../views/UserInfo/Personal";
-import Userdata from "../views/UserInfo/Personal/Userdata"
-import PasswordFirst from "../views/UserInfo/Personal/PasswordFirst"
+import Userdata from "../views/UserInfo/Personal/Userdata";
+import PasswordFirst from "../views/UserInfo/Personal/PasswordFirst";
+import PaswdModify from "../views/UserInfo/Personal/PaswdModify";
+import BindMobile from "../views/UserInfo/Personal/BindMobile";
 
 import Audience from "../views/UserInfo/Audience";
 import Upload from "../views/UserInfo/Upload";
@@ -113,6 +115,8 @@ const routes = [
             children: [
               { path: 'userdata', name: 'userdata', component: Userdata},
               { path: 'password-firs', name: 'password-first', component: PasswordFirst},
+              { path: 'paswd-modify', name: 'paswd-modify', component: PaswdModify},
+              { path: 'bind-mobile', name: 'bind-mobile', component: BindMobile},
             ]
           },
           { path: "messages", name: "messages", component: Messages },

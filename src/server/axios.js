@@ -21,10 +21,10 @@ export default function $axios(options) {
     instance.interceptors.request.use(
       config => {
         // http request 拦截器
-        const token = sessionStorage.getItem('token')
-        if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
-          config.headers.authorization = token  //请求头加上token
-        }
+        // const token = sessionStorage.getItem('token')
+        // if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
+        //   config.headers.authorization = token  //请求头加上token
+        // }
         
         // 1. 请求headers 添加公共参数
         var reqData = {};
@@ -33,20 +33,21 @@ export default function $axios(options) {
         }else{
           reqData = config.data
         }
-        // console.log(reqData,'获取请求参数');
+        console.log(reqData,'获取请求参数');
         const reqParams = addCode(reqData);
         config.headers['appVersion'] = reqParams.appVersion;
         config.headers['timeStamp'] = reqParams.timeStamp;
         config.headers['userAgent'] = reqParams.userAgent;
         config.headers['sign'] = reqParams.sign;
-        // 2. 请求地址url
-        // if (config.url === '/api:id') {
-        //   // 根据API请求地址操作
-        // } 
+        // 2. 请求地址url 
         // 3. 根据请求方法post，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
           // console.log(config.data, 'post_request_string');
           // params使用qs json串转换requestString
+          config.data = qs.stringify(config.data);
+          console.log(config.data,22222)
+        }
+        if (config.method === 'put') {
           config.data = qs.stringify(config.data);
         }
         return config

@@ -76,10 +76,16 @@ export default {
       this.$emit('onFromPopData', false);
     },
     setClick(){
-      console.log(this.selectValue);
       if(this.selectValue){
         // 值不为空， 传回数据
-        this.$emit('onFromPopData', {showType: false, roleVal: this.selectValue});
+        let roleVal;
+        this.defaultData.forEach((val, i) => {
+          if(val.name === this.selectValue){
+            roleVal = val
+          }
+        })
+        console.log(roleVal);
+        this.$emit('onFromPopData', {showType: false, roleVal});
       }
     },
     // 确定退出调接口

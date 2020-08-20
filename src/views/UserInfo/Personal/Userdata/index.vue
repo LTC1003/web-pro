@@ -5,33 +5,33 @@
     <div class="userinfo-list">
       <div class="list">
         <!-- <div class="label"></div> -->
-        <el-form ref="form" :model="form" 
+        <el-form ref="personalData" :model="personalData" 
           label-width="80px" 
           style="">
           <el-form-item label="头像">
-            <el-avatar class="avatar" :src="form.userAvatar"></el-avatar>
+            <el-avatar class="avatar" :src="personalData.avatar"></el-avatar>
           </el-form-item>
           <el-form-item label="身份">
-            <el-button round plain type="warning" size="mini">{{form.roleName}}</el-button>
+            <el-button round plain type="warning" size="mini">{{personalData.roleName}}</el-button>
           </el-form-item>
           <el-form-item label="昵称">
-            <el-input class="inputmini" v-model="form.name"></el-input>
+            <el-input class="inputmini" v-model="personalData.userName"></el-input>
           </el-form-item>
           <el-form-item label="名片">
-            <el-input class="inputSamll" type="text" v-model="form.motto"></el-input>
+            <el-input class="inputSamll" type="text" v-model="personalData.userCard"></el-input>
           </el-form-item>
           <el-form-item label="个人简介">
-            <el-input class="inputSamll" type="textarea" v-model="form.desc"></el-input>
+            <el-input class="inputSamll" type="textarea" v-model="personalData.userSignature"></el-input>
           </el-form-item>
           <el-form-item label="所在地">
-            <el-select class="inputmini" v-model="form.region" placeholder="请选择">
-              <el-option label="区域一" value="上海"></el-option>
-              <el-option label="区域二" value="北京"></el-option>
+            <el-select class="inputmini" v-model="personalData.region" placeholder="请选择">
+              <el-option label="上海" value="上海"></el-option>
+              <el-option label="北京" value="北京"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="兴趣爱好">
             <el-tag
-              v-for="tag in tagList" :key="tag">
+              v-for="tag in personalData.lableIds" :key="tag">
               {{tag}}
             </el-tag>
             <el-button class="addtag" @click="getTagsList()">+Tag</el-button>
@@ -75,14 +75,21 @@ export default {
         showType: false,
       },
       colorArr: ['#FFC0CB','#4169E1','#00BFFF','#DC143C','#C71585','#7B68EE','#00FA9A','#FFD700'],
-      tagList: ['名胜古迹','野外垂钓','毕摩登感'],
-      form: {
-        userAvatar: '',
-        name: '吗快没电',
-        motto: '',
-        desc: '',
+      // tagList: ['名胜古迹','野外垂钓','毕摩登感'],
+      personalData: {
+        avatar: '',
+        userName: '吗快没电',
+        userCard: '',
+        userSignature: '',
         userRole: '',
-        roleName: '未获取身份',
+        roles: {
+          name: '默认'
+        }, // 身份集合
+        roleName: '身份',
+        lableIds: [1,2,3,4,5,6],
+        province: '',
+        city: '', 
+        country: '',
         region: {
           value: 'tianjin',
         },
@@ -92,39 +99,40 @@ export default {
         {setType: 'QQ', setState: 0, setbtn: '解绑'},
         {setType: '微信', setState: 0, setbtn: '绑定'},
         {setType: '微博', setState: 0, setbtn: '绑定'},
-        {setType: '密码', setState: 0, setbtn: '设置密码'},
+        {setType: '密码', setState: 2, setbtn: '设置密码'},
       ],
-      userInfoDate: '',
     }
   },
   mounted() {
     if(localStorage && localStorage.loginUserInfo){
-      this.userInfoDate = JSON.parse(localStorage.loginUserInfo)
-      console.log( this.userInfoDate, 90890)
-      this.form.userAvatar = this.userInfoDate.avatar;
-      this.form.name = this.userInfoDate.userName;
-      this.form.motto = this.userInfoDate.userCard;
-      this.form.desc = this.userInfoDate.userSignature;
-      this.form.userRole = this.userInfoDate.userRole; // 兴趣爱好
-      this.form.province = this.userInfoDate.province; // 省
-      this.form.city = this.userInfoDate.city; // 市
-      this.form.country = this.userInfoDate.country; //乡镇
-      // this.setDataRow = this.userInfoDate.userMobile;
+      this.personalData = JSON.parse(localStorage.loginUserInfo)
+      // console.log( this.personalData, 90890);
+     
       this.setDataRow.forEach((val,key) =>{
         if(val.setType == "密码"){
-          val.setState = this.userInfoDate.passwordStatus;
+          val.setState = this.personalData.passwordStatus;
         }
       });
     }
   },
   methods: {
     onSubmit(){
-
+      console.log(this.personalData, 'rrrr')
+      let user = {
+        id: this.personalData.id,
+        // userRole: this.personalData.roles.id,
+        userRole: 2,
+        lables: [4,6,7],
+        token: this.personalData.token
+      }
+      this.$api.userInfo.updateUserRole(JSON.parse(JSON.stringify(user))).then(res => {
+        console.log(res.message);
+      });
     },
     // 身份角色
     setRole(){
       // token: c897553fa9914dfdb0d5e7ad5907042b
-      this.$api.userInfo.setRoleList({token: this.userInfoDate.token}).then(res => {
+      this.$api.userInfo.getRoleList({token: this.personalData.token}).then(res => {
         console.log(res.data.result, 'role')
         this.popData.showType = true;
         this.popData.type = 1;
@@ -133,7 +141,7 @@ export default {
     },
     // 兴趣标签
     getTagsList(){ 
-      this.$api.userInfo.tagsList({token: this.userInfoDate.token}).then(
+      this.$api.userInfo.tagsList({token: this.personalData.token}).then(
         res => {
           // id name icon
           console.log(res.data.result, 'tags');
@@ -150,8 +158,15 @@ export default {
         case "密码": 
           if (item.setState < 2){
             this.$router.push({name: 'password-first'});
+          } else {
+            this.$router.push({name: 'paswd-modify'});
           }
           break;
+        case "手机": 
+          if (item.setState < 2){
+            this.$router.push({name: 'bind-mobile'});
+          }
+          break; 
         default:
           break;
       }
@@ -161,7 +176,8 @@ export default {
       console.log(popVal, 'parentData');
       //roleVal: "探索者"
       // showType: false
-      this.form.roleName = popVal.roleVal;
+      this.personalData.roles = popVal.roleVal;
+      this.personalData.roleName = popVal.roleVal.name;
       this.popData.showType = popVal.showType;
     }
   }

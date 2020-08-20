@@ -46,12 +46,43 @@ export const outUsers = (params) =>{
     params
   })
 }
+
+/**
+ * 个人中心 用户身份信息
+**/ 
+// 身份角色 -1创建人设默认 
+export const getRoleList = (params) =>{
+  return axios({
+    url: '/api/userservice/roleList',
+    method: 'get',
+    params,
+  })
+}
+// 修改用户角色
+export const updateUserRole = (data) =>{
+  return axios({
+    url: '/api/userservice/updateUser',
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+// 兴趣标签
+export const tagsList = (params) =>{
+  return axios({
+    url: '/api/userservice/labelList',
+    method: 'get',
+    params,
+  })
+}
 // 首次修改密码
 export const changePasdfirst = (data) =>{
   return axios({
-      url: '/api/user/changePasswordFirst',
-      method: 'post',
-      data,
+    url: '/api/user/changePasswordFirst',
+    method: 'post',
+    data,
   })
 }
 
@@ -59,9 +90,9 @@ export const changePasdfirst = (data) =>{
 // /api/user/changePassword
 export const changePassword = (data) =>{
   return axios({
-      url: '/api/user/changePassword',
-      method: 'put',
-      data,
+    url: '/api/user/changePassword',
+    method: 'put',
+    data,
   })
 }
 
@@ -69,28 +100,17 @@ export const changePassword = (data) =>{
 // /api/user/forgetPassword
 export const forgetPassword = (data) =>{
   return axios({
-      url: '/api/user/forgetPassword',
-      method: 'post',
-      data,
+    url: '/api/user/forgetPassword',
+    method: 'post',
+    data,
   })
 }
 
-/**
- * 个人中心 用户身份信息
-**/ 
-// 身份角色
-export const setRoleList = (params) =>{
+// 手机绑定
+export const bindMobile = (data) =>{
   return axios({
-      url: '/api/userservice/roleList',
-      method: 'get',
-      params,
-  })
-}
-// 兴趣标签
-export const tagsList = (params) =>{
-  return axios({
-      url: '/api/userservice/labelList',
-      method: 'get',
-      params,
+      url: '/api/third/bindMobile',
+      method: 'post',
+      data,
   })
 }
