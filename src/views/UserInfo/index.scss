@@ -12,6 +12,9 @@
       &:hover{
         cursor: pointer;
         color: #DF2E47;
+      }
+      &.isActive{
+        color: #DF2E47;
         border-bottom: 1px solid #DF2E47;
       }
     }

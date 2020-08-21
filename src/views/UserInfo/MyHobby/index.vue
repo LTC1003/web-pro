@@ -1,5 +1,5 @@
 <template>
-  <div class="messages"> 
+  <div class="hobby"> 
     <div class="caption">
       <div class="tabs">
         <div class="tab" :class="[tabItem.tabName == activeTab ? 'isActive' : '']" 
@@ -20,7 +20,7 @@
 <script>
 
 export default {
-  name: "messages",
+  name: "myhobby",
   components: {
 
   },
@@ -28,13 +28,13 @@ export default {
     return {
       activeTab: '',
       tabsDate: [
-        {tabName: '反馈消息', typePathName: 'feedback-message'}, 
-        {tabName: '官方通知', typePathName: 'official-notice'}
+        {tabName: '短视频', typePathName: 'short-video'}, 
+        {tabName: '专栏视频', typePathName:'column-video'}
       ],
     }
   },
   mounted() {
-    this.activeTab = '反馈消息';
+    this.activeTab = '短视频';
   },
   methods: {
     onClickTab(pathName,name){

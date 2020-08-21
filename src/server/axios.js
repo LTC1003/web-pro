@@ -33,7 +33,7 @@ export default function $axios(options) {
         }else{
           reqData = config.data
         }
-        console.log(reqData,'获取请求参数');
+        // console.log(reqData,'获取请求参数');
         const reqParams = addCode(reqData);
         config.headers['appVersion'] = reqParams.appVersion;
         config.headers['timeStamp'] = reqParams.timeStamp;
@@ -80,7 +80,7 @@ export default function $axios(options) {
         } else {
           data = response.data
         }
-        console.log(data, '请求成功返回的数据，去做用户登录判断')
+        // console.log(data, '请求成功返回的数据，去做用户登录判断')
         // 根据返回的code值来做不同的处理
         // switch (data.rc) {
         //   case 1:

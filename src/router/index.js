@@ -11,10 +11,15 @@ import Repository from "../views/repository";  //404模板
 import VideoDetail from "../views/Pages/VideoDetail";
 /**个人资料**/
 import UserInfo from "../views/UserInfo";
+
 import History from "../views/UserInfo/History";
 import HistoryLive from "../views/UserInfo/History/HistoryLive"
 import HistoryVideo from "../views/UserInfo/History/HistoryVideo"
+
 import Messages from "../views/UserInfo/Messages";
+import FeedbackMessage from "../views/UserInfo/Messages/FeedbackMessage";
+import OfficialNotice from "../views/UserInfo/Messages/OfficialNotice";
+
 import Personal from "../views/UserInfo/Personal";
 import Userdata from "../views/UserInfo/Personal/Userdata";
 import PasswordFirst from "../views/UserInfo/Personal/PasswordFirst";
@@ -22,6 +27,13 @@ import PaswdModify from "../views/UserInfo/Personal/PaswdModify";
 import BindMobile from "../views/UserInfo/Personal/BindMobile";
 
 import Audience from "../views/UserInfo/Audience";
+import MyAudience from "../views/UserInfo/Audience/MyAudience";
+import AudienceMe from "../views/UserInfo/Audience/AudienceMe";
+
+import Myhobby from "../views/UserInfo/MyHobby";
+import ShortVideo from "../views/UserInfo/MyHobby/ShortVideo";
+import ColumnVideo from "../views/UserInfo/MyHobby/ColumnVideo";
+
 import Upload from "../views/UserInfo/Upload";
 /**个人资料**/
 
@@ -119,9 +131,28 @@ const routes = [
               { path: 'bind-mobile', name: 'bind-mobile', component: BindMobile},
             ]
           },
-          { path: "messages", name: "messages", component: Messages },
           { path: "upload", name: "upload", component: Upload },
-          { path: "audience", name: "audience", component: Audience },
+          { path: "audience", name: "audience", component: Audience,
+            redirect: { name: 'myaudience'},
+            children: [
+              {path: 'myaudience', name: 'myaudience', component: MyAudience},
+              {path: 'audienceme', name: 'audienceme', component: AudienceMe},
+            ],
+          },
+          { path: "myhobby", name: "myhobby", component: Myhobby,
+            redirect: { name: 'short-video'},
+            children: [
+              {path: 'short-video', name: 'short-video', component: ShortVideo},
+              {path: 'column-video', name: 'column-video', component: ColumnVideo},
+            ],
+          },
+          { path: "messages", name: "messages", component: Messages,
+            redirect: { name: 'feedback-message'},
+            children: [
+              {path: 'feedback-message', name: 'feedback-message', component: FeedbackMessage},
+              {path: 'official-notice', name: 'official-notice', component: OfficialNotice},
+            ],
+          },
         ],
       },
     ]

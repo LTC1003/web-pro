@@ -114,3 +114,81 @@ export const bindMobile = (data) =>{
       data,
   })
 }
+
+/**
+ * 观看历史记录
+*/
+// 观看列表
+// user_id page limit module_type
+export const viewHistoryList = (params) =>{
+  return axios({
+    url: '/api/user/look/list',
+    method: 'get',
+    params,
+  })
+}
+
+
+/**
+ * 用户感兴趣的短视频 栏目视频 添加 删除
+**/ 
+// 添加短视频||添加专刊视频  user_id video_id module_type
+export const addHobbyVideo = (params) =>{
+  return axios({
+    url: '/api/user/my_interest/add',
+    method: 'get',
+    params,
+  })
+}
+// 兴趣短视频list||兴趣专刊视频list  user_id module_type page limit
+export const videoHobbyList = (params) =>{
+  return axios({
+    url: '/api/user/my_interest/list',
+    method: 'get',
+    params,
+  })
+}
+// 删除兴趣视频 user_id id_list module_type
+export const videoHobbyDelete = (data) =>{
+  return axios({
+    url: '/api/user/my_interest/batch_del',
+    method: 'post',
+    data,
+  })
+}
+// 短视频||专栏一键删除 user_id module_type
+export const videoHobbyDeleteAll = (params) =>{
+  return axios({
+    url: '/api/user/my_interest/del_all',
+    method: 'get',
+    params,
+  })
+}
+
+/**
+* 关注和取关的 用户
+**/
+// 我的关注-列表  token userId page limit
+export const attentionList = (params) =>{
+  return axios({
+    url: '/api/userservice/attention/attentionList',
+    method: 'get',
+    params,
+  })
+}
+// 取消关注  token attentionId
+export const delAttention = (params) =>{
+  return axios({
+    url: '/api/userservice/attention/delAttention',
+    method: 'get',
+    params,
+  })
+}
+// 添加关注  token uid touid
+export const addAttention = (data) =>{
+  return axios({
+    url: '/api/userservice/attention/addAttention',
+    method: 'post',
+    data,
+  })
+}
