@@ -20,14 +20,14 @@ export default {
 			// { type: '直播间1', 
 			// 	cardList: [
 			// 		{ userCont: 'user1', docs: '123123', imgUrl: require('@/assets/img/userWork.png') },
-			// 		{ userCont: 'user2', docs: '22222', imgUrl: "../../assets/img/bodyBGImg.png" },
+			// 		{ userCont: 'user2', docs: '22222', imgUrl: "@/assets/img/bodyBGImg.png" },
 			// 		{ userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/userWork.png') },
 			// 	]
 			// },
 			// { type: '直播间2', 
 			// 	cardList: [
 			// 		{ userCont: 'user1', docs: '123123', imgUrl: require('@/assets/img/userWork.png') },
-			// 		{ userCont: 'user2', docs: '22222', imgUrl: "../../assets/img/bodyBGImg.png" },
+			// 		{ userCont: 'user2', docs: '22222', imgUrl: "@/assets/img/bodyBGImg.png" },
 			// 		{ userCont: 'user4', docs: '4444', imgUrl: require('@/assets/img/userWork.png') },
 			// 	]
 			// },

@@ -21,7 +21,7 @@ export const getAllVideoListWeb = (data) => {
   })
 }
 // 栏目内长视频详情-视频
-// params: {token: '',userId: '', videoId: ''}
+// params: token, userId, videoId, isTourist
 export const getLongVideoParticulars = (params) => {
   return axios({
     url: '/api/findservice/video/getLongVideoParticulars',

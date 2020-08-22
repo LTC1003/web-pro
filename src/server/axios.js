@@ -45,7 +45,6 @@ export default function $axios(options) {
           // console.log(config.data, 'post_request_string');
           // params使用qs json串转换requestString
           config.data = qs.stringify(config.data);
-          console.log(config.data,22222)
         }
         if (config.method === 'put') {
           config.data = qs.stringify(config.data);

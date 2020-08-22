@@ -2,7 +2,7 @@
 module.exports = {
   // publicPath: {Type: string, Default: '/'};
   publicPath: process.env.NODE_ENV === 'production'? '/production-sub-path/': '/',
-
+  // publicPath: process.env.NODE_ENV === 'production'? './': '/',
   // outputDir: {Type: string, Default: 'dist'}(当运行 vue-cli-service build 时生成的生产环境构建文件的目录。);
   // outputDir: 'dist',
 
@@ -56,9 +56,11 @@ module.exports = {
   //可以在正式环境下关闭错误报告 console.log...
   configureWebpack: config => { 
     if (process.env.NODE_ENV === 'production') {
+      config.mode = production
         // 为生产环境修改配置... production
     } else {
         // 为开发环境修改配置... development
+        config.mode = development
     }
   },
   // webpack-dev-server 相关配置

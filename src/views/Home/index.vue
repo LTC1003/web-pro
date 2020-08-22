@@ -40,16 +40,23 @@ export default {
     const AppHeight = document.getElementById('app');
     AppHeight.style.height = Height + "px";
     // 视频栏目
-    this.$api.findService.getVideoClassifyList({token:'',isTourist: 1}).then(
-      (res) => {
-        if(res.message === "操作成功"){
-          this.videoTypeList = res.data.result;
+    // if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token) {
+    //   this.$api.findService.getVideoClassifyList({token: JSON.parse(localStorage.loginUserInfo).token,isTourist: 2}).then(
+    //     (res) => {
+    //       if(res.message === "操作成功"){
+    //         this.videoTypeList = res.data.result;
+    //       }
+    //     }
+    //   )
+    // } else {
+      this.$api.findService.getVideoClassifyList({token:'',isTourist: 1}).then(
+        (res) => {
+          if(res.message === "操作成功"){
+            this.videoTypeList = res.data.result;
+          }
         }
-        // else if (res.code !== '10001') {
-        //   console.log(err.data, "栏目类型获取失败")
-        // }
-      }
-    )
+      )
+    // } 
   },
   methods: {
     findDimensions() {

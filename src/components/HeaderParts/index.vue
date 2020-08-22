@@ -125,7 +125,7 @@ export default {
     },
     // 视频专区选项展示
     getColumn(typeId){
-      console.log(typeId, 'headPage');
+      // console.log(typeId, 'headPage');
       this.$router.push({name: 'video-zone', query: {id: typeId}});
     },
     // 退出登录子组件传值
