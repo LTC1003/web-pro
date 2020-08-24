@@ -1,15 +1,17 @@
 
 module.exports = {
   // publicPath: {Type: string, Default: '/'};
-  publicPath: process.env.NODE_ENV === 'production'? '/production-sub-path/': '/',
-  // publicPath: process.env.NODE_ENV === 'production'? './': '/',
+  // publicPath: process.env.NODE_ENV === 'production'
+  // ? '/production-sub-path/'
+  // : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? './': '/',
   // outputDir: {Type: string, Default: 'dist'}(当运行 vue-cli-service build 时生成的生产环境构建文件的目录。);
-  // outputDir: 'dist',
+  outputDir: 'dist',
 
   // assetsDir: {Type: string, Default: 'assets'}(放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录);
-  assetsDir: 'assets',
+  assetsDir: '',
 
-  // indexPath: {Type: string, Default: 'index.html'};
+  indexPath: 'index.html',
 
   // filenameHashing: {Type: boolean, Default: true};
   filenameHashing: false,
@@ -35,7 +37,7 @@ module.exports = {
       filename: 'index.html',
       // 当使用 title 选项时，
       // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
-      title: 'Index Page',
+      title: 'ToSee',
       // 在这个页面中包含的块，默认情况下会包含
       // 提取出来的通用 chunk 和 vendor chunk。
       chunks: ['chunk-vendors', 'chunk-common', 'index']
@@ -56,11 +58,11 @@ module.exports = {
   //可以在正式环境下关闭错误报告 console.log...
   configureWebpack: config => { 
     if (process.env.NODE_ENV === 'production') {
-      config.mode = production
+      config.mode = "production"
         // 为生产环境修改配置... production
     } else {
         // 为开发环境修改配置... development
-        config.mode = development
+        config.mode = "development"
     }
   },
   // webpack-dev-server 相关配置

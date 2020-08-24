@@ -68,7 +68,9 @@ export default {
       //判断用户是否登录
       if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token) { 
         // 有token跳转详情调接口。
-        this.$router.push({name: name, params: obj});
+        // let detailVideoData = {userId: obj.userId, videoId: obj.id}
+        localStorage.detailVideoId = obj.videoId
+        this.$router.push({name: name});
       } else{
         // 没有token就不调详情接口,弹框提示用户登录
       }

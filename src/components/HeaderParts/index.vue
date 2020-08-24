@@ -35,8 +35,8 @@
           </el-dropdown-menu>
         </el-dropdown>
         <div class="loginbtngurop" v-else-if="!islogin">
-          <span class="sign" @click="signClick('login')">Signin</span> |
-          <span class="register" @click="signClick('register')">register</span>
+          <span class="sign" @click="signClick('login')">登录</span> |
+          <span class="register" @click="signClick('register')">注册</span>
         </div>
       </div>
       <Login :login="loginMsg" v-show="visibleState"
