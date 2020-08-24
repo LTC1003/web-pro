@@ -120,11 +120,19 @@ export default {
       console.log(this.personalData, 'rrrr')
       let user = {
         id: this.personalData.id,
-        // userRole: this.personalData.roles.id,
+        // userName: '',
+        // province: '',
+        // city: '',
+        // country: '',
+        // userCard:'',
+        // userSignature: '',
         userRole: 2,
         lables: [4,6,7],
-        token: this.personalData.token
+        // token: this.personalData.token
       }
+      user['token'] = this.personalData.token
+      console.log(user,'ooohhhh');
+      
       this.$api.userInfo.updateUserRole(JSON.parse(JSON.stringify(user))).then(res => {
         console.log(res.message);
       });

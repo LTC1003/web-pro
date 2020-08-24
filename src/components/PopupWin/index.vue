@@ -90,15 +90,25 @@ export default {
     },
     // 确定退出调接口
     outRight(){
-      console.log(JSON.parse(localStorage.loginUserInfo).token);
-      this.$api.userInfo.outUsers({token: JSON.parse(localStorage.loginUserInfo).token}).then(
-        res => {
-          if(res.message === "操作成功") {
-            this.$emit('onFromPopData', {showType: false, islogin: 0});
-            localStorage.clear();
+      if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token){
+        this.$api.userInfo.outUsers({token: JSON.parse(localStorage.loginUserInfo).token}).then(
+          res => {
+            if(res.message === "操作成功") {
+              this.$emit('onFromPopData', {showType: false, islogin: 0});
+              localStorage.clear();
+              this.$router.push('/');
+            } else {
+              if (res.message === "token失效,重新登录") {
+                this.$emit('onFromPopData', {showType: false, islogin: 0});
+                localStorage.clear();
+                this.$router.push('/');
+              }
+            }
           }
-        }
-      )
+        )
+      } else {
+        this.$message.error('token is null userOut!')
+      }
     },
     // 选择颜色
     optionTags(keyId){
