@@ -25,20 +25,21 @@ export default function $axios(options) {
         // if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
         //   config.headers.authorization = token  //请求头加上token
         // }
-        
         // 1. 请求headers 添加公共参数
         var reqData = {};
         let reqParams = null;
         if (config.method === 'get') {
           reqData = options.params
-        }else{
+        } else {
           reqData = config.data
         }
         // 2. 请求地址url
         switch (config.url) {
           case '/api/userservice/updateUser':
             reqParams = addCode();
-            console.log(reqData,'获取请求参数');
+            if (config.method === 'post') {
+              config.data = qs.stringify(config.data);
+            }
             break;
           default:
             reqParams = addCode(reqData);
@@ -49,13 +50,11 @@ export default function $axios(options) {
         config.headers['userAgent'] = reqParams.userAgent;
         config.headers['sign'] = reqParams.sign;
         // 3. 根据请求方法post，序列化传来的参数，根据后端需求是否序列化
-        if (config.method === 'post') {
-          // params使用qs json串转换requestString
-          config.data = qs.stringify(config.data);
-        }
+        
         if (config.method === 'put') {
           config.data = qs.stringify(config.data);
         }
+        console.log(config, 34444)
         return config
       },
       err => {
@@ -160,6 +159,7 @@ export default function $axios(options) {
       };  
       
       let mergeObj = Object.assign({},reqData,reqHead);
+
       let sortObj = {};
       let newkeyArr = Object.keys(mergeObj).sort();      
       newkeyArr.forEach((val,k) => {
@@ -175,15 +175,21 @@ export default function $axios(options) {
         //   }
         // }
       })
+      // let reapteData = JSON.stringify(sortObj);
       let reapteData = decodeURIComponent(qs.stringify(sortObj));
-      // console.log(reapteData, 77899);
-      // debugger
+      console.log(reapteData, 2222222222);
+
       reapteData += '&key=DN6AjdNsv6PZXYUoOxVmrVILB+S';
+      console.log(reapteData, 444444444444);
       reqHead['sign'] = MD5(reapteData).toUpperCase();
       coolback = reqHead;
+      console.log(reqHead,123123123123);
+      // debugger;
       return coolback
     }
     // 请求处理
+    console.log(options, 989895657)
+    
     instance(options).then(res => {
       resolve(res)
       return false

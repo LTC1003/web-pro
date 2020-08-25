@@ -117,7 +117,6 @@ export default {
   },
   methods: {
     onSubmit(){
-      console.log(this.personalData, 'rrrr')
       let user = {
         id: this.personalData.id,
         // userName: '',
@@ -127,13 +126,10 @@ export default {
         // userCard:'',
         // userSignature: '',
         userRole: 2,
-        lables: [4,6,7],
-        // token: this.personalData.token
-      }
-      user['token'] = this.personalData.token
-      console.log(user,'ooohhhh');
-      
-      this.$api.userInfo.updateUserRole(JSON.parse(JSON.stringify(user))).then(res => {
+        lableIds: ['6' ,'7', '8'],
+        token: this.personalData.token,
+      };
+      this.$api.userInfo.updateUserRole(user).then(res => {
         console.log(res.message);
       });
     },

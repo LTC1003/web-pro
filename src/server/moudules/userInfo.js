@@ -64,9 +64,9 @@ export const updateUserRole = (data) =>{
     url: '/api/userservice/updateUser',
     method: 'post',
     data,
-    headers: {
-      'Content-Type': 'application/json'
-    }
+    // headers: {
+    //   'Content-Type':  'application/json'
+    // }
   })
 }
 // 兴趣标签
