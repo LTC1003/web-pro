@@ -37,12 +37,12 @@ export default function $axios(options) {
         switch (config.url) {
           case '/api/userservice/updateUser':
             reqParams = addCode();
-            if (config.method === 'post') {
-              config.data = qs.stringify(config.data);
-            }
             break;
           default:
             reqParams = addCode(reqData);
+            if (config.method === 'post') {
+              config.data = qs.stringify(config.data);
+            }
             break;
         }
         config.headers['appVersion'] = reqParams.appVersion;
@@ -54,24 +54,24 @@ export default function $axios(options) {
         if (config.method === 'put') {
           config.data = qs.stringify(config.data);
         }
-        console.log(config, 34444)
         return config
       },
       err => {
         // 对请求错误做些什么
+        console.log(err, 'res_error');
         // 1. 判断请求超时
-        if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+        if (err.code === 'ECONNABORTED' && err.message.indexOf('timeout') !== -1) {
           return service.request(originalRequest);// 再重复请求一次
         }
         // 2. 需要重定向到错误页面
-        const errorInfo = error.response
-        if (errorInfo) {
-          error = errorInfo.data  // 页面那边catch的时候就能拿到详细的错误信息,看最下边的Promise.reject
-          const errorStatus = errorInfo.status; // 404 403 500 ...
-          router.push({
-            path: `/error/${errorStatus}`
-          })
-        }
+        // const errorInfo = error.response
+        // if (errorInfo) {
+        //   error = errorInfo.data  // 页面那边catch的时候就能拿到详细的错误信息,看最下边的Promise.reject
+        //   const errorStatus = errorInfo.status; // 404 403 500 ...
+        //   router.push({
+        //     path: `/error/${errorStatus}`
+        //   })
+        // }
         return Promise.reject(err) // 在调用的那边可以拿到(catch)你想返回的错误信息
       }
     )
@@ -86,16 +86,6 @@ export default function $axios(options) {
           data = response.data
         }
         // console.log(data, '请求成功返回的数据，去做用户登录判断')
-        // 根据返回的code值来做不同的处理
-        // switch (data.rc) {
-        //   case 1:
-        //     console.log(data.desc)
-        //     break;
-        //   case 0:
-        //     store.commit('changeState')
-        //     // console.log('登录成功')
-        //   default:
-        // }
         // 若不是正确的返回code，且已经登录，就抛出错误
         // const err = new Error(data.desc)
         // err.data = data
@@ -177,19 +167,13 @@ export default function $axios(options) {
       })
       // let reapteData = JSON.stringify(sortObj);
       let reapteData = decodeURIComponent(qs.stringify(sortObj));
-      console.log(reapteData, 2222222222);
-
       reapteData += '&key=DN6AjdNsv6PZXYUoOxVmrVILB+S';
-      console.log(reapteData, 444444444444);
       reqHead['sign'] = MD5(reapteData).toUpperCase();
       coolback = reqHead;
-      console.log(reqHead,123123123123);
       // debugger;
       return coolback
     }
-    // 请求处理
-    console.log(options, 989895657)
-    
+    // 请求处理    
     instance(options).then(res => {
       resolve(res)
       return false

@@ -5,39 +5,40 @@
     <div class="userinfo-list">
       <div class="list">
         <!-- <div class="label"></div> -->
-        <el-form ref="personalData" :model="personalData" 
+        <el-form ref="personalData" :model="personalData" :rules="rulesPersonal"
           label-width="80px" 
-          style="">
-          <el-form-item label="头像">
+          >
+          <el-form-item label="头像" prop="avatar">
             <el-avatar class="avatar" :src="personalData.avatar"></el-avatar>
           </el-form-item>
-          <el-form-item label="身份">
-            <el-button round plain type="warning" size="mini">{{personalData.roleName}}</el-button>
+          <el-form-item label="身份" prop="userRole">
+            <!-- <el-button round plain type="warning" size="mini">{{personalData.userRole}}</el-button> -->
+            <div>{{getRoleName(personalData.userRole)}}</div>
           </el-form-item>
-          <el-form-item label="昵称">
+          <el-form-item label="昵称" prop="userName">
             <el-input class="inputmini" v-model="personalData.userName"></el-input>
           </el-form-item>
-          <el-form-item label="名片">
+          <el-form-item label="名片" prop="userCard">
             <el-input class="inputSamll" type="text" v-model="personalData.userCard"></el-input>
           </el-form-item>
-          <el-form-item label="个人简介">
+          <el-form-item label="个人简介" prop="userSignature">
             <el-input class="inputSamll" type="textarea" v-model="personalData.userSignature"></el-input>
           </el-form-item>
-          <el-form-item label="所在地">
+          <el-form-item label="所在地" prop="region">
             <el-select class="inputmini" v-model="personalData.region" placeholder="请选择">
               <el-option label="上海" value="上海"></el-option>
               <el-option label="北京" value="北京"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="兴趣爱好">
+          <el-form-item label="兴趣爱好" prop="lableIds">
             <el-tag
               v-for="tag in personalData.lableIds" :key="tag">
-              {{tag}}
+              {{tag +':'+ lableIds}}
             </el-tag>
             <el-button class="addtag" @click="getTagsList()">+Tag</el-button>
           </el-form-item>
           <el-form-item style="text-align: center">
-            <el-button round size="small" style="width: 130px; margin-left: -80px" type="danger" @click="onSubmit">保存</el-button>
+            <el-button round size="small" style="width: 130px; margin-left: -80px" type="danger" @click="onUserSubmit('personalData')">保存</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -77,22 +78,26 @@ export default {
       colorArr: ['#FFC0CB','#4169E1','#00BFFF','#DC143C','#C71585','#7B68EE','#00FA9A','#FFD700'],
       // tagList: ['名胜古迹','野外垂钓','毕摩登感'],
       personalData: {
-        avatar: '',
-        userName: '吗快没电',
-        userCard: '',
-        userSignature: '',
-        userRole: '',
-        roles: {
-          name: '默认'
-        }, // 身份集合
-        roleName: '身份',
-        lableIds: [1,2,3,4,5,6],
-        province: '',
-        city: '', 
-        country: '',
-        region: {
-          value: 'tianjin',
-        },
+        // avatar: '',
+        // userName: '吗快没电',
+        // userCard: '',
+        // userSignature: '',
+        // userRole: '未设定',
+        // lableIds: [],
+        // province: '',
+        // city: '', 
+        // country: '',
+        // region: {
+        //   value: 'tianjin',
+        // },
+      },
+      rulesPersonal: {
+        userRole: [
+          { required: true, message: '必填', trigger: 'change' },
+        ],
+        lableIds: [
+          {required: true, message: '必填', trigger: 'change'}
+        ]
       },
       setDataRow: [
         {setType: '手机', setState: 0, setbtn: '修改手机'},
@@ -106,7 +111,7 @@ export default {
   mounted() {
     if(localStorage && localStorage.loginUserInfo){
       this.personalData = JSON.parse(localStorage.loginUserInfo)
-      // console.log( this.personalData, 90890);
+      console.log( this.personalData, 90890); 
      
       this.setDataRow.forEach((val,key) =>{
         if(val.setType == "密码"){
@@ -116,28 +121,33 @@ export default {
     }
   },
   methods: {
-    onSubmit(){
-      let user = {
-        id: this.personalData.id,
-        // userName: '',
-        // province: '',
-        // city: '',
-        // country: '',
-        // userCard:'',
-        // userSignature: '',
-        userRole: 2,
-        lableIds: ['6' ,'7', '8'],
-        token: this.personalData.token,
-      };
-      this.$api.userInfo.updateUserRole(user).then(res => {
-        console.log(res.message);
-      });
+    onUserSubmit(formName){
+      this.$refs[formName].validate( valid => {
+      // this.$refs.personalData.validate( valid => {
+        console.log(valid, 'hho');
+        if(valid){
+          let user = {
+            id: this.personalData.id,
+            // userName: '',
+            // province: '',
+            // city: '',
+            // country: '',
+            // userCard:'',
+            // userSignature: '',
+            userRole: 2,
+            lableIds: ['6' ,'7', '8'],
+            token: this.personalData.token,
+          };
+          // this.$api.userInfo.updateUserRole(user).then(res => {
+          //   console.log(res.message);
+          // });
+        }
+      })
     },
     // 身份角色
     setRole(){
       // token: c897553fa9914dfdb0d5e7ad5907042b
       this.$api.userInfo.getRoleList({token: this.personalData.token}).then(res => {
-        console.log(res.data.result, 'role')
         this.popData.showType = true;
         this.popData.type = 1;
         this.popData.data= res.data.result;
@@ -147,7 +157,6 @@ export default {
     getTagsList(){ 
       this.$api.userInfo.tagsList({token: this.personalData.token}).then(
         res => {
-          // id name icon
           console.log(res.data.result, 'tags');
           this.popData.showType = true;
           this.popData.type = 2;
@@ -178,11 +187,29 @@ export default {
     // parent dispatch child
     getPopData(popVal){
       console.log(popVal, 'parentData');
-      //roleVal: "探索者"
-      // showType: false
-      this.personalData.roles = popVal.roleVal;
-      this.personalData.roleName = popVal.roleVal.name;
-      this.popData.showType = popVal.showType;
+      if (popVal) {  // 组件传参传入，否则
+        this.personalData.userRole = popVal.roleItemObj.id;
+        this.popData.showType = popVal.showType;
+      } else {
+        this.popData.showType = popVal
+      }
+    },
+    // 身份状态切换回调函数
+    getRoleName(index){
+      switch (index) {
+        case 1:
+          return '旅行家'
+          break;
+        case 2:
+          return '探索者'
+          break;
+        case 3:
+          return '文创师'
+          break;
+        default:
+          return '为设定'
+          break;
+      }
     }
   }
 };

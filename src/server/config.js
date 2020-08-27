@@ -1,5 +1,6 @@
-const baseUrl = 'http://10.12.88.190:8080'
-// const baseUrl = 'http://10.12.89.172:8080'
+// const baseUrl = 'http://10.12.89.46:8080'
+// 测试
+const baseUrl = 'https://toseetest.jyddnw.com'
 module.exports = {
   baseUrl,
   config: {

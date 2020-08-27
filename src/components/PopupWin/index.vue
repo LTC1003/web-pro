@@ -21,9 +21,10 @@
         <!-- 2区 -->
         <div class="tags" v-show="popData.type == 2">
           <el-tag
-            v-for="tag in tags"
+            :class="tag.name"
+            v-for="tag in tags" 
             :key="tag.id"
-            @click="optionTags(tag)"
+            @click="optionTags(tag.name)"
             >
             {{tag.name}}
           </el-tag>
@@ -47,6 +48,7 @@ export default {
     // }
   },
   data () {
+
     return {
       // defaultLiterals: '公用弹窗组件',
       defaultData: '默认初始数据',
@@ -66,6 +68,44 @@ export default {
         // {name: 'tsg6', type: '#FFCD5C' },
         // {name: 'tsg7', type: '#CDABDA' },
       ],
+      setArr: new Set([]),
+      // activeTag: true,
+      // bgcolorTag: [activeTag1, activeTag2, activeTag3],
+      bgcolor: '',
+      isColorBG : function(key){
+        switch (key) {
+          case '美食小吃':
+            return'#22e7e4'
+            break;
+          case '笔墨书画':
+            return'#FFCD5C'
+            break;
+          case '历史文化':
+            return'rgb(219, 11, 11)'
+            break;
+          case '户外探险':
+            return'rgb(199, 23, 140)'
+            break;
+          case '野外垂钓':
+            return'#CDABDA'
+            break;
+          case '名胜古迹':
+            return'#FB897A'
+            break;
+          case '文物艺术':
+            return'#c05358'
+            break;
+          case '自然风光':
+            return'#61ce4b'
+            break;
+          case '娱乐休闲':
+            return'#6fa5c9'
+            break;
+          default:
+            return'666'
+            break;
+        }
+      },
     }
   },
   mounted() { 
@@ -78,14 +118,14 @@ export default {
     setClick(){
       if(this.selectValue){
         // 值不为空， 传回数据
-        let roleVal;
+        let roleItemObj;
         this.defaultData.forEach((val, i) => {
           if(val.name === this.selectValue){
-            roleVal = val
+            roleItemObj = val
           }
         })
-        console.log(roleVal);
-        this.$emit('onFromPopData', {showType: false, roleVal});
+        console.log(roleItemObj);
+        this.$emit('onFromPopData', {showType: false, roleItemObj});
       }
     },
     // 确定退出调接口
@@ -111,10 +151,23 @@ export default {
       }
     },
     // 选择颜色
-    optionTags(keyId){
+    optionTags(keyName){
       // 点击单数选择改变颜色，点击双数放弃回复颜色
-      console.log(keyId);
-    }
+      let className = document.getElementsByClassName(keyName);
+      if (this.setArr.has(keyName)){ // SET查询 
+        // repeat返回 true
+        this.setArr.delete(keyName);
+        className[0].style.background = '';
+		    className[0].style.color = '#666'
+        //全部删除 // setArr.clear();
+      } else {
+        // no-repeat返回 false
+        this.setArr.add(keyName);
+        className[0].style.background = this.isColorBG(keyName);
+		    className[0].style.color = '#fff'
+      }
+      console.log(this.setArr, '成功');
+    },
   },
   watch: {
     popData: {

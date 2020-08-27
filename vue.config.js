@@ -74,7 +74,7 @@ module.exports = {
     open: true, //自动打开浏览器
     proxy: { // 设置代理
       '/api': {                                      
-        target: '10.12.89.237:8080',
+        target: '10.12.89.103:8080',
       },
       '/test': {
         target: 'http://10.12.88.215:8080',
