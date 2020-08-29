@@ -9,7 +9,7 @@
           {{tabItem.tabName}}
         </div>
       </div>
-      <div class='managebtn'>管理</div>
+      <!-- <div class='managebtn'>管理</div> -->
     </div>  
     <div class="typeContent">
       <router-view></router-view>

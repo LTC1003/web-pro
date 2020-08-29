@@ -67,7 +67,6 @@ export default {
         showType: false,
       },
       imgsrc: require('@/assets/img/toSeeBlackLogo.png'),
-      // reuserData: {},
       avatarImg: '',
       searchVal: '',
       loginMsg: "",
@@ -92,15 +91,12 @@ export default {
     }
   },
   mounted() {
-    if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token) {
+    if (localStorage.loginUserInfo) {
       this.avatarImg = JSON.parse(localStorage.loginUserInfo).avatar;
       this.islogin = 1;
-      // this.reuserData = JSON.parse(localStorage.loginUserInfo);
-      // console.log(this.reuserData, 223);
     }else{
-      console.log(2222);
       // 用户未登陆
-      // this.islogin = 0;
+      this.islogin = 0;
     }
   },
   methods: {

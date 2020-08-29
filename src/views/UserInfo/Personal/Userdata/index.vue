@@ -30,12 +30,14 @@
               <el-option label="北京" value="北京"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="兴趣爱好" prop="lableIds">
+          <el-form-item label="兴趣爱好" prop="lables">
             <el-tag
-              v-for="tag in personalData.lableIds" :key="tag">
-              {{tag +':'+ lableIds}}
+              v-for="tag in personalData.lables" 
+              :key="tag.id"
+              :color="tag.bgcolor">
+              {{tag.name}}
             </el-tag>
-            <el-button class="addtag" @click="getTagsList()">+Tag</el-button>
+            <el-button class="addtag" @click="getTagsList()">添加兴趣</el-button>
           </el-form-item>
           <el-form-item style="text-align: center">
             <el-button round size="small" style="width: 130px; margin-left: -80px" type="danger" @click="onUserSubmit('personalData')">保存</el-button>
@@ -68,7 +70,6 @@ export default {
   },
   data() {
     return {
-      
       visibleType:'',
       popData: {
         type: 0,
@@ -83,7 +84,7 @@ export default {
         // userCard: '',
         // userSignature: '',
         // userRole: '未设定',
-        // lableIds: [],
+        // lables: [],
         // province: '',
         // city: '', 
         // country: '',
@@ -95,7 +96,7 @@ export default {
         userRole: [
           { required: true, message: '必填', trigger: 'change' },
         ],
-        lableIds: [
+        lables: [
           {required: true, message: '必填', trigger: 'change'}
         ]
       },
@@ -109,44 +110,66 @@ export default {
     }
   },
   mounted() {
+    // 获取个人信息
     if(localStorage && localStorage.loginUserInfo){
-      this.personalData = JSON.parse(localStorage.loginUserInfo)
-      console.log( this.personalData, 90890); 
-     
-      this.setDataRow.forEach((val,key) =>{
-        if(val.setType == "密码"){
-          val.setState = this.personalData.passwordStatus;
-        }
-      });
+      this.getUserDataInfo(JSON.parse(localStorage.loginUserInfo));
     }
+    // 个人绑定设置
+    this.setDataRow.forEach((val,key) =>{
+      if(val.setType == "密码"){
+        val.setState = this.personalData.passwordStatus;
+      }
+    });
   },
   methods: {
+    // 获取个人信息
+    getUserDataInfo(localUserData){
+      let objData = {
+        phoneType: '-',
+        channel: '-',
+        lastLoginTime: (new Date()).valueOf().toString(),
+        lastLoginIp: '10.12.88.103',
+      }
+      objData['moblie'] = localUserData.userMobile;
+      this.$api.userInfo.userLoginMobile(objData).then(res => {
+        this.personalData = res.data.result;
+      })
+    },
     onUserSubmit(formName){
       this.$refs[formName].validate( valid => {
       // this.$refs.personalData.validate( valid => {
         console.log(valid, 'hho');
         if(valid){
           let user = {
+             // userName: '吗快没电',
+        // userCard: '',
+        // userSignature: '',
             id: this.personalData.id,
-            // userName: '',
+            userName: this.personalData.userName,
             // province: '',
             // city: '',
             // country: '',
-            // userCard:'',
-            // userSignature: '',
+            userCard: this.personalData.userCard,
+            userSignature: this.personalData.userSignature,
             userRole: 2,
-            lableIds: ['6' ,'7', '8'],
+            lableIds: [],
             token: this.personalData.token,
           };
-          // this.$api.userInfo.updateUserRole(user).then(res => {
-          //   console.log(res.message);
-          // });
+          this.personalData.lables.forEach(val => {
+            user.lableIds.push(val.id);
+          })
+          console.log(user, 344343434);
+          this.$api.userInfo.updateUserRole(user).then(res => {
+            if (res.message == "操作成功") {
+              // this.personalData = res.data.result;
+              localStorage.loginUserInfo = JSON.stringify(res.data.result);
+            } 
+          });
         }
       })
     },
     // 身份角色
     setRole(){
-      // token: c897553fa9914dfdb0d5e7ad5907042b
       this.$api.userInfo.getRoleList({token: this.personalData.token}).then(res => {
         this.popData.showType = true;
         this.popData.type = 1;
@@ -188,7 +211,12 @@ export default {
     getPopData(popVal){
       console.log(popVal, 'parentData');
       if (popVal) {  // 组件传参传入，否则
-        this.personalData.userRole = popVal.roleItemObj.id;
+        if (popVal.selectTags.size) {
+          this.personalData.lables = popVal.selectTags
+
+        } else {
+          this.personalData.userRole = popVal.roleItemObj.id;
+        }
         this.popData.showType = popVal.showType;
       } else {
         this.popData.showType = popVal

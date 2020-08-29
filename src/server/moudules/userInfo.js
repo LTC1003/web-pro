@@ -192,3 +192,19 @@ export const addAttention = (data) =>{
     data,
   })
 }
+// 反馈列表 Feedback
+export const feedbackList = (params) =>{
+  return axios({
+    url: '/api/user/help/list',
+    method: 'get',
+    params,
+  })
+}
+// 反馈建议提交  //user_id content image
+export const feedbackAdd = (params) =>{
+  return axios({
+    url: '/api/user/feedback/add',
+    method: 'get',
+    params,
+  })
+}

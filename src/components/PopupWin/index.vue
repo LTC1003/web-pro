@@ -24,10 +24,14 @@
             :class="tag.name"
             v-for="tag in tags" 
             :key="tag.id"
-            @click="optionTags(tag.name)"
+            @click="optionTags(tag, tag.name, tag.id)"
             >
             {{tag.name}}
           </el-tag>
+          <div v-show="isTagErrMsg"  style="color: #f00; text-align: center; margin: 10px">{{errMsgText}}</div>
+          <div class="btn-group">
+            <button class="setbutton" @click="setDataTags()">确认修改</button>
+          </div>
         </div>
         <div class="outUser" v-show="popData.type == 3">
           <div>你确定要退出当前账号？</div>
@@ -42,35 +46,16 @@ export default {
   name: 'popup-win',
   props: {
     popData: '',
-    // visible: {
-    //   type: Boolean,
-    //   default: false,
-    // }
   },
   data () {
-
     return {
-      // defaultLiterals: '公用弹窗组件',
-      defaultData: '默认初始数据',
+      errMsgText: '',
+      isTagErrMsg: false, //tag err提示 
+      defaultData: 'defaultData',
       defTitle: 'defTitle',
       selectValue: '',
-      // options: [
-      //   {value: 'value1', label: 'label1'},
-      //   {value: 'value2', label: 'label2'},
-      //   {value: 'value3', label: 'label3'}
-      // ],
-      tags: [
-        // {name: 'tsg1', type: '#2591f1' },
-        // {name: 'tsg2', type: '#9b1d11' },
-        // {name: 'tsg3', type: '#38c993' },
-        // {name: 'tsg4', type: '#f959e2' },
-        // {name: 'tsg5', type: '#FB897A' },
-        // {name: 'tsg6', type: '#FFCD5C' },
-        // {name: 'tsg7', type: '#CDABDA' },
-      ],
+      tags: [],
       setArr: new Set([]),
-      // activeTag: true,
-      // bgcolorTag: [activeTag1, activeTag2, activeTag3],
       bgcolor: '',
       isColorBG : function(key){
         switch (key) {
@@ -108,8 +93,8 @@ export default {
       },
     }
   },
-  mounted() { 
-    
+  mounted() {
+
   },
   methods: {
     onClose(){
@@ -151,28 +136,47 @@ export default {
       }
     },
     // 选择颜色
-    optionTags(keyName){
+    optionTags(tagObj, tagName, tagid){
       // 点击单数选择改变颜色，点击双数放弃回复颜色
-      let className = document.getElementsByClassName(keyName);
-      if (this.setArr.has(keyName)){ // SET查询 
-        // repeat返回 true
-        this.setArr.delete(keyName);
-        className[0].style.background = '';
-		    className[0].style.color = '#666'
-        //全部删除 // setArr.clear();
-      } else {
-        // no-repeat返回 false
-        this.setArr.add(keyName);
-        className[0].style.background = this.isColorBG(keyName);
-		    className[0].style.color = '#fff'
-      }
-      console.log(this.setArr, '成功');
+      let className = document.getElementsByClassName(tagName);
+      console.log(this.setArr.size)
+      
+        if (this.setArr.has(tagObj)){ // SET查询 
+          // repeat返回 true
+          this.setArr.delete(tagObj);
+          className[0].style.background = '';
+          className[0].style.color = ''
+          //全部删除 // setArr.clear();
+        } else {
+          // no-repeat返回 false
+         
+          if(this.setArr.size > 2){
+            this.errMsgText = '最多不超过3个';
+            this.isTagErrMsg = true;
+          } else {
+            tagObj['bgcolor'] = this.isColorBG(tagName)
+            className[0].style.background = this.isColorBG(tagName);
+            className[0].style.color = '#fff'
+            this.setArr.add(tagObj);
+          }
+        }
+      
     },
+    // 提交选择的兴趣
+    setDataTags(){
+      // console.log(this.setArr.size);
+      if(this.setArr.size){
+        this.$emit('onFromPopData', {showType: false, selectTags: this.setArr});
+      } else {
+        this.errMsgText = '不少于一个';
+        this.isTagErrMsg = true;
+      }
+    }
   },
   watch: {
     popData: {
       handler(n, o){
-        console.log(n, 'pop');
+        console.log(n, o,'pop');
         switch (n.type) {
           case 1:    
           this.defaultData = n.data;
@@ -187,7 +191,6 @@ export default {
           this.defTitle = '退出'   
             break;           
           default: 
-          console.log(n.data);
             break;
         }
       },
