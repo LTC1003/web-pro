@@ -127,7 +127,22 @@ export const viewHistoryList = (params) =>{
     params,
   })
 }
-
+// 添加观看纪录 video_id user_id module_type
+export const addLookVideoHistory = (params) => {
+  return axios({
+    url: '/api/user/look/add',
+    method: 'get',
+    params,
+  })
+}
+// 删除历史观看(批量) user_id id_list module_type
+export const delListLookVideoHistory = (data) => {
+  return axios({
+    url: '/api/user/look/batch_del',
+    method: 'post',
+    data,
+  })
+}
 
 /**
  * 用户感兴趣的短视频 栏目视频 添加 删除
@@ -184,7 +199,7 @@ export const delAttention = (params) =>{
     params,
   })
 }
-// 添加关注  token uid touid
+// 添加关注用户  token uid touid
 export const addAttention = (data) =>{
   return axios({
     url: '/api/userservice/attention/addAttention',

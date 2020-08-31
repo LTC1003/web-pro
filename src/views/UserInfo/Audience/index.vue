@@ -11,9 +11,7 @@
       </div>
       <div class='managebtn'>管理</div>
     </div>  
-    <div class="typeContent">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -47,6 +45,6 @@ export default {
 };
 </script>
 // scoped
-<style lang="scss">
+<style lang="scss" scoped>
   @import "./index.scss";
 </style>

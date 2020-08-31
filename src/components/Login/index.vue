@@ -1,116 +1,102 @@
 <template>
-  <div class="login" @click.self="onClick(false)">
-    <div class="login-warp" v-if="loginData == 'login'">
-      <div class="navs">
-        <div class="nav"
-        :class="{active: isActive == index }" 
-        @click="clickActive(item,index)" 
-        v-for="(item, index) in navList" 
-        :key="index">{{item.name}}
+  <div class="signin">
+    <div class="logon-box">
+      <div class="close el-icon-close" @click="onClose(false)"></div>
+      <!-- 快速注册 -->
+      <div class="register-warp" v-if="loginData == 'register'">
+        <div class="navs">
+          <div class="nav active">快速注册</div>
+        </div>
+        <div class="loginbody">
+          <el-form :model="register" ref="register" class="loginform">
+            <el-form-item>
+              <el-input v-model="register.moblie" placeholder="手机号" @blur="onBlurVaild(register.moblie)" clearable>
+              </el-input>
+              <div class="alerterr" v-show="errShowPhone">{{errPhoneText}}</div>
+            </el-form-item>
+            <el-form-item >
+              <el-input v-model="register.verifyCode" placeholder="验证码">
+                <el-button class="contrlCode" slot="suffix" @click="getCodeVerify(register.moblie)" :disabled="isDisabled">{{getCodeState}}</el-button>
+              </el-input>
+              <div class="alerterr" v-show="errShowVerify">{{errVerifyText}}</div>
+            </el-form-item>
+            <div class="btn-denger" @click="clickRegister('register')">注册</div>
+          </el-form>
+          <div class="other">
+            <span @click="loginData = 'login'" >
+              返回账号登录<i class="el-icon-arrow-right"></i>
+            </span>
+          </div>
         </div>
       </div>
-      <div class="loginbody" v-show="isShow">
-        <!-- 账号登录 -->
-        <el-form :model="loginPaswd" ref='loginPaswd' :rules="rulesPswd" class="loginform">
-          <el-form-item prop="moblie">
-            <el-input v-model="loginPaswd.moblie" placeholder="手机号">
-              <i
-                icon="el-icon-my-close"  
-                class="el-icon-my-close el-input__icon"
-                slot="suffix"
-                @click="clearInputVal">
-              </i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input v-model="loginPaswd.password" type="password" placeholder="密码">
-              <i icon="el-icon-my-erase"  
-                class="el-icon-my-erase el-input__icon"
-                slot="suffix"
-                @click.prevent="visibilityTab">
-              </i>  
-            </el-input>
-          </el-form-item>
-          <div class="btn-denger" @click="onSubmit('loginPaswd')">登录</div>
-        </el-form>
-        <div class="other">
-          <span  @click="toRessetPage()" >
-            忘记密码
-          </span> |
-          <span @click="loginData ='register'">注册</span>
+      <!-- 快速登陆 密码与短信登陆 -->
+      <div class="login-warp" v-else>
+        <div class="navs">
+          <div class="nav"
+          :class="{active: isActive == index }" 
+          @click="clickActive(item,index)" 
+          v-for="(item, index) in navList" 
+          :key="index">{{item.name}}
+          </div>
+        </div>
+        <!-- 密码登陆 -->
+        <div class="loginbody" v-show="isShow">
+          <el-form :model="loginPaswd" ref='loginPaswd' :rules="rulesPswd" class="loginform">
+            <el-form-item prop="moblie">
+              <el-input v-model="loginPaswd.moblie" placeholder="手机号" clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input v-model="loginPaswd.password" type="password" placeholder="密码">
+                <i icon="el-icon-my-erase"  
+                  class="el-icon-my-erase el-input__icon"
+                  slot="suffix"
+                  @click.prevent="visibilityTab">
+                </i>  
+              </el-input>
+            </el-form-item>
+            <div class="btn-denger" @click="onSubmit('loginPaswd')">登录</div>
+          </el-form>
+          <div class="other">
+            <span  @click="toRessetPage()" >
+              忘记密码
+            </span> |
+            <span @click="loginData ='register'">注册</span>
+          </div>
+        </div>
+        <!-- 验证登陆 -->
+        <div class="loginbody" v-show="!isShow">
+          <el-form :model="loginVerify" ref="loginVerify" :rules="rulesVerify" class="loginform">
+            <el-form-item prop="moblie">
+              <el-input v-model="loginVerify.moblie" placeholder="手机号" clearable>
+                <!-- <i icon="el-icon-my-erase"
+                  class=" el-input__icon"
+                  :class="eyeClass"
+                  slot="suffix"
+                  style="border: 1px"
+                  @click="handleIconClick">
+                </i> -->
+                <!-- <i
+                  icon="el-icon-my-close"  
+                  class="el-icon-my-close el-input__icon"
+                  slot="suffix"
+                  @click="clearValidate('moblie')">
+                </i> -->
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="verifyCode">
+              <el-input v-model="loginVerify.verifyCode" placeholder="验证码">
+                <el-button class="contrlCode" slot="suffix" @click="getCodeVerify(loginVerify.moblie)" :disabled="isDisabled">{{getCodeState}}</el-button>
+              </el-input>
+            </el-form-item>
+            <div class="btn-denger" @click="submitVerify('loginVerify')">登录</div>
+          </el-form>
+          <div class="other">
+            <span @click="loginData ='register'">注册</span>
+          </div>
         </div>
       </div>
-      <div class="loginbody" v-show="!isShow">
-        <!-- 短信-验证码 -->
-        <el-form :model="loginVerify" ref="loginVerify" :rules="rulesVerify" class="loginform">
-          <el-form-item prop="moblie">
-            <el-input v-model="loginVerify.moblie" placeholder="手机号">
-              <i
-                icon="el-icon-my-close"  
-                class="el-icon-my-close el-input__icon"
-                slot="suffix"
-                @click="clearValidate('moblie')">
-              </i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="verifyCode">
-            <el-input v-model="loginVerify.verifyCode" placeholder="验证码">
-              <el-button class="contrlCode" slot="suffix" @click="getCodeVerify(loginVerify.moblie)" :disabled="isDisabled">{{getCodeState}}</el-button>
-            </el-input>
-          </el-form-item>
-          <div class="btn-denger" @click="submitVerify('loginVerify')">登录</div>
-        </el-form>
-        <div class="other">
-          <span @click="loginData ='register'">注册</span>
-        </div>
-      </div>
-      <div class="partners">
-        <div class="masthead">第三方登录</div>
-        <div class="partother">
-          <div class="wxlogo"></div>
-          <div class="qqlogo"></div>
-          <div class="wblogo"></div>
-        </div>
-      </div>
-    </div>
-    <div class="register-warp" v-if="loginData == 'register'">
-      <div class="navs">
-        <div class="nav active">快速注册</div>
-      </div>
-      <div class="loginbody">
-        <el-form :model="register" ref="register" :rules="rulesRegis" class="loginform">
-          <el-form-item prop="moblie">
-            <el-input v-model="register.moblie" 
-              placeholder="手机号"
-              @focus="headleFocus">
-              <i
-                v-show="isIconClose"
-                icon="el-icon-my-close"  
-                class="el-icon-my-close el-input__icon"
-                slot="suffix">
-              </i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="verifyCode">
-            <el-input v-model="register.verifyCode" placeholder="输入获取的验证码">
-              <!-- <i icon="el-icon-my-erase"
-                class=" el-input__icon"
-                :class="eyeClass"
-                slot="suffix"
-                style="border: 1px"
-                @click="handleIconClick">
-              </i> -->
-              <el-button class="contrlCode" slot="suffix" @click="getCodeVerify(register.moblie)" :disabled="isDisabled">{{getCodeState}}</el-button>
-            </el-input>
-          </el-form-item>
-          <div class="btn-denger" @click="clickRegister('register')">注册</div>
-        </el-form>
-        <div class="other">
-          <span @click="loginData = 'login'" >
-            返回账号登录<i class="el-icon-arrow-right"></i>
-          </span>
-        </div>
-      </div>
+      <!-- 第三方登录方式 -->
       <div class="partners">
         <div class="masthead">第三方登录</div>
         <div class="partother">
@@ -127,29 +113,33 @@
     name: 'login',
     data () {
       // 手机验证
-      var validMoblie = (rule, value, callback) => {
-        if(/^1[3456789]\d{9}$/.test(value) == false){
-          return callback(new Error("11位手机号不正确"));
-        } else {
-          callback();
-        }
-      };
+      // var validMoblie = (rule, value, callback) => {
+      //   if(/^1[3456789]\d{9}$/.test(value) == false){
+      //     return callback(new Error("11位手机号不正确"));
+      //   } else {
+      //     callback();
+      //   }
+      // };
       // 验证码code
-      var validVer = (rule, value, callback) => {
-        if(/^(\d){6}$/.test(value) == false) {
-          callback(new Error("6位数字失效"));
-        } else {
-          callback();
-        }
-      };
-      var validPawd = (rule, value, callback) => {
-        if(/^(\w){6,15}$/.test(value) == false){
-          callback(new Error('只能输入6-15个字母、数字、下划线'));
-        }else{
-          callback();
-        }
-      };
+      // var validVer = (rule, value, callback) => {
+      //   if(/^(\d){6}$/.test(value) == false) {
+      //     callback(new Error("6位数字失效"));
+      //   } else {
+      //     callback();
+      //   }
+      // };
+      // var validPawd = (rule, value, callback) => {
+      //   if(/^(\w){6,15}$/.test(value) == false){
+      //     callback(new Error('只能输入6-15个字母、数字、下划线'));
+      //   }else{
+      //     callback();
+      //   }
+      // };
       return {
+        errShowPhone: false,
+        errPhoneText: '请输入正确手机号',
+        errShowVerify:false,
+        errVerifyText: '请获取正确验证',
         eyeClass: 'el-icon-my-shuteye', // el-icon-my-erase
         inputPassType: 'password',  // 输入框类型值password 转换 text
         isDisabled: false,
@@ -160,7 +150,6 @@
           {name: '短信登录'},
           {name: '账号登录'}
         ],
-        isIconClose: false,
         isActive: 1,
         loginPaswd:{
           moblie: '',
@@ -177,35 +166,34 @@
         loginData: '',
         rulesPswd: {
           moblie: [
-            { required: true, message: '请输入手机号', trigger: 'blur' },
-            { validator: validMoblie, trigger: 'change'}
+            { required: true, message: '请输入手机号', trigger: 'change' },
+            // { validator: validMoblie, trigger: 'change'}
           ],
           password: [
             { required: true, message: '确认pawd', trigger: 'blur' },
-            { validator: validPawd, trigger: 'blur'}
+            // { validator: validPawd, trigger: 'blur'}
           ]
         },
         rulesVerify: {
            moblie: [
             { required: true, message: '必填', trigger: 'blur' },
-            { validator: validMoblie, trigger: 'blur' }
+            // { validator: validMoblie, trigger: 'blur' }
           ],
           verifyCode: [
             { required: true, message: '必填'},
-            { validator: validVer, trigger: 'blur'}
+            // { validator: validVer, trigger: 'blur'}
           ]
         },
-        rulesRegis:{
-          moblie: [
-            { required: true, message: '必填', trigger: 'blur' },
-            { validator: validMoblie, trigger: 'blur' }
-          ],
-          verifyCode: [
-            { required: true, message: '必填'},
-            { validator: validVer, trigger: 'blur'}
-          ]
-        },
-        vCodeState: Boolean,
+        // rulesRegis:{
+        //   moblie: [
+        //     { required: true, message: '必填', trigger: 'blur' },
+        //     { validator: validMoblie, trigger: 'blur' }
+        //   ],
+        //   verifyCode: [
+        //     { required: true, message: '必填', triggerL: 'blur'},
+        //     { validator: validVer, trigger: 'blur'}
+        //   ]
+        // },
       }
     },
     props: [
@@ -224,27 +212,17 @@
       
     },
     methods: {
-      // 编程式路由跳转页面
+      
+      // 忘记密码
       toRessetPage(){
         this.$router.push({name:"retrieve-paswd"});
         this.$emit('changeState', false);
-      },
-      // 清空输入框
-      clearInputVal(e){
-        this.loginPaswd.moblie = '';
       },
       // 密码可见和隐藏
       visibilityTab(e){
         console.log(e);
       },
-      headleFocus(ev){
-        ev.preventDefault();
-        this.isIconClose = true;
-      },
-      headleBlur(){
-        this.isIconClose = false;
-      },
-      onClick(val){
+      onClose(val){
         this.$emit('changeState', val);
       },
       // 手机短线验证结果/同步请求(async await)
@@ -280,7 +258,7 @@
                 this.isDisabled = false;
               } else {
                 this.isDisabled = true;
-                this.getCodeState = `倒计时${seed}`;
+                this.getCodeState = `重新发送${seed}`;
               }
             };
             let count = setInterval(num, 1000);
@@ -315,38 +293,49 @@
           }
         });
       },
-      // 注册 
-      clickRegister(){
-        this.$refs.register.validate(
-          valid => {
-            if (valid) {
-              // 调用短信验证共用fun
-              this.getPhoneCode(this.register.moblie, this.register.verifyCode).then(res =>{
-                if (res){
-                  let objData = {
-                    phoneType: '-',
-                    channel: '-',
-                    lastLoginTime: (new Date()).valueOf().toString(),
-                    lastLoginIp: '10.12.88.103',
-                  }
-                  objData['moblie'] = this.register.moblie;
-                  // objData['verifyCode'] = this.register.verifyCode;
-                  this.$api.userInfo.userLoginMobile(objData).then( res => {
-                    if(res.message === "操作成功"){
-                      localStorage.loginUserInfo = JSON.stringify(res.data.result);
-                      // localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
-                      // this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
-                      // let delete = localStorage.removeItem('LoginUserInfo'); // 移除
-                      this.$emit('changeState', {isShow : false, isLogin: 1}) // 退出弹框
-                    }
-                  });
+      // 注册验证手机号 
+      onBlurVaild(inputVal){
+        console.log(inputVal);
+        if(/^1[3456789]\d{9}$/.test(inputVal) == false){
+          return this.errShowPhone = true
+        } else {
+          return this.errShowPhone = false;
+        }
+      },
+      // 注册提交表单
+      clickRegister(formName){
+        // 判断验证不为空
+          if(/^(\d){6}$/.test(this[formName].verifyCode) == false) {
+            // 验证码不通过
+            this.errShowVerify = true;
+          } else {
+            this.onBlurVaild(this.register.moblie);
+            // 调用短信验证共用fun
+            this.errShowVerify = false;
+            this.getPhoneCode(this.register.moblie, this.register.verifyCode).then(res =>{
+              if (res){
+                let objData = {
+                  phoneType: '-',
+                  channel: '-',
+                  lastLoginTime: (new Date()).valueOf().toString(),
+                  lastLoginIp: '10.12.88.103',
                 }
-              })
-            }else{
-              // 表单效验失败
-            }
+                objData['moblie'] = this.register.moblie;
+                // objData['verifyCode'] = this.register.verifyCode;
+                this.$api.userInfo.userLoginMobile(objData).then( res => {
+                  if(res.message === "操作成功"){
+                    localStorage.loginUserInfo = JSON.stringify(res.data.result);
+                    // localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
+                    // this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
+                    // let delete = localStorage.removeItem('LoginUserInfo'); // 移除
+                    this.$emit('changeState', {isShow : false, isLogin: 1, userData: res.data.result}) // 退出弹框
+                  }
+                });
+              } else {
+                '验证码失效！'
+              }
+            })
           }
-        )
       },
       // 账号密码登录
       onSubmit(formName){ 
@@ -388,7 +377,6 @@
       },
       clickActive(val, index){
         this.isActive = index;
-        console.log(val.name, 'haha')
         if (val.name == '账号登录') {
           this.isShow = true;
         } else {

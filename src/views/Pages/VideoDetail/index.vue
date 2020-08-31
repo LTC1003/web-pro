@@ -2,7 +2,7 @@
   <div class="video-detail">
     <!-- {{text}} -->
     <div class="divflex">
-      <div class="play-main" v-model="palyData">
+      <div class="play-main">
         <div class="playerbox">
           <video id="playerid"
           :src="palyData.videoUrl"  
@@ -25,7 +25,7 @@
         <div class="play-userinfo">
           <div class="title">{{palyData.title}}</div>
           <div class="auxiliary">
-            <div class="auxItem"><span>主栏目: {{palyData.cateId}}</span><span>子栏目: {{palyData.catePid}}</span></div>
+            <div class="auxItem"><span>主栏目: {{palyData.oneClassify}}</span><span>子栏目: {{palyData.twoClassify}}</span></div>
             <div class="auxItem">发布时间：{{palyData.createdAt}}</div>
             <div class="auxItem"><span class="">点赞</span> {{palyData.likes}}</div>
             <div class="auxItem"><span class="">分享</span> {{palyData.shares}}</div>
@@ -42,13 +42,13 @@
           </div>
           <div class="briefly">{{palyData.userSignature}}</div>
           <div class="interest">
-            <span>关注：{{0}}</span>
-            <span>粉丝：{{0}}</span>
+            <span>关注：{{palyData.attCount}}</span>
+            <span>粉丝：{{palyData.fansCount}}</span>
             <span>鼓励值：{{palyData.interests}}</span>
           </div>
           <div class="computgroup">
             <div class="olg">鼓励一下</div>
-            <div class="gzt">关注TA</div>
+            <div class="gzt" @click="addAttentionUser()">关注TA</div>
           </div>
         </div>
         <div class="recommendations">
@@ -79,6 +79,7 @@ export default {
   data() {
     return {
       text: "视频详情",
+      loaclResData: '',
       palyData: {
         // attentionStatus: 1,
         // avatars: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png",
@@ -129,17 +130,19 @@ export default {
     }
     this.getVideoDetail(localStorage.detailVideoId);
     this.getVideoRecommend();
+    this.getAddLookVideo(this.palyData);
   },
   methods: {
+    // 视频详情
     getVideoDetail(videoId){
       let paramObj = {
         videoId
       }
       if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token) {
+        this.loaclResData = JSON.parse(localStorage.loginUserInfo);
         paramObj['token'] = JSON.parse(localStorage.loginUserInfo).token;
         paramObj['userId'] = JSON.parse(localStorage.loginUserInfo).id;
         paramObj['isTourist'] = 2;
-
         this.$api.findService.getLongVideoParticulars(paramObj).then(
         res => {
           
@@ -150,6 +153,7 @@ export default {
         })
       }
     },
+    // 推荐
     getVideoRecommend(){
       let objParams = {
         // token: token,
@@ -167,11 +171,39 @@ export default {
       }
       this.$api.findService.getLongVideoRecommend(objParams).then( res => {
         if (res.data.pageCount) {
-          pageCount: 1
+          // pageCount: 1
           this.recommendData = res.data.result;
         }
       })
-    }
+    },
+    // 添加用户专注
+    addAttentionUser(){
+      
+      let reqData = {
+        token: JSON.parse(localStorage.loginUserInfo).token,
+        uid: JSON.parse(localStorage.loginUserInfo).id,
+        touid: this.palyData.id,
+      }
+      
+      this.$api.userInfo.addAttention(reqData).then(res => {
+        // console.log(res.data.result, '返回: attentionId');
+        if (res.message == "操作成功") {
+          this.palyData.fansCount += 1;
+        }
+      })
+    },
+    // 添加观看历史纪录
+    // video_id user_id module_type
+    getAddLookVideo(videoData){
+      let reqData = {
+        video_id: videoData.id,
+        user_id: videoData.userId,
+        module_type: 2,
+      }
+      this.$api.userInfo.addAttention(reqData).then(res => {
+        console.log(res, 'add videoId');
+      })
+    },
   }
 };
 </script>
