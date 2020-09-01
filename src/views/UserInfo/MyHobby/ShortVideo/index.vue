@@ -1,24 +1,30 @@
 <template>
   <div class="shortvideo">
-    <div v-if="!isContent">{{contentBackInfo}}</div>
+    <div class="nullalert" v-if="!isContent">{{contentBackInfo}}</div>
     <div v-else class="videoItem" v-for="(item, index) in datalist" :key="index">
       <div class="sourcev">
-        <img :src="item.thumb" alt="">
-        <div class="langtime">{{item.duration}}</div>
+        <img class="video-cover" :src="item.cover" alt="">
+        <div class="langtime">{{computedTime(item.duration)}}</div>
       </div>
-      <div class="videocard">
-        <div class="title">{{item.title}}</div>
+      <div class="usercol">
+        <div class="cardtitle">
+          {{item.title}}
+        </div>
         <div class="carduser">
-          <div class="user">
-            <img :src="item.userAvatar" alt="">
-            <div class="usename">{{item.userName}}</div>
-          </div>
-          <div class="cordthird">
-            <div class="likes">{{item.likes}}</div>
-            <div class="shares">{{item.shares}}</div>
-          </div>
+          <div class="userole">{{item.userRole}}</div>
+          <div class="usename">{{item.cate_name}}</div>
         </div>
       </div>
+    </div>
+    <div style="text-align:center; width: 100%">
+      <el-pagination
+        layout="prev, pager, next"
+        :pager-count="pagerCount"
+        :total="100"
+        :page-size="pageSize"
+        :current-page.sync="currentPage"
+        @current-change="onCurrentChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -28,46 +34,44 @@
     name: 'short-video',
     data() {
       return {
+        total: 100, 
+        pagerCount: 7, // 大于等于 5 且小于等于 21 的奇数
+        pageSize: 10, 
+        currentPage: 1, 
         contentBackInfo: 'short-video',
         isContent: 1,
-        datalist:[
-          // {
-          //   attentionStatus: 1, //关注过该用户
-          //   duration: 14, // 	视频时长(S)
-          //   id: 4,
-          //   likes: 2, // 点赞数
-          //   shares: 0,  // 分享数
-          //   show_url: "http://qiniu.jyddnw.com/20191129/5de0bbe5d74fb.mp4", // 视频url
-          //   thumb: "http://qiniu.jyddnw.com/20191129/5de0bbd71a2d1.png", // 封面
-          //   title: "让你再喝酒，今天老娘全方位伺候你这个醉鬼", // 标题
-          //   userAvatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png", //头像
-          //   userName: "好好学", // 用户名
-          //   videoUserId: 26, // 视频用户id
-          //   video_id: 1161, // 视频id
-          // },
-        ],
+        datalist:[],
+        localUserData: '',
       }
     },
     mounted() {
+      this.localUserData = JSON.parse(localStorage.loginUserInfo);
       this.getShortList();
     },
     methods: {
       getShortList(){
-        let userdata = JSON.parse(localStorage.loginUserInfo);
-        let reqData = {};
-        // reqData['user_id'] = userdata.id;
-        reqData['user_id'] = 25;
-        reqData['module_type'] = 1;
-        reqData['page'] = 1;
-        reqData['limit'] = 10;
+        let reqData = {
+          user_id: this.localUserData.id,
+          module_type: 1,
+          page: this.currentPage,
+          limit: this.pageSize
+        };
         this.$api.userInfo.videoHobbyList(reqData).then(res => {
-          if(!res.data.pageCount){
+          if(res.data && res.data.pageCount){
+            this.datalist = res.data.result;
+            this.isContent = 1;
+          } else {
             this.contentBackInfo = "空空如也，什么都没有观看过";
             this.isContent = 0;
-          } else {
-            this.datalist = res.data.result;
           }
         });
+      },
+      computedTime(msTime){
+        return msTime += 1
+      },
+      onCurrentChange(val){
+        // console.log(`当前页: ${val}`);
+        this.getShortList();
       }
     }
   }
@@ -75,61 +79,75 @@
 <style lang="scss">
   .shortvideo{
     display: flex;
-    margin: -10px;
+    flex-wrap: wrap;
+    margin: 20px -10px;
+    .nullalert{
+      width: 100%;
+      min-height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .videoItem{
       margin: 10px;
-      width: 230px;
-      border:1px solid #333;
+      // width: 230px;
+      width: 2.28rem;
       .sourcev{
-        height: 125px;
-        // box-sizing: content-box;
+        height: 124px;
         position: relative;
-        img{
-          width: 100%;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        .video-cover{
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
         }
         .langtime{
+          color: #ffffff;
           position: absolute;
-          bottom: 20px;
-          right: 20px;
+          bottom: 6px;
+          right: 10px;
         }
       }
-      .videocard{
-        height: 230px;
-        height: 70px;
+      .usercol{
         background: #ffffff;
-        .carduser{
-          height: 50px;
-          flex: 1;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          .user{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            img{
-              width: 40px;
-              height: 40px;
-            }
-            .usename{
-              margin-left: 10px;
-            }
-          }
-          .cordthird{
-            width: 20px;
-            line-height: 20px;
-            div{
-              border: 1px solid #333;
-            }
-          }
-        }
-        .title{
+        height: 67px;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        padding: 10px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        .cardtitle{
+          height: 20px;
+          font-size: 14px;
+          color: #333333;
           line-height: 20px;
+          width:208px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+          -o-text-overflow:ellipsis;
+          -webkit-text-overflow:ellipsis;
         }
-  
+        .carduser{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 10px;
+          .userole{
+            height: 17px;
+            font-size: 12px;
+            color: #FFFFFF;
+            line-height: 17px;
+            padding: 0 6px;
+            background: linear-gradient(180deg, #FFE524 0%, #FDAE19 100%);
+            border-radius: 9px;
+          }
+          .usename{
+            height: 17px;
+            font-size: 12px;
+            color: #999999;
+            line-height: 17px;
+          }
+        }
       }
     }
   }

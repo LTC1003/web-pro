@@ -16,10 +16,10 @@
             <div>{{getRoleName(personalData.userRole)}}</div>
           </el-form-item>
           <el-form-item label="昵称" prop="userName">
-            <el-input class="inputmini" v-model="personalData.userName"></el-input>
+            <el-input class="inputmini" v-model="personalData.userName" clearable></el-input>
           </el-form-item>
           <el-form-item label="名片" prop="userCard">
-            <el-input class="inputSamll" type="text" v-model="personalData.userCard"></el-input>
+            <el-input class="inputSamll" type="text" v-model="personalData.userCard" clearable></el-input>
           </el-form-item>
           <el-form-item label="个人简介" prop="userSignature">
             <el-input class="inputSamll" type="textarea" v-model="personalData.userSignature"></el-input>
@@ -80,9 +80,9 @@ export default {
       // tagList: ['名胜古迹','野外垂钓','毕摩登感'],
       personalData: {
         // avatar: '',
-        // userName: '吗快没电',
-        // userCard: '',
-        // userSignature: '',
+        // userName: '昵称',
+        // userCard: '名片',
+        // userSignature: '个人简介',
         // userRole: '未设定',
         // lables: [],
         // province: '',
@@ -97,8 +97,19 @@ export default {
           { required: true, message: '必填', trigger: 'change' },
         ],
         lables: [
-          {required: true, message: '必填', trigger: 'change'}
-        ]
+          {required: true, message: '必填', trigger: 'change' }
+        ],
+        userName: [
+          { required: true, message: '请输入昵称', trigger: 'blur' },
+          { min: 2, max: 8, message: '昵称2到8个字符', trigger: 'blur' }
+        ],
+        userCard: [
+          { required: false, message: '', trigger: 'blur' },
+          { max: 12, message: '最多12个字符', trigger: 'blur' }
+        ],
+        userSignature:[
+          { max: 50, message: '最多50个字符', trigger: 'blur' }
+        ],
       },
       setDataRow: [
         {setType: '手机', setState: 0, setbtn: '修改手机'},
@@ -141,14 +152,11 @@ export default {
         console.log(valid, 'hho');
         if(valid){
           let user = {
-             // userName: '吗快没电',
-        // userCard: '',
-        // userSignature: '',
-            id: this.personalData.id,
-            userName: this.personalData.userName,
             // province: '',
             // city: '',
             // country: '',
+            id: this.personalData.id,
+            userName: this.personalData.userName,
             userCard: this.personalData.userCard,
             userSignature: this.personalData.userSignature,
             userRole: 2,
@@ -158,11 +166,10 @@ export default {
           this.personalData.lables.forEach(val => {
             user.lableIds.push(val.id);
           })
-          console.log(user, 344343434);
           this.$api.userInfo.updateUserRole(user).then(res => {
             if (res.message == "操作成功") {
-              // this.personalData = res.data.result;
               localStorage.loginUserInfo = JSON.stringify(res.data.result);
+              this.getUserDataInfo(JSON.parse(localStorage.loginUserInfo));
             } 
           });
         }

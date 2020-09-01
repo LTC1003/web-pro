@@ -1,6 +1,8 @@
 <template>
   <div id="djcertified">
-      <div class="title">{{agrData.title}}</div>
+      <div class="title">
+        {{agrData.title}}
+      </div>
       <div class="section-content">
         {{agrData.content}}
       </div>
@@ -37,7 +39,6 @@
     methods: {
       getUserAgreement(){
         this.$api.userInfo.toseeUserAgreement({toSeeType: 3, token: this.localUserData.token}).then(res => {
-          console.log(res, 'xieyi');
           this.agrData = res.data.result;
         })
       },

@@ -16,6 +16,16 @@
         </div>
       </div>
     </div>
+    <div style="text-align:center; width: 100%">
+      <el-pagination
+        layout="prev, pager, next"
+        :pager-count="pagerCount"
+        :total="100"
+        :page-size="pageSize"
+        :current-page.sync="currentPage"
+         @current-change="onCurrentChange">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -24,60 +34,25 @@
     name: 'history-video',
     data() {
       return {
+        total: 100, //总数
+        pagerCount: 7, // 页码按钮的数量 大于等于 5 且小于等于 21 的奇数
+        pageSize: 10, // 每页条数
+        currentPage: 1, // 当前页
         localUserData: '',
         contentBackInfo: '空空如也，没有任何观看记录',
         isContent: 1,
         datalist:[
-          {
-            cate_name: "娱乐",  //分类名称
-            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
-            duration: 15,  // 视频时长
-            id: 2, 
-            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
-            title: "测试主题",
-            userRole: -1,
-            video_id: 1153,  //视频id
-          },
-          {
-            cate_name: "娱乐",  //分类名称
-            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
-            duration: 15,  // 视频时长
-            id: 2, 
-            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
-            title: "测试主题",
-            video_id: 1153,  //视频id
-            userRole: 1,
-          },
-          {
-            cate_name: "娱乐",  //分类名称
-            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
-            duration: 15,  // 视频时长
-            id: 2, 
-            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
-            title: "测试主题",
-            video_id: 1153,  //视频id
-            userRole: 2,
-          },
-          {
-            cate_name: "娱乐",  //分类名称
-            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
-            duration: 15,  // 视频时长
-            id: 2, 
-            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
-            title: "测试主题",
-            video_id: 1153,  //视频id
-            userRole: 3,
-          },
-          {
-            cate_name: "娱乐",  //分类名称
-            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
-            duration: 15,  // 视频时长
-            id: 2, 
-            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
-            title: "测试主题",
-            video_id: 1153,  //视频id
-            userRole: 1,
-          }
+          // {
+              // cate_name: "Mini剧"
+              // cover: "http://qiniu.jyddnw.com/images/timg25.jpg"
+              // duration: 300
+              // id: 638
+              // show_url: "http://qiniu.jyddnw.com/159677776300061zr5l85aze.mp4"
+              // title: "街巷美食3"
+              // userName: "奥术大师多"
+              // userRole: "探索者"
+              // video_id: 1237
+          // },
         ],
 
       }
@@ -88,24 +63,28 @@
     },
     methods: {
       getVideoList(){
-        let reqData = {};
-        // reqData['user_id'] = this.localUserData.id;
-        reqData['user_id'] = 25;
-        reqData['module_type'] = 1;
-        reqData['page'] = 1;
-        reqData['limit'] = 10;
+        let reqData = {
+          user_id: this.localUserData.id,
+          module_type : 2,
+          page: this.currentPage,
+          limit: this.pageSize,
+        };
         this.$api.userInfo.viewHistoryList(reqData).then(res => {
-          console.log(res, 'list');
-          if(!res.data.pageCount){
+          if(res.data.result){
+            this.datalist = res.data.result;
+            this.isContent = 1;
+          } else {
             this.contentBackInfo = "空空如也，没有留下任何观看记录";
             this.isContent = 0;
-          } else {
-            this.datalist = res.data.result;
           }
         });
       },
       computedTime(msTime){
         return msTime += 1
+      },
+      onCurrentChange(val){
+        // console.log(`当前页: ${val}`);
+        this.getVideoList();
       }
     }
   }
@@ -124,7 +103,7 @@
     }
     .historyvideo{
       margin: 10px;
-      width: 229px;
+      width: 2.28rem;
       .sourcev{
         height: 124px;
         position: relative;
@@ -153,6 +132,12 @@
           font-size: 14px;
           color: #333333;
           line-height: 20px;
+          width:208px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          -o-text-overflow:ellipsis;
+          -webkit-text-overflow:ellipsis;
         }
         .carduser{
           display: flex;

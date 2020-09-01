@@ -1,23 +1,34 @@
 <template>
-  <div class="myaudience"> 
-    <div class="usercard" v-for="(item, index) in dataList" :key="index">
-      <!-- <div class="user-avatar">
-        {{item.avatar}}
-      </div> -->
+  <div class="myaudience">
+    <div class="nullalert" v-if="!isContent">{{contentBackInfo}}</div>
+    <div v-else class="usercard" v-for="(item, index) in dataList" :key="index">
       <el-avatar class="user-avatar" :src="item.avatar"></el-avatar>
       <div class="user-cont">
         <div class="userinfo">
-          <div>
-            <div class="username">{{item.touid}}</div>
-            <div class="userrole" v-if="item.userRole == 1">{{'旅行家'}}</div>
-            <div class="userrole" v-else-if="item.userRole == 2">{{'探索者'}}</div>
-            <div class="userrole" v-else-if="item.userRole == 3">{{'文创师'}}</div>
-            <div class="userrole" v-else>{{'没设定'}}</div>
+          <div class="userline">
+            <div class="username">{{item.userName}}</div>
+            <div class="userrole">
+              {{item.userRole == 1 ? '旅行家': 
+              (item.userRole == 2) ? '探索者' : 
+              (item.userRole == 3) ? '文创师' :'未设定'}}
+            </div>
           </div>
           <div class="dingyu" @click="getDelAttention(item.attentionId)">取消订阅</div> 
         </div>
-        <div class="cardtitle">是个 iu 的人会改变历史的空间和 vi 饿不够了不错的s di j</div>
+        <div class="cardtitle">
+          {{item.userCard}}
+        </div>
       </div>
+    </div>
+    <div style="text-align:center; width: 100%">
+      <el-pagination
+        layout="prev, pager, next"
+        :pager-count="pagerCount"
+        :total="100"
+        :page-size="pageSize"
+        :current-page.sync="currentPage"
+         @current-change="onCurrentChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -31,18 +42,24 @@ export default {
   },
   data() {
     return {
-      // contentBackInfo: '我的关注',
+      isContent: 1,
+      contentBackInfo: '我的关注',
       localUserData: '', // 本地用户数据
       dataList: [
-        {
-          attentionId: 237,
-          touid: 143,
-          userRole: -1,
-          avatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png",
-          userName: "ISEE用户1922",
-          attentionStatus: 1
-        },
+        // {
+        //   attentionId: 237,
+        //   touid: 143,
+        //   userRole: -1,
+        //   userCard: 'sdd'
+        //   avatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png",
+        //   userName: "ISEE用户1922",
+        //   attentionStatus: 1
+        // },
       ],
+      total: 100, //总数
+      pagerCount: 7, // 页码按钮的数量 大于等于 5 且小于等于 21 的奇数
+      pageSize: 10, // 每页条数
+      currentPage: 1, // 当前页
     }
   },
   mounted() {
@@ -54,12 +71,19 @@ export default {
       let reqData = {
         token: this.localUserData.token,
         userId: this.localUserData.id, 
-        page: 1,
-        limit: 10,
+        page: this.currentPage,
+        limit: this.pageSize,
       }
       this.$api.userInfo.attentionList(reqData).then(res => {
-        if (res.data) {
+        if (res.data) { // 判断返回的对象的key data存在
+        console.log(11111)
           this.dataList = res.data.result;
+          this.isContent = 1;
+        } else {
+        console.log(2222);
+
+          this.contentBackInfo = "空空如也，没有更多关注";
+          this.isContent = 0;
         }
       })
     },
@@ -76,6 +100,11 @@ export default {
         }
       })
     },
+    // 调当前页
+    onCurrentChange(val){
+      console.log(`当前页: ${val}`);
+      this.getAttentionList();
+    }
   }
 };
 </script>
@@ -88,6 +117,13 @@ export default {
     justify-content: flex-start;
     align-items: center;
     margin: 20px -10px;
+    .nullalert{
+      width: 100%;
+      min-height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .usercard{
       width: 314px;
       // width: 30%;
@@ -107,28 +143,54 @@ export default {
       }
       .user-cont{
         flex: 1;
+        height: 70px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         .userinfo{
           width: 100%;
           display: flex;
           justify-content: space-between;
-          .username{
-            display: inline-block; 
-            width: 48px;
-            height: 22px;
-            font-size: 16px;
-            font-family: PingFangSC-Regular, PingFang SC;
-            font-weight: 400;
-            color: #333333;
-            line-height: 22px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          // margin-bottom: 10px;
+          .dingyu{
+            // width: 48px;
+            height: 17px;
+            font-size: 12px;
+            line-height: 17px;
+            &:hover{
+              color: #479CDC;
+              cursor: pointer;
+            }
           }
-          .userrole{
-            display: inline-block;
-            height: 18px;
-            line-height: 18px;
-            padding: 2px 5px;
-            background: linear-gradient(180deg, #FFE524 0%, #FDAE19 100%);
-            border-radius: 9px;
-            color: #ffffff;
+          .userline{
+            // border: 1px solid #333333;
+            width: 1.35rem;
+            display: flex;
+            align-items: center;
+            .username{
+              display: inline-block; 
+              width: 80px;
+              height: 22px;
+              line-height: 22px;
+              font-size: 16px;
+              color: #333333;
+              // 单行文本
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              -o-text-overflow:ellipsis;
+              -webkit-text-overflow:ellipsis;
+            }
+            .userrole{
+              display: inline-block;
+              height: 18px;
+              line-height: 18px;
+              padding: 2px 5px;
+              background: linear-gradient(180deg, #FFE524 0%, #FDAE19 100%);
+              border-radius: 9px;
+              color: #ffffff;
+            }
           }
         }
         .cardtitle{
@@ -139,6 +201,12 @@ export default {
           font-weight: 400;
           color: #999999;
           line-height: 17px;
+          // 多行文本
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
       }
     }
