@@ -46,9 +46,11 @@ export default {
   @import "./index.scss";
   .pages{
     font-size: 0.14rem;
+    // display: flex;
+    // flex-direction: column;
     .page-contnet{
       background-color: #f1f2f6;
-      min-height: 300px;
+      min-height: 500px;
       padding: 20px 0;
     }
   }

@@ -11,9 +11,7 @@
       </div>
       <div class='managebtn'>管理</div>
     </div>  
-    <div class="typeContent">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 

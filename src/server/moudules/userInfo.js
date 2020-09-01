@@ -223,3 +223,12 @@ export const feedbackAdd = (params) =>{
     params,
   })
 }
+// toSeeType == 1 ? 用户协议 : toSeeType == 2 ? 隐私政策 : ''
+// toSeeType token
+export const toseeUserAgreement = (params) =>{
+  return axios({
+    url: '/api/userservice/abouttosee/type',
+    method: 'get',
+    params,
+  })
+}

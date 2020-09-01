@@ -3,15 +3,15 @@
     <div class="nullalert" v-if="!isContent">{{contentBackInfo}}</div>
     <div v-else class="historyvideo" v-for="(item, index) in datalist" :key="index">
       <div class="sourcev">
-        <img :src="item.cover" alt="">
-        <div class="langtime">{{item.duration}}</div>
+        <img class="video-cover" :src="item.cover" alt="">
+        <div class="langtime">{{computedTime(item.duration)}}</div>
       </div>
       <div class="usercol">
         <div class="cardtitle">
           <div>{{item.title}}</div>
         </div>
         <div class="carduser">
-          <div class="userole">{{item.id}}</div>
+          <div class="userole">{{item.userRole}}</div>
           <div class="usename">{{item.cate_name}}</div>
         </div>
       </div>
@@ -24,29 +24,72 @@
     name: 'history-video',
     data() {
       return {
-        contentBackInfo: 'historyVideo',
+        localUserData: '',
+        contentBackInfo: '空空如也，没有任何观看记录',
         isContent: 1,
         datalist:[
           {
             cate_name: "娱乐",  //分类名称
             cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
             duration: 15,  // 视频时长
-            id: 2,
+            id: 2, 
+            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
+            title: "测试主题",
+            userRole: -1,
+            video_id: 1153,  //视频id
+          },
+          {
+            cate_name: "娱乐",  //分类名称
+            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
+            duration: 15,  // 视频时长
+            id: 2, 
             show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
             title: "测试主题",
             video_id: 1153,  //视频id
+            userRole: 1,
+          },
+          {
+            cate_name: "娱乐",  //分类名称
+            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
+            duration: 15,  // 视频时长
+            id: 2, 
+            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
+            title: "测试主题",
+            video_id: 1153,  //视频id
+            userRole: 2,
+          },
+          {
+            cate_name: "娱乐",  //分类名称
+            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
+            duration: 15,  // 视频时长
+            id: 2, 
+            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
+            title: "测试主题",
+            video_id: 1153,  //视频id
+            userRole: 3,
+          },
+          {
+            cate_name: "娱乐",  //分类名称
+            cover: "http://qiniu.jyddnw.com/images/TEST10.jpg",  // 视频封面
+            duration: 15,  // 视频时长
+            id: 2, 
+            show_url: "http://qiniu.jyddnw.com/20191127/5dde3e84510f3.mp4", //视频url
+            title: "测试主题",
+            video_id: 1153,  //视频id
+            userRole: 1,
           }
         ],
+
       }
     },
     mounted() {
+      this.localUserData = JSON.parse(localStorage.loginUserInfo);
       this.getVideoList();
     },
     methods: {
       getVideoList(){
-        let userdata = JSON.parse(localStorage.loginUserInfo);
         let reqData = {};
-        // reqData['user_id'] = userdata.id;
+        // reqData['user_id'] = this.localUserData.id;
         reqData['user_id'] = 25;
         reqData['module_type'] = 1;
         reqData['page'] = 1;
@@ -61,13 +104,17 @@
           }
         });
       },
+      computedTime(msTime){
+        return msTime += 1
+      }
     }
   }
 </script>
 <style lang="scss" >
   .historylist{
     display: flex;
-    margin: -10px;
+    flex-wrap: wrap;
+    margin: 20px -10px;
     .nullalert{
       width: 100%;
       min-height: 300px;
@@ -77,32 +124,56 @@
     }
     .historyvideo{
       margin: 10px;
-      border:1px solid #333333;
-      width: 230px;
+      width: 229px;
       .sourcev{
-        height: 125px;
+        height: 124px;
         position: relative;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        .video-cover{
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+        }
         .langtime{
           color: #ffffff;
           position: absolute;
-          bottom: 20px;
-          right: 20px;
+          bottom: 6px;
+          right: 10px;
         }
       }
       .usercol{
-        background: #c5c5e5;
-        height: 65px;
+        background: #ffffff;
+        height: 67px;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        padding: 10px;
+        font-family: PingFangSC-Regular, PingFang SC;
         .cardtitle{
+          height: 20px;
           font-size: 14px;
-          color: #666666;
+          color: #333333;
           line-height: 20px;
         }
         .carduser{
-          height: 45px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 0 10px;
+          margin-top: 10px;
+          .userole{
+            height: 17px;
+            font-size: 12px;
+            color: #FFFFFF;
+            line-height: 17px;
+            padding: 0 6px;
+            background: linear-gradient(180deg, #FFE524 0%, #FDAE19 100%);
+            border-radius: 9px;
+          }
+          .usename{
+            height: 17px;
+            font-size: 12px;
+            color: #999999;
+            line-height: 17px;
+          }
         }
       }
     }

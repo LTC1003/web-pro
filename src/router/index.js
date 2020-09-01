@@ -7,7 +7,6 @@ import Lineplay from "../views/Pages/Lineplay";
 import SearchInfoList from "../views/SearchInfoList";
 
 import Login from "../components/Login";
-import Repository from "../views/repository";  //404模板
 import VideoDetail from "../views/Pages/VideoDetail";
 /**个人资料**/
 import UserInfo from "../views/UserInfo";
@@ -45,6 +44,11 @@ import ResetSuccess from "../views/RetrievePaswd/ResetSuccess"
 /**修改密码**/ 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
+/**服务协议**/
+import UserAgreement from '../views/UserAgreement'
+import Privacy from '../views/Privacy'
+import DJCertified from '../views/DJCertified'
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
@@ -156,7 +160,22 @@ const routes = [
         ],
       },
     ]
-  }
+  },
+  {
+    path: '/user-agreement',
+    name: 'user-agreement',
+    component: UserAgreement
+  },
+  {
+    path: '/privacy',
+    name: 'privacy',
+    component: Privacy
+  },
+  {
+    path: '/djcertified',
+    name: 'djcertified',
+    component: DJCertified
+  },
 ];
 
 const originalPush = VueRouter.prototype.push
