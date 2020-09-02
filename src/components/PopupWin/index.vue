@@ -7,16 +7,17 @@
         <div class="closebtn el-icon-close" @click="onClose()"></div>
       </div>
       <div class="popbody">
+        <!-- 1区 -->
         <div class="selectair" v-show="popData.type == 1">
-          <el-select class="el-select" v-model="selectValue" placeholder="请选择" v-show="1">
+          <el-select class="el-select" v-model="selectRole" placeholder="请选择" v-show="1">
             <el-option
-              v-for="item in defaultData"
+              v-for="item in userRoles"
               :key="item.id"
               :label="item.name"
               :value="item.name">
             </el-option>
           </el-select>
-          <button class="setbutton" @click="setClick()">确认修改</button>
+          <button class="setbutton" @click="setClick">确认修改</button>
         </div>
         <!-- 2区 -->
         <div class="tags" v-show="popData.type == 2">
@@ -30,9 +31,10 @@
           </el-tag>
           <div v-show="isTagErrMsg"  style="color: #f00; text-align: center; margin: 10px">{{errMsgText}}</div>
           <div class="btn-group">
-            <button class="setbutton" @click="setDataTags()">确认修改</button>
+            <button class="setbutton" @click="setDataTags">确认修改</button>
           </div>
         </div>
+        <!-- 2区 -->
         <div class="outUser" v-show="popData.type == 3">
           <div>你确定要退出当前账号？</div>
           <button class="setbutton" @click="outRight">确认</button>
@@ -51,9 +53,9 @@ export default {
     return {
       errMsgText: '',
       isTagErrMsg: false, //tag err提示 
-      defaultData: 'defaultData',
+      userRoles: 'userRoles',
       defTitle: 'defTitle',
-      selectValue: '',
+      selectRole: '',
       tags: [],
       setArr: new Set([]),
       bgcolor: '',
@@ -97,42 +99,18 @@ export default {
 
   },
   methods: {
-    onClose(){
-      this.$emit('onFromPopData', false);
-    },
+    // 选择角色后确认
     setClick(){
-      if(this.selectValue){
+      if(this.selectRole){
         // 值不为空， 传回数据
         let roleItemObj;
-        this.defaultData.forEach((val, i) => {
-          if(val.name === this.selectValue){
+        this.userRoles.forEach((val, i) => {
+          if(val.name === this.selectRole){
             roleItemObj = val
           }
         })
-        console.log(roleItemObj);
-        this.$emit('onFromPopData', {showType: false, roleItemObj});
-      }
-    },
-    // 确定退出调接口
-    outRight(){
-      if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token){
-        this.$api.userInfo.outUsers({token: JSON.parse(localStorage.loginUserInfo).token}).then(
-          res => {
-            if(res.message === "操作成功") {
-              this.$emit('onFromPopData', {showType: false, islogin: 0});
-              localStorage.clear();
-              this.$router.push('/');
-            } else {
-              if (res.message === "token失效,重新登录") {
-                this.$emit('onFromPopData', {showType: false, islogin: 0});
-                localStorage.clear();
-                this.$router.push('/');
-              }
-            }
-          }
-        )
-      } else {
-        this.$message.error('token is null userOut!')
+        // console.log(roleItemObj, 77878778878);
+        this.$emit('onFromPopData', {showType: false, type: 1, roleItemObj});
       }
     },
     // 选择颜色
@@ -140,46 +118,67 @@ export default {
       // 点击单数选择改变颜色，点击双数放弃回复颜色
       let className = document.getElementsByClassName(tagName);
       console.log(this.setArr.size)
-      
-        if (this.setArr.has(tagObj)){ // SET查询 
-          // repeat返回 true
-          this.setArr.delete(tagObj);
-          className[0].style.background = '';
-          className[0].style.color = ''
-          //全部删除 // setArr.clear();
+      if (this.setArr.has(tagObj)){ // SET查询 
+        // repeat返回 true
+        this.setArr.delete(tagObj);
+        className[0].style.background = '';
+        className[0].style.color = ''
+        //全部删除 // setArr.clear();
+      } else {
+        // no-repeat返回 false
+        if(this.setArr.size > 2){
+          this.errMsgText = '最多不超过3个';
+          this.isTagErrMsg = true;
         } else {
-          // no-repeat返回 false
-         
-          if(this.setArr.size > 2){
-            this.errMsgText = '最多不超过3个';
-            this.isTagErrMsg = true;
-          } else {
-            tagObj['bgcolor'] = this.isColorBG(tagName)
-            className[0].style.background = this.isColorBG(tagName);
-            className[0].style.color = '#fff'
-            this.setArr.add(tagObj);
-          }
+          tagObj['bgcolor'] = this.isColorBG(tagName)
+          className[0].style.background = this.isColorBG(tagName);
+          className[0].style.color = '#fff'
+          this.setArr.add(tagObj);
         }
-      
+      }
     },
     // 提交选择的兴趣
     setDataTags(){
       // console.log(this.setArr.size);
       if(this.setArr.size){
-        this.$emit('onFromPopData', {showType: false, selectTags: this.setArr});
+        this.$emit('onFromPopData', {showType: false, type: 2, selectTags: this.setArr});
       } else {
         this.errMsgText = '不少于一个';
         this.isTagErrMsg = true;
       }
-    }
+    },
+    // 确定退出调接口
+    outRight(){
+      if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token){
+        this.$api.userInfo.outUsers({token: JSON.parse(localStorage.loginUserInfo).token}).then(res => {
+          if(res.message === "操作成功") {
+            this.$emit('onFromPopData', {showType: false, type: 3, islogin: 0});
+            localStorage.clear();
+            this.$router.push('/');
+          } else {
+            if (res.message === "token失效,重新登录") {
+              // this.$emit('onFromPopData', {showType: false, type: 3, islogin: 1});
+              console.log('token失效,重新登录')
+            }
+          }
+        });
+      } else {
+        this.$message.error('token is null userOut!');
+      }
+    },
+    // 关闭窗口
+    onClose(){
+      // this.$emit('onFromPopData', false);
+      this.$emit('onFromPopData', {showType: false});
+    },
   },
   watch: {
     popData: {
       handler(n, o){
-        console.log(n, o,'pop');
+        // console.log(n, o,'pop');
         switch (n.type) {
           case 1:    
-          this.defaultData = n.data;
+          this.userRoles = n.data;
           this.defTitle = '修改身份'   
             break; 
           case 2:    

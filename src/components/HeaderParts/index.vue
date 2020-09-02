@@ -91,44 +91,55 @@ export default {
     }
   },
   mounted() {
-    if (localStorage.loginUserInfo) {
+    if (!!localStorage.loginUserInfo && this.islogin) {
       this.avatarImg = JSON.parse(localStorage.loginUserInfo).avatar;
-      this.islogin = 1;
-    }else{
+      // this.islogin = 1;
+    }
+    else{
       // 用户未登陆
-      this.islogin = 0;
+      // this.islogin = 0;
     }
   },
   methods: {
+    // 用户登录注册弹窗
     signClick(name){
-      // console.log(name, '用户登录注册');
       this.loginMsg = name;
       this.visibleState = true;
     },
-    // 登录子组件传值
-    getStateVal(val){
-      console.log(val, 776)
-      this.visibleState = val.isShow;
-      this.islogin = val.isLogin;
-      this.avatarImg = val.userData.avatar;
-    },
+    // 路由跳转页面
     routePush(name){
-      if (name === "outUsers"){ // 退出
+      if (name === "outUsers"){ // 用户退出弹框提示
         this.userOut.showType = true;
       } else {
         this.$router.push({name: name});
       }
+    },
+    // 登录子组件传值
+    getStateVal(val){
+      // console.log(val, 776)
+      if (val) {
+        this.visibleState = val.isShow;
+        this.islogin = val.isLogin;
+        localStorage.loginUserInfo = JSON.stringify(val.userData);
+        this.avatarImg = val.userData.avatar;
+      } else {
+        // 窗口关闭
+        this.visibleState = val;
+        // 清空
+        // this.loginMsg = '清空';
+      }
+    },
+    // 退出登录子组件传值
+    outuser(val){
+      this.userOut.showType = val.showType; // false   
+      this.islogin = val.islogin; // 0
     },
     // 视频专区选项展示
     getColumn(typeId){
       // console.log(typeId, 'headPage');
       this.$router.push({name: 'video-zone', query: {id: typeId}});
     },
-    // 退出登录子组件传值
-    outuser(val){
-      this.userOut.showType = val.showType; // false   
-      this.islogin = val.islogin; // 0
-    }
+        
   },
 };
 </script>

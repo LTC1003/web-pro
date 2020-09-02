@@ -1,7 +1,7 @@
 <template>
   <div class="signin">
     <div class="logon-box">
-      <div class="close el-icon-close" @click="onClose(false)"></div>
+      <div class="close el-icon-close" @click="onClose()"></div>
       <!-- 快速注册 -->
       <div class="register-warp" v-if="loginData == 'register'">
         <div class="navs">
@@ -47,12 +47,19 @@
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input v-model="loginPaswd.password" type="password" placeholder="密码">
-                <i icon="el-icon-my-erase"  
+              <el-input v-model="loginPaswd.password" :type="inputTypeVal" placeholder="密码">
+                <!-- <i icon="el-icon-my-erase"  
                   class="el-icon-my-erase el-input__icon"
                   slot="suffix"
                   @click.prevent="visibilityTab">
-                </i>  
+                </i>   -->
+                <i 
+                  icon="el-icon-my-shuteye"
+                  class="el-icon-my-shuteye"
+                  :class="{'el-icon-my-erase': paswdEyesIcon}"
+                  slot="suffix"
+                  @click="visibilityTab">
+                </i>
               </el-input>
             </el-form-item>
             <div class="btn-denger" @click="onSubmit('loginPaswd')">登录</div>
@@ -69,19 +76,6 @@
           <el-form :model="loginVerify" ref="loginVerify" :rules="rulesVerify" class="loginform">
             <el-form-item prop="moblie">
               <el-input v-model="loginVerify.moblie" placeholder="手机号" clearable>
-                <!-- <i icon="el-icon-my-erase"
-                  class=" el-input__icon"
-                  :class="eyeClass"
-                  slot="suffix"
-                  style="border: 1px"
-                  @click="handleIconClick">
-                </i> -->
-                <!-- <i
-                  icon="el-icon-my-close"  
-                  class="el-icon-my-close el-input__icon"
-                  slot="suffix"
-                  @click="clearValidate('moblie')">
-                </i> -->
               </el-input>
             </el-form-item>
             <el-form-item prop="verifyCode">
@@ -113,34 +107,36 @@
     name: 'login',
     data () {
       // 手机验证
-      // var validMoblie = (rule, value, callback) => {
-      //   if(/^1[3456789]\d{9}$/.test(value) == false){
-      //     return callback(new Error("11位手机号不正确"));
-      //   } else {
-      //     callback();
-      //   }
-      // };
+      var validMoblie = (rule, value, callback) => {
+        if(/^1[3456789]\d{9}$/.test(value) == false){
+          return callback(new Error("11位手机号不正确"));
+        } else {
+          callback();
+        }
+      };
       // 验证码code
-      // var validVer = (rule, value, callback) => {
-      //   if(/^(\d){6}$/.test(value) == false) {
-      //     callback(new Error("6位数字失效"));
-      //   } else {
-      //     callback();
-      //   }
-      // };
-      // var validPawd = (rule, value, callback) => {
-      //   if(/^(\w){6,15}$/.test(value) == false){
-      //     callback(new Error('只能输入6-15个字母、数字、下划线'));
-      //   }else{
-      //     callback();
-      //   }
-      // };
+      var validVer = (rule, value, callback) => {
+        if(/^(\d){6}$/.test(value) == false) {
+          callback(new Error("请获取验证码"));
+        } else {
+          callback();
+        }
+      };
+      // 密码验证
+      var validPawd = (rule, value, callback) => {
+        if(/^(\w){6,15}$/.test(value) == false){
+          callback(new Error('只能输入6-15个字母、数字、下划线'));
+        }else{
+          callback();
+        }
+      };
       return {
+        paswdEyesIcon: false,
+        inputTypeVal: 'password',
         errShowPhone: false,
         errPhoneText: '请输入正确手机号',
         errShowVerify:false,
         errVerifyText: '请获取正确验证',
-        eyeClass: 'el-icon-my-shuteye', // el-icon-my-erase
         inputPassType: 'password',  // 输入框类型值password 转换 text
         isDisabled: false,
         getCodeState: '获取验证码',
@@ -166,22 +162,22 @@
         loginData: '',
         rulesPswd: {
           moblie: [
-            { required: true, message: '请输入手机号', trigger: 'change' },
-            // { validator: validMoblie, trigger: 'change'}
+            { required: true, message: '请输入手机或账号', trigger: 'change' },
+            { validator: validMoblie, trigger: 'blur'}
           ],
           password: [
-            { required: true, message: '确认pawd', trigger: 'blur' },
-            // { validator: validPawd, trigger: 'blur'}
+            { required: true, message: '请输入密码', trigger: 'change' },
+            { validator: validPawd, trigger: 'blur'}
           ]
         },
         rulesVerify: {
            moblie: [
-            { required: true, message: '必填', trigger: 'blur' },
-            // { validator: validMoblie, trigger: 'blur' }
+            { required: true, message: '请输入手机号', trigger: 'change' },
+            { validator: validMoblie, trigger: 'change' }
           ],
           verifyCode: [
-            { required: true, message: '必填'},
-            // { validator: validVer, trigger: 'blur'}
+            { required: true, message: '请输入验证', trigger: 'change' },
+            { validator: validVer, trigger: 'blur' }
           ]
         },
         // rulesRegis:{
@@ -219,11 +215,35 @@
         this.$emit('changeState', false);
       },
       // 密码可见和隐藏
-      visibilityTab(e){
-        console.log(e);
+      visibilityTab(){
+        if (this.inputTypeVal == 'password') {
+          setTimeout(() => {
+            this.inputTypeVal = 'text';
+            this.paswdEyesIcon = true;
+          }, 300)
+        } else {
+          setTimeout(() => {
+            this.inputTypeVal = 'password'
+            this.paswdEyesIcon = false;
+          }, 300)  
+        }
       },
-      onClose(val){
-        this.$emit('changeState', val);
+      onClose(){
+        this.$emit('changeState', false);
+        // var hasPath = location.hash.split('#',length-1);
+        // this.$router.push(hasPath[1])
+        // this.loginPaswd = {
+        //   moblie: '',
+        //   password: ''
+        // };
+        // this.loginVerify = {
+        //   moblie: '',
+        //   verifyCode: '',
+        // };
+        // this.register = {
+        //   moblie: '',
+        //   verifyCode: '',
+        // };
       },
       // 手机短线验证结果/同步请求(async await)
       async getPhoneCode(moblie, verify){
@@ -295,7 +315,7 @@
       },
       // 注册验证手机号 
       onBlurVaild(inputVal){
-        console.log(inputVal);
+        // console.log(inputVal);
         if(/^1[3456789]\d{9}$/.test(inputVal) == false){
           return this.errShowPhone = true
         } else {
@@ -304,7 +324,7 @@
       },
       // 注册提交表单
       clickRegister(formName){
-        // 判断验证不为空
+          // 判断验证不为空
           if(/^(\d){6}$/.test(this[formName].verifyCode) == false) {
             // 验证码不通过
             this.errShowVerify = true;
@@ -338,7 +358,7 @@
           }
       },
       // 账号密码登录
-      onSubmit(formName){ 
+      onSubmit(formName){
         // userMobile/userPassword/lastLoginTime/lastLoginIp
         this.$refs[formName].validate((valid) => {
           if(valid){
@@ -359,22 +379,20 @@
             })
           }
         }); 
-        
       },
-      handleIconClick(ev){
-        if (this.inputPassType == 'password'){
-          setTimeout(() => {
-            this.inputPassType = 'text';
-            this.eyeClass = 'el-icon-my-erase'
-          }, 500)
-        } else {
-          setTimeout(() => {
-            this.inputPassType ='password';
-            this.eyeClass = 'el-icon-my-shuteye'
-          }, 300)
-        }
-        
-      },
+      // handleIconClick(ev){
+      //   if (this.inputPassType == 'password'){
+      //     setTimeout(() => {
+      //       this.inputPassType = 'text';
+      //       this.eyeClass = 'el-icon-my-erase'
+      //     }, 500)
+      //   } else {
+      //     setTimeout(() => {
+      //       this.inputPassType ='password';
+      //       this.eyeClass = 'el-icon-my-shuteye'
+      //     }, 300)
+      //   }
+      // },
       clickActive(val, index){
         this.isActive = index;
         if (val.name == '账号登录') {
