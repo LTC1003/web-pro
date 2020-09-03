@@ -16,8 +16,16 @@
           </el-dropdown-menu>
         </el-dropdown>
         <div class="item-tab" @click="routePush('linepaly')">直播专区</div>
-        <el-input class="search-type" v-model="searchVal" placeholder="sadad">
-          <div style="width:30px, height: 30px" icon="el-icon-search"></div>
+        <el-input 
+          placeholder="搜索视频"
+          id="searchtype"
+          class="search-type" 
+          v-model="searchVal" >
+          <i
+            class="el-icon-search el-input__icon"
+            slot="suffix"
+            @click="searchAll">
+          </i>
         </el-input>
       </div>
       <div class="control-user">
@@ -35,7 +43,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <div class="loginbtngurop" v-else-if="!islogin">
-          <span class="sign" @click="signClick('login')">登录</span> |
+          <span class="sign" @click="signClick('login')">登录</span> 
           <span class="register" @click="signClick('register')">注册</span>
         </div>
       </div>
@@ -91,13 +99,13 @@ export default {
     }
   },
   mounted() {
-    if (!!localStorage.loginUserInfo && this.islogin) {
+    if (!!localStorage.loginUserInfo) {
       this.avatarImg = JSON.parse(localStorage.loginUserInfo).avatar;
-      // this.islogin = 1;
+      this.islogin = 1;
     }
     else{
       // 用户未登陆
-      // this.islogin = 0;
+      this.islogin = 0;
     }
   },
   methods: {
@@ -131,15 +139,19 @@ export default {
     },
     // 退出登录子组件传值
     outuser(val){
-      this.userOut.showType = val.showType; // false   
-      this.islogin = val.islogin; // 0
+      console.log(val, '退出');
+      this.userOut.showType = val.showType; // 弹窗的显示  
+      this.islogin = val.islogin; // 头像的显示
     },
     // 视频专区选项展示
     getColumn(typeId){
       // console.log(typeId, 'headPage');
       this.$router.push({name: 'video-zone', query: {id: typeId}});
     },
-        
+    searchAll(ev){
+      console.log(ev, this.searchVal);
+      this.searchVal
+    }
   },
 };
 </script>

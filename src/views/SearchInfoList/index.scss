@@ -1,0 +1,53 @@
+.search-info{
+  min-height: 500px;
+  // background: #345343;
+  .searchcontent{
+    width: 78%;
+    margin: 0 auto;
+    // background: #894542;
+    .elarttext{
+      width: 187px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #999999;
+      line-height: 19px;
+    }
+    .searchtypebox{
+      font-family: PingFangSC-Regular, PingFang SC;
+      margin-top: 50px;
+      .theade{
+        width: 82px;
+        height: 25px;
+        font-size: 18px;
+        color: #333333;
+        line-height: 25px;
+        margin-bottom: 20px;
+      }
+      .searchlist{
+        margin: -10px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        .searchitem{
+          margin: 10px;
+          width: 264px;
+          height: 188px;
+          .div1{
+            width: 100%;
+            height: 148px;
+            background: #894542;
+          } 
+          .div2{
+            width: 100%;
+            height: 40px;
+            background: #ffffff;
+          }
+        }
+      }
+
+    }
+  }
+}

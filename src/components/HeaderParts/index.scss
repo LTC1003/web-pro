@@ -41,6 +41,11 @@
         .el-input__icon{
           line-height: 35px;
         }
+        .el-input__suffix{
+          &:hover{
+            cursor: pointer;
+          }
+        } 
       }
       .el-dropdown{
         font-size: 0.18rem;

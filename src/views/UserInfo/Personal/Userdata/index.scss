@@ -10,15 +10,34 @@
   .userinfo-list{
     position: relative;
     .list{
+      .el-form-item__content{
+        line-height: 22px;
+      }
       .avatar{
         width: 60px;
         height:60px;
+      }
+      .rolename{
+        width: 48px;
+        height: 18px;
+        line-height: 18px;
+        background: linear-gradient(180deg, #FFE524 0%, #FDAE19 100%);
+        border-radius: 9px;
+        font-size: 12px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        color: #FFFFFF;
+        padding: 0px 5px;
+        position: absolute;
+        top: 10px;
       }
       .inputmini{
         width: 240px;
       }
       .inputSamll{
         width: 500px;
+        .el-textarea__inner{
+          padding-right: 40px;
+        }
       }
     }
     .control-btn{

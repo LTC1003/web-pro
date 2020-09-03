@@ -1,5 +1,5 @@
 <template>
-  <div id="popup" @click.self="onClose()">
+  <div id="popup" >
     <div class="container-pop">
       <!-- {{defaultLiterals}} -->
       <div class="popheader">
@@ -36,7 +36,7 @@
         </div>
         <!-- 2区 -->
         <div class="outUser" v-show="popData.type == 3">
-          <div>你确定要退出当前账号？</div>
+          <div class="outelart">你确定要退出当前账号？</div>
           <button class="setbutton" @click="outRight">确认</button>
         </div>
       </div>
@@ -164,12 +164,13 @@ export default {
         });
       } else {
         this.$message.error('token is null userOut!');
+        this.$emit('onFromPopData', {showType: false, islogin: 0});
       }
     },
     // 关闭窗口
     onClose(){
       // this.$emit('onFromPopData', false);
-      this.$emit('onFromPopData', {showType: false});
+      this.$emit('onFromPopData', {showType: false, islogin: 1});
     },
   },
   watch: {

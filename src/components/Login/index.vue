@@ -40,7 +40,7 @@
           </div>
         </div>
         <!-- 密码登陆 -->
-        <div class="loginbody" v-show="isShow">
+        <div class="loginbody" v-show="!isShow">
           <el-form :model="loginPaswd" ref='loginPaswd' :rules="rulesPswd" class="loginform">
             <el-form-item prop="moblie">
               <el-input v-model="loginPaswd.moblie" placeholder="手机号" clearable>
@@ -72,7 +72,7 @@
           </div>
         </div>
         <!-- 验证登陆 -->
-        <div class="loginbody" v-show="!isShow">
+        <div class="loginbody" v-show="isShow">
           <el-form :model="loginVerify" ref="loginVerify" :rules="rulesVerify" class="loginform">
             <el-form-item prop="moblie">
               <el-input v-model="loginVerify.moblie" placeholder="手机号" clearable>
@@ -144,9 +144,9 @@
         isShow: true,
         navList: [
           {name: '短信登录'},
-          {name: '账号登录'}
+          {name: '账号登录'},
         ],
-        isActive: 1,
+        isActive: 0,
         loginPaswd:{
           moblie: '',
           password: ''
@@ -252,11 +252,13 @@
           code: verify
         }
         try {
-          let res = await this.$api.userInfo.loginCheckCode(paramObj).then();
-          return res.message === "success"
+          let res = await this.$api.userInfo.loginCheckCode(paramObj).then(res => {
+            return res
+          });
+          // console.log(res, 77788)
+          return res
         } catch (err) {
-          console.log(err)
-          alert('请求出错！')
+          alert('验证请求出错',err);
         }
       },
       getCodeVerify(value){
@@ -266,6 +268,8 @@
           this.$api.userInfo.getLoginSendcode({phone_number: value }).then(res => {
             if (res.message === "success") {
               
+            } else {
+              this.$message.error(res.message);
             }
           })
           if(!this.isDisabled){
@@ -290,7 +294,8 @@
         this.$refs.loginVerify.validate(valid => {
           if (valid) {
             this.getPhoneCode(this.loginVerify.moblie, this.loginVerify.verifyCode).then(res =>{
-              if (res){
+              // console.log(res, 34567)
+              if (res.message === "success"){
                 let objData = {
                   phoneType: '-',
                   channel: '-',
@@ -304,8 +309,14 @@
                     // localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
                     // this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
                     this.$emit('changeState', {isShow : false, isLogin: 1, userData: JSON.parse(localStorage.loginUserInfo)}) // 退出弹框
+                  } else {
+                    // message: "验证码错误或已失效"
+                    console.log(res.message);
+                    this.$message.error(res.message);
                   }
                 });
+              } else {
+                this.$message.error(res.message);
               }
             })
           }else{
@@ -333,7 +344,7 @@
             // 调用短信验证共用fun
             this.errShowVerify = false;
             this.getPhoneCode(this.register.moblie, this.register.verifyCode).then(res =>{
-              if (res){
+              if (res.message === "success"){
                 let objData = {
                   phoneType: '-',
                   channel: '-',
@@ -352,7 +363,9 @@
                   }
                 });
               } else {
-                '验证码失效！'
+                this.$message.error(res.message, 666777);
+                // 验证码不通过
+                // this.errShowVerify = true;
               }
             })
           }
@@ -396,9 +409,9 @@
       clickActive(val, index){
         this.isActive = index;
         if (val.name == '账号登录') {
-          this.isShow = true;
-        } else {
           this.isShow = false;
+        } else {
+          this.isShow = true ;
         }
       }
     }

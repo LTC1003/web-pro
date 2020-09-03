@@ -13,7 +13,9 @@
           </el-form-item>
           <el-form-item label="身份" prop="userRole">
             <!-- <el-button round plain type="warning" size="mini">{{personalData.userRole}}</el-button> -->
-            <div>{{getRoleName(personalData.userRole)}}</div>
+            <div class="rolename">
+              {{getRoleName(personalData.userRole)}}
+            </div>
           </el-form-item>
           <el-form-item label="昵称" prop="userName">
             <el-input class="inputmini" v-model="personalData.userName" clearable></el-input>
@@ -22,7 +24,11 @@
             <el-input class="inputSamll" type="text" v-model="personalData.userCard" clearable></el-input>
           </el-form-item>
           <el-form-item label="个人简介" prop="userSignature">
-            <el-input class="inputSamll" type="textarea" v-model="personalData.userSignature"></el-input>
+            <el-input class="inputSamll" type="textarea"  placeholder="请输入内容"
+              maxlength="50"
+              show-word-limit
+              v-model="personalData.userSignature">
+            </el-input>
           </el-form-item>
           <el-form-item label="所在地">
             <el-cascader
@@ -229,20 +235,21 @@ export default {
     },
     // 窗口返货的参数
     getPopData(popVal){
-      console.log(popVal, 'parentData');
+      // console.log(popVal, 'parentData');
       if (popVal.type == 1) {  // 身份
         this.personalData.userRole = popVal.roleItemObj.id;
+        this.popData.showType = popVal.showType;
       } else if (popVal.type == 2) { // 兴趣
         if (popVal.selectTags.size) {
           this.personalData.lables = popVal.selectTags
+          this.popData.showType = popVal.showType;
         }
-      } else if (popVal.type == 3){ // 退出当前用户
-        console.log(popVal, 'close');
       } else { // undefind
+        console.log(popVal);
+        this.popData.showType = popVal.showType;
         return
       }
-      // this.popData.showType = popVal 
-      this.popData.showType = popVal.showType;
+      
     },
     // 身份状态切换回调函数
     getRoleName(index){
@@ -257,7 +264,7 @@ export default {
           return '文创师'
           break;
         default:
-          return '为设定'
+          return '未设定'
           break;
       }
     }
