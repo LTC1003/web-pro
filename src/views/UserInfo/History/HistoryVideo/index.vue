@@ -79,8 +79,20 @@
           }
         });
       },
-      computedTime(msTime){
-        return msTime += 1
+      // 转时长
+      computedTime(msTime){ //秒ms, 毫秒mss
+        // let day = Math.floor((time) / (86400000)); //天
+        // let hours = Math.floor((mssTime % 86400000) / 3600000); //时
+        let minutes = parseInt((msTime % 3600000) / 60); //分 ((mstime % (1000 * 60 *60)) / 60)
+        let seconds = parseInt((msTime % 60)); //秒
+        // console.log(this.duboolnum(minutes), this.duboolnum(seconds));
+        return this.duboolnum(minutes) + ':' + this.duboolnum(seconds)
+      },
+      duboolnum(num){
+        if(num < 10){
+          num = '0' + num;
+        }
+        return num
       },
       onCurrentChange(val){
         // console.log(`当前页: ${val}`);

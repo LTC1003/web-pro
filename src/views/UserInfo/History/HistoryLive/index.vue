@@ -1,9 +1,9 @@
 <template>
   <div>
     {{text}}
-    <div v-for="(item, index) in datalist" :key="index">
+    <!-- <div v-for="(item, index) in datalist" :key="index">
       {{item}}
-    </div>
+    </div> -->
   </div>
 </template>
 

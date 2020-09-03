@@ -1,10 +1,10 @@
 <template>
   <div class="feedback"> 
-    <div>
-      <div class="feddlist" v-for="(item, index) in feedbackDatas" :key="index">
-        <div>{{item.content}}</div>
+    <div class="feedlist">
+      <div class="feeditem" v-for="(item, index) in feedbackDatas" :key="index">
+        <!-- <div>{{item.content}}</div> -->
         <div>{{item.order}}</div>
-        <div>{{itemtitle}}</div>
+        <div>{{itemtitle}}</div>    
       </div>
     </div>
   </div>
@@ -29,7 +29,7 @@ export default {
   methods: {
    getFeedbackList(){
     this.$api.userInfo.feedbackList().then(res => {
-      console.log(res, 444555);
+      console.log(res.data.result, 444555);
       if(res.message == "success"){
         this.feedbackDatas = res.data.result;
         // content: "<p></p><p>1、忘记密码怎么办？</p>"
@@ -45,4 +45,15 @@ export default {
 
 <style lang="scss" scoped>
   // @import "./index.scss";
+  .feedback{
+    flex: 1;
+    padding: 20px;
+    .feedlist{
+      display: flex;
+      flex-wrap: wrap;
+      .feeditem{
+        flex: 1;
+      }
+    }
+  }
 </style>
