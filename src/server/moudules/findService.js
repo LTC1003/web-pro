@@ -76,3 +76,15 @@ export const hotRecentUpdate = (params) => {
   })
 }
 
+/**
+ * overflow: hidden;
+  white-space: nowrap; 
+  -o-text-overflow: ellipsis;
+  text-overflow:    ellipsis;
+ * 
+ * 
+ * display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;  // 行数（整数）
+  overflow: hidden;
+ * *********/ 

@@ -17,7 +17,7 @@
         </el-dropdown>
         <div class="item-tab" @click="routePush('linepaly')">直播专区</div>
         <el-input 
-          placeholder="搜索视频"
+          :placeholder="searchPlaceholder"
           id="searchtype"
           class="search-type" 
           v-model="searchVal" >
@@ -69,6 +69,7 @@ export default {
   ],
   data() { 
     return {
+      searchPlaceholder: '搜索视频',
       userOut: {
         type: 3,
         docs: '确定要退出当前用户?',
@@ -150,7 +151,8 @@ export default {
     },
     searchAll(ev){
       console.log(ev, this.searchVal);
-      this.searchVal
+      this.searchPlaceholder = this.searchVal;
+      this.$router.push({name: 'search-info-list', query: {searchVal:this.searchVal}});
     }
   },
 };

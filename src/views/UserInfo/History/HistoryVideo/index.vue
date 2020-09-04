@@ -19,10 +19,9 @@
     <div style="text-align:center; width: 100%">
       <el-pagination
         layout="prev, pager, next"
-        :pager-count="pagerCount"
-        :total="100"
         :page-size="pageSize"
         :current-page.sync="currentPage"
+        :total="total"
          @current-change="onCurrentChange">
       </el-pagination>
     </div>
@@ -34,27 +33,15 @@
     name: 'history-video',
     data() {
       return {
-        total: 100, //总数
-        pagerCount: 7, // 页码按钮的数量 大于等于 5 且小于等于 21 的奇数
+        total: 10, //总数
+        pagerCount: 5, // 页码按钮的数量 大于等于 5 且小于等于 21 的奇数
         pageSize: 10, // 每页条数
         currentPage: 1, // 当前页
+        pageCount: 1, // 页数
         localUserData: '',
         contentBackInfo: '空空如也，没有任何观看记录',
         isContent: 1,
-        datalist:[
-          // {
-              // cate_name: "Mini剧"
-              // cover: "http://qiniu.jyddnw.com/images/timg25.jpg"
-              // duration: 300
-              // id: 638
-              // show_url: "http://qiniu.jyddnw.com/159677776300061zr5l85aze.mp4"
-              // title: "街巷美食3"
-              // userName: "奥术大师多"
-              // userRole: "探索者"
-              // video_id: 1237
-          // },
-        ],
-
+        datalist:[],
       }
     },
     mounted() {
@@ -65,14 +52,18 @@
       getVideoList(){
         let reqData = {
           user_id: this.localUserData.id,
+          token: this.localUserData.token,
           module_type : 2,
           page: this.currentPage,
           limit: this.pageSize,
         };
         this.$api.userInfo.viewHistoryList(reqData).then(res => {
-          if(res.data.result){
+          if(!!res.data.result){
             this.datalist = res.data.result;
             this.isContent = 1;
+            this.pageCount = res.data.pageCount;
+            this.total = this.pageSize *  this.pageCount;
+            console.log(res);
           } else {
             this.contentBackInfo = "空空如也，没有留下任何观看记录";
             this.isContent = 0;

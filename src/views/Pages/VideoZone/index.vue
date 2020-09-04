@@ -15,10 +15,11 @@
         </el-carousel>
         <div class="hot-video">
           <div class="userCard" v-for="(item, index) in previousList" :key="index">
-            <div class="userCont">
-              <img :src=" item.thumb">
+            <div class="usercover" 
+              @click="goToVideoDetail('video-detail', {userId: item.userId, videoId: item.id})"
+              :style="{backgroundImage: 'url('+ item.thumb +')'}">
+              <div class="userDocs">{{item.title}}</div>
             </div>
-            <!-- <div class="userDocs">{{item.title}}</div> -->
           </div>
         </div>
       </div>
@@ -65,7 +66,12 @@ export default {
     this.getHotPrevious();
   },
   methods: {
-    // 推荐
+    // 视频详情
+    goToVideoDetail(name, obj){
+      localStorage.detailVideoId = obj.videoId
+      this.$router.push({name: name});
+    },
+    // 推荐-广告
     getHotBanner(){
       let type = 1;
       this.$api.findService.hotBanner({type}).then((res, err) => {
@@ -77,15 +83,27 @@ export default {
         }
       });
     },
+    // 热推-往期推荐
     getHotPrevious(){
       this.$api.findService.hotPrevious({offset:1, type: 5}).then((res, err) => {
+        let newArr = [];
         if(res.message === "success"){
-          this.previousList = res.data.result;
+          // 拿前四条
+          res.data.result.forEach((res,index) => {
+            if (index < 6) {
+              newArr.push(res);
+            } else {
+              return
+            }
+          })
+          // this.previousList = res.data.result;
+          this.previousList = newArr;
         } else {
           this.$message.error(res.message);
         }
       });
     },
+    // 全部长视频栏目
     getVideoType(columnId){
       let localData;
       if (!!localStorage.loginUserInfo && JSON.parse(localStorage.loginUserInfo).token) {

@@ -24,7 +24,7 @@
       <el-pagination
         layout="prev, pager, next"
         :pager-count="pagerCount"
-        :total="100"
+        :total="total"
         :page-size="pageSize"
         :current-page.sync="currentPage"
          @current-change="onCurrentChange">
@@ -45,21 +45,12 @@ export default {
       isContent: 1,
       contentBackInfo: '我的关注',
       localUserData: '', // 本地用户数据
-      dataList: [
-        // {
-        //   attentionId: 237,
-        //   touid: 143,
-        //   userRole: -1,
-        //   userCard: 'sdd'
-        //   avatar: "http://qiniu.jyddnw.com/images/my_headportrait_default@3x.png",
-        //   userName: "ISEE用户1922",
-        //   attentionStatus: 1
-        // },
-      ],
-      total: 100, //总数
-      pagerCount: 7, // 页码按钮的数量 大于等于 5 且小于等于 21 的奇数
+      dataList: [],
+      total: 10, //总数
+      pagerCount: 5, // 页码按钮的数量 大于等于 5 且小于等于 21 的奇数
       pageSize: 10, // 每页条数
       currentPage: 1, // 当前页
+      pageCount: 1,
     }
   },
   mounted() {
@@ -76,11 +67,11 @@ export default {
       }
       this.$api.userInfo.attentionList(reqData).then(res => {
         if (res.data) { // 判断返回的对象的key data存在
-        console.log(11111)
           this.dataList = res.data.result;
           this.isContent = 1;
+          // this.pageCount = res.data.pageCount;
+          this.total = this.pageSize *  res.data.pageCount;
         } else {
-        console.log(2222);
 
           this.contentBackInfo = "空空如也，没有更多关注";
           this.isContent = 0;
