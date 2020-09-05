@@ -60,15 +60,14 @@ export default {
     onModifyForm(){
       this.$refs.modifyForm.validate(valid => {
         if (valid) {
-          
-            this.userData['oldPassword'] = this.modifyForm.paswdOld
-            this.userData['newPassword'] = this.modifyForm.paswdNew
-         
+          this.userData['oldPassword'] = this.modifyForm.paswdOld
+          this.userData['newPassword'] = this.modifyForm.paswdNew
           this.$api.userInfo.changePassword(this.userData).then(res => {
             console.log(res.data);
             if(res.message == '密码重置成功'){
               this.$message.success(res.message);
-              this.$router.push({name: "userdata"});
+              this.$router.push({name: "home"});
+              localStorage.clear()
             } else {
               this.$message.error(res.message);
             }

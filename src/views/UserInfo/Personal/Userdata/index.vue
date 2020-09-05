@@ -58,10 +58,30 @@
     </div>
     <h2 class="caption">账号设置</h2>
     <div class="setAccount">
-      <div class="setcol" v-for="(item, index) in setDataRow" :key="index">
+      <!-- <div class="setcol" v-for="(item, index) in setDataRow" :key="index">
         <div>{{item.setType}}</div>
         <div class="setState">{{item.setState}}</div>
         <el-button class="setbtn" @click="setUserBtn(item)">{{item.setbtn}}</el-button>
+      </div> -->
+      <!-- <div class="setcol" v-if="personalData.userMobile">
+        <div>手机</div>
+        <div class="setState">{{covertStar(personalData.userMobile)}}</div>
+        <el-button class="setbtn" @click="setUserBtn('setMobile')">修改手机</el-button>
+      </div>
+      <div class="setcol" v-else>
+        <div>手机</div>
+        <div class="setState">未绑定</div>
+        <el-button class="setbtn" @click="setUserBtn('Mobile')">绑定</el-button>
+      </div> -->
+      <div class="setcol" v-if="personalData.passwordStatus == 2">
+        <div>密码</div>
+        <div class="setState">为了您的账号安全请定期修改密码</div>
+        <el-button class="setbtn" @click="setUserBtn('modifyPaswd')">修改密码</el-button>
+      </div>
+      <div class="setcol" v-else>
+        <div>密码</div>
+        <div class="setState">设置初始密码 {{personalData.passwordStatus}}</div>
+        <el-button class="setbtn" @click="setUserBtn('createPaswd')">设置密码</el-button>
       </div>
     </div>
     <!-- 引用弹出组件 -->
@@ -81,7 +101,7 @@ export default {
   data() {
     return {
       //三级联动
-      options: regionDataPlus,
+      options: regionData,
       selectedOptions: [],
       visibleType:'',
       popData: {
@@ -121,13 +141,13 @@ export default {
           { max: 50, message: '最多50个字符', trigger: 'blur' }
         ],
       },
-      setDataRow: [
+      // setDataRow: [
         // {setType: '手机', setState: 0, setbtn: '修改手机'},
         // {setType: 'QQ', setState: 0, setbtn: '解绑'},
         // {setType: '微信', setState: 0, setbtn: '绑定'},
         // {setType: '微博', setState: 0, setbtn: '绑定'},
-        {setType: '密码', setState: 2, setbtn: '设置密码'},
-      ],
+        // {setType: '密码', setState: 2, setbtn: '设置密码'},
+      // ],
       localUserData: '',
     }
   },
@@ -138,11 +158,11 @@ export default {
       this.getUserDataInfo();
     }
     // 个人绑定设置
-    this.setDataRow.forEach((val,key) =>{
-      if(val.setType == "密码"){
-        val.setState = this.personalData.passwordStatus;
-      }
-    });
+    // this.setDataRow.forEach((val,key) =>{
+    //   if(val.setType == "密码"){
+    //     val.setState = this.personalData.passwordStatus;
+    //   }
+    // });
   },
   methods: {
     // 三级联动事件
@@ -155,7 +175,7 @@ export default {
       this.personalData.province = CodeToText[value[0]]
       this.personalData.city = CodeToText[value[1]]
       this.personalData.country = CodeToText[value[2]]
-      console.log(this.selectedOptions,123123);
+      // console.log(this.selectedOptions,123123);
     },
     // 获取个人信息
     getUserDataInfo(){
@@ -168,10 +188,9 @@ export default {
       objData['moblie'] = this.localUserData.userMobile;
       this.$api.userInfo.userLoginMobile(objData).then(res => {
         this.personalData = res.data.result;
-        // console.log(TextToCode[this.personalData.province].code, 911);
-        // console.log(TextToCode[this.personalData.province][this.personalData.city].code, 922);
-        // console.log(TextToCode[this.personalData.province][this.personalData.city][this.personalData.country].code, 911);
-        this.selectedOptions = TextToCode[this.personalData.province][this.personalData.city][this.personalData.country].code
+        if (this.personalData.province && this.personalData.city && this.personalData.country) {
+          this.selectedOptions = TextToCode[this.personalData.province][this.personalData.city][this.personalData.country].code
+        }
       })
     },
     onUserSubmit(formName){
@@ -214,24 +233,31 @@ export default {
       )
     },
     // 绑定设置
-    setUserBtn(item){
+    setUserBtn(typename){
       // console.log(item.setType, 'user');
-      switch (item.setType) {
-        case "密码": 
-          if (item.setState < 2){
+      switch (typename) {
+        case "createPaswd": //首次
             this.$router.push({name: 'password-first'});
-          } else {
-            this.$router.push({name: 'paswd-modify'});
-          }
           break;
-        case "手机": 
-          if (item.setState < 2){
+        case "modifyPaswd": // 旧改新
+          this.$router.push({name: 'paswd-modify'});
+          break;
+        case "Mobile": // 绑定
             this.$router.push({name: 'bind-mobile'});
-          }
           break; 
+        // case "setMobile": // 更换绑定,修改手机号
+        //     this.$router.push({name: 'bind-mobile'});
+        //   break; 
         default:
           break;
       }
+    },
+    // 手机号遮盖
+    covertStar(tel){
+      console.log(tel);
+      var reg = /^(\d{3})\d{4}(\d{4})$/;
+      tel = tel.replace(reg, "$1****$2");
+      return tel;
     },
     // 窗口返货的参数
     getPopData(popVal){

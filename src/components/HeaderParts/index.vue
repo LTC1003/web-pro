@@ -6,12 +6,12 @@
           <img :src="imgsrc" alt="logo">  
         </div>
         <el-dropdown>
-          <span class="el-dropdown-link item-tab">
+          <span class="el-dropdown-link item-tab" @click="getColumnAll()">
             视频专区<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="(item, index) in typeList" :key="index">
-              <div class="dropdown_column" @click="getColumn(item.id)">{{item.cateName}}</div>
+              <div class="dropdown_column" @click="getColumn(item)">{{item.cateName}}</div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -42,15 +42,15 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <div class="loginbtngurop" v-else-if="!islogin">
+        <div class="loginbtngurop" v-else>
           <span class="sign" @click="signClick('login')">登录</span> 
           <span class="register" @click="signClick('register')">注册</span>
         </div>
       </div>
-      <Login :login="loginMsg" v-show="visibleState"
+      <Login :login="loginMsg" v-if="visibleState"
         @changeState="getStateVal">
       </Login>
-      <PopupWin :popData="userOut" @onFromPopData="outuser" v-show="userOut.showType"></PopupWin>
+      <PopupWin :popData="userOut" @onFromPopData="outuser" v-if="userOut.showType"></PopupWin>
     </div>
   </div>
 </template>
@@ -78,15 +78,10 @@ export default {
       imgsrc: require('@/assets/img/toSeeBlackLogo.png'),
       avatarImg: '',
       searchVal: '',
-      loginMsg: "",
+      loginMsg: '',
       user: {
         name: "你大爷干啥"
       },
-      // videoCategory: [
-      //   {cateName: "热推",id: 16,type: 1},
-      //   {cateName: "热推",id: 17,type: 2},
-      //   {cateName: "热推",id: 18,type: 3},
-      // ],
       userList: [
         {name: '个人',pathName: 'personal'},
         {name: '历史',pathName: 'history'},
@@ -144,10 +139,13 @@ export default {
       this.userOut.showType = val.showType; // 弹窗的显示  
       this.islogin = val.islogin; // 头像的显示
     },
-    // 视频专区选项展示
-    getColumn(typeId){
-      // console.log(typeId, 'headPage');
-      this.$router.push({name: 'video-zone', query: {id: typeId}});
+    // 视频全部栏目
+    getColumnAll(){
+      this.$router.push({name: 'video-zone'});
+    },
+    // 视频专区栏目单项
+    getColumn(typeObj){
+      this.$router.push({name: 'video-zone', query: typeObj});
     },
     searchAll(ev){
       console.log(ev, this.searchVal);
@@ -155,6 +153,13 @@ export default {
       this.$router.push({name: 'search-info-list', query: {searchVal:this.searchVal}});
     }
   },
+  // watch: {
+  //   loginMsg: {
+  //     handler(nData, oData){
+  //     },
+  //     deep:true
+  //   }
+  // }
 };
 </script>
 

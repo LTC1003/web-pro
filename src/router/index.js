@@ -130,7 +130,7 @@ const routes = [
             redirect: { name: 'userdata' },
             children: [
               { path: 'userdata', name: 'userdata', component: Userdata},
-              { path: 'password-firs', name: 'password-first', component: PasswordFirst},
+              { path: 'password-first', name: 'password-first', component: PasswordFirst},
               { path: 'paswd-modify', name: 'paswd-modify', component: PaswdModify},
               { path: 'bind-mobile', name: 'bind-mobile', component: BindMobile},
             ]

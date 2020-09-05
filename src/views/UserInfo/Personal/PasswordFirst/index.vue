@@ -3,20 +3,19 @@
     <h2 class="caption">创建密码</h2>
     <div class="pawdbox">
       <div class="formbox">
-        <el-input v-model="firstPawd" placeholder="输入6-20位英文或数字密码" @blur="onBlir"></el-input>
+        <el-input v-model="firstPawd" placeholder="输入6-20位英文或数字密码"></el-input>
         <div class="err-text" style="color: #f00" v-show="isErr">{{errText}}</div>
-        <el-button type="danger" @click="isRight()">确定</el-button>
+        <el-button class="creactRightBtn" @click="isRight()">确定</el-button>
       </div>
     </div>  
   </div>
 </template>
 
 <script>
-// import PopupWin from "@/components/PopupWin"
 export default {
   name: "password-first",
   components: {
-    // PopupWin,
+  
   },
   data() {
     return {
@@ -39,32 +38,35 @@ export default {
         return 
       } else {
         // this.isErr = false;
-        console.log('密码验证通过', this.userInfoDate);
+        // console.log('密码验证通过', this.userInfoDate);
         let objData = {
-          // token: this.userInfoDate.token,
-          // userMobile: this.userInfoDate.mobile,
-          // newPassword: this.firstPawd
+          token: this.userInfoDate.token,
+          userMobile: this.userInfoDate.userMobile,
+          newPassword: this.firstPawd
         }
-        objData['token'] = this.userInfoDate.token;
-        objData['userMobile'] = this.userInfoDate.userMobile;
-        objData['newPassword'] = this.firstPawd;
         this.$api.userInfo.changePasdfirst(objData).then(res => {
-          console.log(res);
+          // console.log(res);
           if(res.message === "操作成功"){
-            this.$router.push({name: "userdata"});
+            this.$message.success("首次创建密码成功");
+            this.$router.push({path: "/"});
+            localStorage.clear();
+            // query:{路由参数}
+            // this.$router.push({name: "userdata"});
+          } else {
+            this.$message.error("首次创建密码失败");
           }
         });
       }
     },
-    onBlir(){
-      console.log(this.firstPawd, 2223);
-      if(/^(\w){6,20}$/.test(this.firstPawd) == false){
-        this.isErr = true;
-        return 
-      } else {
-        this.isErr = false;
-      }
-    }
+    // onchange(){
+    //   console.log('asduii', 2223);
+    //   if(/^(\w){6,20}$/.test(this.firstPawd) == false){
+    //     this.isErr = true;
+    //     return 
+    //   } else {
+    //     this.isErr = false;
+    //   }
+    // }
   }
 };
 </script>
@@ -90,7 +92,22 @@ export default {
       align-items: center;
       width: 400px;
       min-width: 300px;
-      border: 1px solid #444;
+      .creactRightBtn{
+        width: 130px;
+        height: 36px;
+        background: #FFBBC4;
+        border-radius: 18px;
+        font-size: 14px;
+        color: #FFFFFF;
+        line-height: 36px;
+        padding: 0;
+        margin-top: 30px;
+        border: none;
+        &:hover{
+          color: #FFFFFF;
+          background: #ec2741d2;
+        }
+      }
     }
   }
 }

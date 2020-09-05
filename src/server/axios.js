@@ -21,7 +21,7 @@ export default function $axios(options) {
     instance.interceptors.request.use(
       config => {
         // http request 拦截器
-        const token = JSON.parse(localStorage.getItem('loginUserInfo')).token
+        // const token = JSON.parse(localStorage.getItem('loginUserInfo')).token
         // if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
         //   config.headers.authorization = token  //请求头加上token
         // }
@@ -29,13 +29,15 @@ export default function $axios(options) {
         var reqData = {};
         let reqParams = null;
         if (config.method === 'get') {
-          reqData = Object.assign({}, options.params, {
-            token
-          })
+          // reqData = Object.assign({}, options.params, {
+          //   token
+          // })
+          reqData = options.params
         } else {
-          reqData = Object.assign({}, config.data, {
-            token
-          })
+          // reqData = Object.assign({}, config.data, {
+          //   token
+          // })
+          reqData = options.data
         }
         // 2. 请求地址url
         switch (config.url) {
