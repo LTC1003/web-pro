@@ -8,7 +8,7 @@
       </div>
       <div class="hot-warp">
         <el-carousel class="banner">
-          <el-carousel-item v-for="item, index in bannerList" :key="index">
+          <el-carousel-item v-for="(item, index) in bannerList" :key="index">
             <h3 class="small banner_title">{{item.title}}</h3>
             <img :src="item.img" alt="">
           </el-carousel-item>
