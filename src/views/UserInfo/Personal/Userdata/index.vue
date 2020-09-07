@@ -39,13 +39,16 @@
             </el-cascader>
           </el-form-item>
           <el-form-item label="兴趣爱好" prop="lables">
-            <el-tag
-              v-for="tag in personalData.lables" 
-              :key="tag.id"
-              :color="tag.bgcolor">
-              {{tag.name}}
-            </el-tag>
-            <el-button class="addtag" @click="getTagsList()">添加兴趣</el-button>
+            <div class="tagGroup">
+              <el-tag
+                v-for="tag in personalData.lables" 
+                :key="tag.id"
+                :style="{background: isColorBG(tag.name)}">
+                {{tag.name}}
+              </el-tag>
+              <!-- <el-button class="addtag" @click="getTagsList()">  </el-button> -->
+              <i class="el-icon-circle-plus-outline addtag" @click="getTagsList()" ></i>
+            </div>
           </el-form-item>
           <el-form-item style="text-align: center">
             <el-button round size="small" style="width: 130px; margin-left: -80px" type="danger" @click="onUserSubmit('personalData')">保存</el-button>
@@ -200,8 +203,8 @@ export default {
           let user = this.personalData;
           let lableIds = [];
           this.personalData.lables.forEach(val => {
-            // console.log(val, 'tagid')
-            lableIds.push(val.labelId);
+            // console.log(val, 'tagid') 【1，3，4】
+            lableIds.push(val.id);
           });
           user['lableIds'] = lableIds;
           this.$api.userInfo.updateUserRole(user).then(res => {
@@ -259,14 +262,54 @@ export default {
       tel = tel.replace(reg, "$1****$2");
       return tel;
     },
+          isColorBG : function(key){
+        // const namesArr = this.setArr.map((item) => {
+        //   return item.name
+        // })
+        // if(!namesArr.includes(key)){
+        //   return '#fff'
+        // }
+        switch (key) {
+          case '美食小吃':
+            return'#22e7e4'
+            break;
+          case '笔墨书画':
+            return'#FFCD5C'
+            break;
+          case '历史文化':
+            return'rgb(219, 11, 11)'
+            break;
+          case '户外探险':
+            return'rgb(199, 23, 140)'
+            break;
+          case '野外垂钓':
+            return'#CDABDA'
+            break;
+          case '名胜古迹':
+            return'#FB897A'
+            break;
+          case '文物艺术':
+            return'#c05358'
+            break;
+          case '自然风光':
+            return'#61ce4b'
+            break;
+          case '娱乐休闲':
+            return'#6fa5c9'
+            break;
+          default:
+            return'666'
+            break;
+        }
+      },
     // 窗口返货的参数
     getPopData(popVal){
-      // console.log(popVal, 'parentData');
+      console.log(popVal, 'parentData');
       if (popVal.type == 1) {  // 身份
         this.personalData.userRole = popVal.roleItemObj.id;
         this.popData.showType = popVal.showType;
       } else if (popVal.type == 2) { // 兴趣
-        if (popVal.selectTags.size) {
+        if (popVal.selectTags.length) {
           this.personalData.lables = popVal.selectTags
           this.popData.showType = popVal.showType;
         }

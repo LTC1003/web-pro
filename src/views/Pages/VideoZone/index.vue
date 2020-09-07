@@ -1,32 +1,33 @@
 <template>
   <div class="video-zone">
-    <!-- 视频热推 广告 -->
-    <div class="hotVideo" v-if="hotVideoHidden">
-      <div class="thead">
-        <div class="title">热推</div>
-        <div class="btn"> 查看更多<span> > </span></div>
-      </div>
-      <div class="hot-warp">
-        <el-carousel class="banner">
-          <el-carousel-item v-for="(item, index) in bannerList" :key="index">
-            <h3 class="small banner_title">{{item.title}}</h3>
-            <img :src="item.img" alt="">
-          </el-carousel-item>
-        </el-carousel>
-        <div class="hot-video">
-          <div class="userCard" v-for="(item, index) in previousList" :key="index">
-            <div class="usercover" 
-              @click="goToVideoDetail('video-detail', {userId: item.userId, videoId: item.id})"
-              :style="{backgroundImage: 'url('+ item.thumb +')'}">
-              <div class="userDocs">{{item.title}}</div>
+ 
+    <!-- 栏目组件 -->
+    <div v-for="(item, index) in dataList" :key="index">
+      <!-- 视频热推 广告 -->
+      <div class="hotVideo" v-if="item.id == 16 || !$route.query.id">
+        <div class="thead">
+          <div class="title">热推</div>
+          <div class="btn"> 查看更多<span> > </span></div>
+        </div>
+        <div class="hot-warp">
+          <el-carousel class="banner">
+            <el-carousel-item v-for="(item, index) in bannerList" :key="index">
+              <h3 class="small banner_title">{{item.title}}</h3>
+              <img :src="item.img" alt="">
+            </el-carousel-item>
+          </el-carousel>
+          <div class="hot-video">
+            <div class="userCard" v-for="(item, index) in previousList" :key="index">
+              <div class="usercover" 
+                @click="goToVideoDetail('video-detail', {userId: item.userId, videoId: item.id})"
+                :style="{backgroundImage: 'url('+ item.thumb +')'}">
+                <div class="userDocs">{{item.title}}</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- 栏目组件 -->
-    <div v-for="(item, index) in dataList" :key="index" v-if="columnListHiddn">
-      <ListColumn :cardItem="item"></ListColumn>
+      <ListColumn :cardItem="item" v-if="columnListHiddn && item.id != 16"></ListColumn>
     </div>
   </div>
 </template>
@@ -67,7 +68,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.query, 999221);
+    console.log(this.dataList, 999221);
     this.typeObj = this.$route.query;
     if (!!localStorage.loginUserInfo) {
       this.localUserData = JSON.parse(localStorage.loginUserInfo);
@@ -150,7 +151,7 @@ export default {
       }
       this.$api.findService.getAllVideoListWeb(this.loginUserData).then( res => {
         this.dataList = res.data.result;
-        // console.log(this.dataList, 666);
+        console.log(this.dataList, 666);
       });
     }
   },

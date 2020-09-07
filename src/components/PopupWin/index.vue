@@ -22,10 +22,10 @@
         <!-- 2区 -->
         <div class="tags" v-show="popData.type == 2">
           <el-tag
-            :class="tag.name"
-            v-for="tag in tags" 
+            :style="{background: isColorBG(tag.name)}"
+            v-for="(tag, i) in tags" 
             :key="tag.id"
-            @click="optionTags(tag, tag.name, tag.id)"
+            @click="optionTags(tag, tag.name, tag.id, i)"
             >
             {{tag.name}}
           </el-tag>
@@ -57,9 +57,15 @@ export default {
       defTitle: 'defTitle',
       selectRole: '',
       tags: [],
-      setArr: new Set([]),
+      setArr: [],
       bgcolor: '',
       isColorBG : function(key){
+        const namesArr = this.setArr.map((item) => {
+          return item.name
+        })
+        if(!namesArr.includes(key)){
+          return '#fff'
+        }
         switch (key) {
           case '美食小吃':
             return'#22e7e4'
@@ -117,30 +123,26 @@ export default {
     optionTags(tagObj, tagName, tagid){
       // 点击单数选择改变颜色，点击双数放弃回复颜色
       let className = document.getElementsByClassName(tagName);
-      console.log(this.setArr.size)
-      if (this.setArr.has(tagObj)){ // SET查询 
+      const ids = this.setArr.map(val => val.id)
+      if (ids.indexOf(tagObj.id) !== -1){ // SET查询 
         // repeat返回 true
-        this.setArr.delete(tagObj);
-        className[0].style.background = '';
-        className[0].style.color = ''
-        //全部删除 // setArr.clear();
+        this.setArr.splice(ids.indexOf(tagObj.id), 1);
+        this.errMsgText = '';
       } else {
         // no-repeat返回 false
-        if(this.setArr.size > 2){
+        if(this.setArr.length > 2){
           this.errMsgText = '最多不超过3个';
           this.isTagErrMsg = true;
         } else {
-          tagObj['bgcolor'] = this.isColorBG(tagName)
-          className[0].style.background = this.isColorBG(tagName);
-          className[0].style.color = '#fff'
-          this.setArr.add(tagObj);
+          this.setArr.push(tagObj);
         }
       }
+      tagObj.bgColor = this.isColorBG(tagObj.name)
     },
     // 提交选择的兴趣
     setDataTags(){
       // console.log(this.setArr.size);
-      if(this.setArr.size){
+      if(this.setArr.length){
         this.$emit('onFromPopData', {showType: false, type: 2, selectTags: this.setArr});
       } else {
         this.errMsgText = '不少于一个';
@@ -176,7 +178,7 @@ export default {
   watch: {
     popData: {
       handler(n, o){
-        // console.log(n, o,'pop');
+        console.log(n, o,'pop');
         switch (n.type) {
           case 1:    
           this.userRoles = n.data;
