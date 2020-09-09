@@ -5,7 +5,7 @@
       <!-- 快速注册 -->
       <div class="register-warp" v-if="loginData == 'register'">
         <div class="navs">
-          <div class="nav active">快速注册</div>
+          <div class="nav active">快速注册</div>  
         </div>
         <div class="loginbody">
           <el-form :model="register" ref="register" class="loginform">
@@ -67,8 +67,8 @@
           <div class="other">
             <span  @click="toRessetPage()" >
               忘记密码
-            </span> |
-            <span @click="loginData ='register'">注册</span>
+            </span>
+            <!-- <span @click="loginData ='register'">注册</span> -->
           </div>
         </div>
         <!-- 验证登陆 -->
@@ -86,19 +86,19 @@
             <div class="btn-denger" @click="submitVerify('loginVerify')">登录</div>
           </el-form>
           <div class="other">
-            <span @click="loginData ='register'">注册</span>
+            <!-- <span @click="loginData ='register'">注册</span> -->
           </div>
         </div>
       </div>
       <!-- 第三方登录方式 -->
-      <div class="partners">
+      <!-- <div class="partners">
         <div class="masthead">第三方登录</div>
         <div class="partother">
           <div class="wxlogo"></div>
           <div class="qqlogo"></div>
           <div class="wblogo"></div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

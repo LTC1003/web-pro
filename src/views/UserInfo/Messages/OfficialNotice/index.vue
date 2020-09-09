@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      text: '官方通知',
+      text: '官方暂无最新消息',
     }
   },
   mounted() {

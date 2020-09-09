@@ -144,7 +144,7 @@ const routes = [
             ],
           },
           { path: "myhobby", name: "myhobby", component: Myhobby,
-            redirect: { name: 'short-video'},
+            redirect: { name: 'column-video'},
             children: [
               {path: 'short-video', name: 'short-video', component: ShortVideo},
               {path: 'column-video', name: 'column-video', component: ColumnVideo},

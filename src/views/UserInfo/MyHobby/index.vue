@@ -2,17 +2,17 @@
   <div class="hobby"> 
     <div class="caption">
       <div class="tabs">
-        <div class="tab" :class="[tabItem.tabName == activeTab ? 'isActive' : '']" 
+        <div class="tab" :class="[activeTab == index ? 'isActive' : '']" 
           v-for="(tabItem, index) in tabsDate" :key="index" 
           :name ="tabItem.tabName" 
-          @click="onClickTab(tabItem.typePathName, tabItem.tabName)">
+          @click="onClickTab(index)">
           {{tabItem.tabName}}
         </div>
       </div>
-      <div class='managebtn'>管理</div>
+      <div class='managebtn' @click="delControl()">{{delControlText}}</div>
     </div>  
     <div class="typeContent">
-      <router-view></router-view>
+      <router-view :itemChildData="itemChildData"></router-view>
     </div>
   </div>
 </template>
@@ -26,23 +26,32 @@ export default {
   },
   data() {
     return {
-      activeTab: '',
+      delControlText: '管理',
+      itemChildData: '',
+      activeTab: 0,
       tabsDate: [
         {tabName: '短视频', typePathName: 'short-video'}, 
-        {tabName: '专栏视频', typePathName:'column-video'}
+        {tabName: '专栏视频', typePathName:'column-video'},
       ],
     }
   },
   mounted() {
-    this.activeTab = '短视频';
+    this.activeTab = 1;
   },
   methods: {
-    onClickTab(pathName,name){
-      this.activeTab = name;
-      console.log(pathName)
-      this.$router.push({name: pathName});
+    onClickTab(index){
+      this.activeTab = index;
+      this.$router.push({name: this.tabsDate[index].typePathName});
+    },
+    delControl(){
+      if (this.delControlText === '管理') {
+        this.delControlText = '完成';
+        this.itemChildData = {childType: this.activeTab, delStats: true};
+      } else {
+        this.delControlText = '管理';
+        this.itemChildData = {childType: this.activeTab, delStats: false};
+      }
     }
-   
   }
 };
 </script>

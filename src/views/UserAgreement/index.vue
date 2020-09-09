@@ -190,19 +190,19 @@
     min-height: 400px;
     background: #eaeaf0;
     margin: 20px auto;
-    font-size: 0.14px;
+    font-size: 0.12rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 10px;
     .title{
       font-size: 0.22rem;
       color: #333333;
-      line-height: 60px;
+      line-height: 0.6rem;
       text-align: center;
 
     } 
     .section-content{
       color: #666666;
-      line-height: 24px;
+      line-height: 0.24rem;
     }
   }
 </style>

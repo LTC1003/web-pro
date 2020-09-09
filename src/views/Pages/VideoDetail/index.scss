@@ -143,14 +143,25 @@
             width: 160px;
             height: 90px;
             background: #333233;
+            position: relative;
             .sorucev{
-              width: 100%;
+              border-radius: 4px;
+              cursor: pointer;
+            }
+            .langtime{
+              position: absolute;
+              right: 5px;
+              bottom: 5px;
+              color: #ffffff;
             }
           }
           .videodesc{
             flex: 1;
             margin-left: 10px;
             height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
             .desc-title{
               width: 138px;
               height:40px;
@@ -167,6 +178,13 @@
               line-height:14px;
               font-size:10px;
               color: #999999;
+              display: flex;
+              align-items: center;
+              .el-icon-videolink{
+                width: 14px;
+                height: 14px;
+                vertical-align: middle;
+              }
             }
           }
         }
@@ -208,6 +226,21 @@
   width: 24px;
   height: 24px;
   background: url("../../../assets/iconFont/home_video_share.png") no-repeat;
+  background-size: cover;
+  margin-right: 10px;
+  &::before{
+    content: "站";
+    font-size: 12px;
+    visibility: hidden;
+  }
+  &:hover{
+    cursor: pointer;
+  }
+}
+.el-icon-icon-links{
+  width: 14px;
+  height: 14px;
+  background: url("../../../assets/iconFont/icon-links.png") no-repeat;
   background-size: cover;
   margin-right: 10px;
   &::before{

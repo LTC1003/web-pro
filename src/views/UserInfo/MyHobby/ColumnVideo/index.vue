@@ -3,7 +3,10 @@
     <div class="nullalert" v-if="!isContent">{{contentBackInfo}}</div>
     <div v-else class="videoItem" v-for="(item, index) in datalist" :key="index">
       <div class="sourcev">
-        <img class="video-cover" :src="item.thumb" alt="">
+        <div class="deleteItem" v-show="deleteHidden" @click="onDelete(item.id)">
+          <i class="el-icon-close"></i>
+        </div>
+        <img class="video-cover" :src="item.thumb" alt="" @click="goToVideoDetail('video-detail', {videoId: item.video_id})">
         <div class="langtime">{{computedTime(item.duration)}}</div>
       </div>
       <div class="usercol">
@@ -32,8 +35,12 @@
 <script>
   export default {
     name: 'column-video',
+    props:[
+      'itemChildData'
+    ],
     data() {
       return {
+        deleteHidden: false,
         contentBackInfo: '栏目视频',
         isContent: 1,
         datalist:[
@@ -69,6 +76,7 @@
     methods: {
       getColumnList(){
         let reqData = {
+          token: this.localUserData.token,
           user_id: this.localUserData.id,
           module_type: 2,
           page: this.currentPage,
@@ -79,18 +87,61 @@
             this.datalist = res.data.result;
             this.isContent = 1;
           } else {
-            this.contentBackInfo = "空空如也，什么都没有观看过";
+            this.contentBackInfo = "空空如也!";
             this.isContent = 0;
           }
         });
       },
-      computedTime(smTime){
-        // console.log(smTime)
+      // 删除
+      onDelete(itemId){
+         let reqData = {
+          user_id: this.localUserData.id,
+          token: this.localUserData.token,
+          module_type : 2,
+          id_list: itemId
+        };
+        // reqData['id_list'] = itemId.toString();
+        // console.log(reqData.id_list, 3435345);
+        this.$api.userInfo.videoHobbyDelete(reqData).then(res => {
+          if (res.message === "success") {
+            this.$message.success('成功删除');
+            this.getColumnList();
+          }
+        })
+      },
+      // 跳转详情
+      goToVideoDetail(name, obj){
+        localStorage.detailVideoId = obj.videoId
+        this.$router.push({name: name});
+      },
+      // 时长
+      computedTime(msTime){
+        let minutes = parseInt((msTime % 3600000) / 60);
+        let seconds = parseInt((msTime % 60)); 
+        return this.duboolnum(minutes) + ':' + this.duboolnum(seconds);
+      },
+      duboolnum(num){
+        if(num < 10){
+          num = '0' + num;
+        }
+        return num
       },
       onCurrentChange(val){
         // console.log(`当前页: ${val}`);
         this.getColumnList();
       },
+    },
+    watch: {
+      itemChildData: {
+        handler(n,o) {
+          if (n.childType) {
+            this.deleteHidden = n.delStats;
+          } else {
+            // 短视频
+          }
+        },
+        deep: true
+      }
     }
   }
 </script>
@@ -115,9 +166,28 @@
         position: relative;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
+        .deleteItem{
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background: #CCCCCC;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          top: -13px;
+          right: -13px;
+          .el-icon-close{
+            font-size: 10px;
+            color: #FFFFFF;
+          }
+        }
         .video-cover{
           border-top-left-radius: 4px;
           border-top-right-radius: 4px;
+          &:hover{
+            cursor: pointer;
+          }
         }
         .langtime{
           color: #ffffff;

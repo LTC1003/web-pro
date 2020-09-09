@@ -7,12 +7,14 @@
       <el-form-item prop="verify">
         <el-input v-model="ruleForm.verify" placeholder="请输入验证码">
           <template>
-            <el-button type="success" slot="append" @click="getVerifyCode">获取验证码</el-button>
+            <el-button type="success" slot="append"
+            @click="getCodeVerify(ruleForm.moblie)"
+            :disabled="isDisabled">{{getCodeState}}</el-button>
           </template>
         </el-input>
       </el-form-item>
       <el-form-item prop="pass">
-        <el-input v-model="ruleForm.pass" placeholder="请输入6-12字符，英文，数字密码"></el-input>
+        <el-input v-model="ruleForm.pass" placeholder="请输新密码"></el-input>
       </el-form-item>
       <el-form-item prop="againPass">
         <el-input v-model="ruleForm.againPass" placeholder="请再次输入"></el-input>
@@ -34,7 +36,16 @@
 
     },
     data() {
+      var validVer = (rule, value, callback) => {
+        if(/^(\d){6}$/.test(value) == false) {
+          callback(new Error("请获取验证码"));
+        } else {
+          callback();
+        }
+      };
       return {
+        isDisabled: false,
+        getCodeState: '获取验证码',
         isShowMoblie: false,
         ruleForm: {
           moblie: '',
@@ -44,7 +55,8 @@
         },
         rules:{
           verify: [
-            { required: true, trigger: 'blur'}
+            { required: true, message: '必填', trigger: 'blur'},
+            { validator: validVer, trigger: 'blur' }
           ],
           pass: [
             { required: true, message: '必填', trigger: 'blur' },
@@ -74,16 +86,44 @@
     },
     methods: {
       // 请求手机验证码
-      getVerifyCode(){
-        if(this.ruleForm.moblie == undefined || this.ruleForm.moblie == '' || this.ruleForm.moblie == 'undefined'){
-          this.ruleForm.moblie = 'undefined';
+      // getVerifyCode(){
+      //   if(this.ruleForm.moblie == undefined || this.ruleForm.moblie == '' || this.ruleForm.moblie == 'undefined'){
+      //     this.ruleForm.moblie = 'undefined';
+      //   } else {
+      //     this.$api.userInfo.getLoginSendcode({phone_number: this.ruleForm.moblie}).then(
+      //       (res) => {
+      //         console.log(res, 'zeizei');
+      //         this.isShowMoblie = true;
+      //       }
+      //     )
+      //   }
+      // },
+      getCodeVerify(value){
+        if(/^1[3456789]\d{9}$/.test(value) == false){
+          return this.$message.error("11位手机号不正确");
         } else {
-          this.$api.userInfo.getLoginSendcode({phone_number: this.ruleForm.moblie}).then(
-            (res) => {
-              console.log(res, 'zeizei');
-              this.isShowMoblie = true;
+          this.$api.userInfo.getLoginSendcode({phone_number: value }).then(res => {
+            if (res.message === "success") {
+              
+            } else {
+              this.$message.error(res.message);
             }
-          )
+          })
+          if(!this.isDisabled){
+            let seed = 60;
+            let num = seedCount => {
+              seed --;
+              if (seed < 1) {
+                clearInterval(count);
+                this.getCodeState = '重新发送';
+                this.isDisabled = false;
+              } else {
+                this.isDisabled = true;
+                this.getCodeState = `重新发送${seed}`;
+              }
+            };
+            let count = setInterval(num, 1000);
+          }
         }
       },
       goStepPage(num){

@@ -71,12 +71,17 @@
           <div class="title">相关推荐</div>
           <div class="videoRecom" v-for="(item, index) in recommendData" :key="index">
             <div class="videoposter">
-              <video class="sorucev" :poster="item.thumb"></video>
+              <img class="sorucev" :src="item.thumb"  @click="goToVideoDetail(item.id)"></img>
+              <div class="langtime">{{computedTime(item.videoDuration)}}</div>
             </div>
             <div class="videodesc">
               <div class="desc-title">{{item.title}}</div>
               <div class="desc-links">
-                <div>links:{{item.likes}}</div>
+                <i icon="el-icon-icon-links"  
+                  class="el-icon-icon-links"
+                  slot="suffix" >
+                </i> 
+                <div>{{item.likes}}</div>
               </div>
             </div>
           </div>
@@ -141,9 +146,9 @@ export default {
     }
   },
   mounted() {
-    if(!!localStorage.detailVideoId){
+    // if(!!localStorage.detailVideoId){
       // console.log(localStorage.detailVideoId, '视频id');
-    }
+    // }
     if (!!localStorage.loginUserInfo) {
       this.localUserData = JSON.parse(localStorage.loginUserInfo);
     }
@@ -183,6 +188,10 @@ export default {
         }
       });
     },
+    // 跳转详情
+    goToVideoDetail(RecomVideoId){
+      this.getVideoDetail(RecomVideoId);
+    },
     // 添加用户关注
     addAttentionUser(userId){
       let reqData = {
@@ -202,6 +211,7 @@ export default {
       let reqData = {
         video_id: videoData,
         user_id: this.localUserData.id,
+        token: this.localUserData.token,
         module_type: 2,
       }
       console.log(reqData,'sdsd');
@@ -214,6 +224,7 @@ export default {
       let reqData = {
         video_id: videoId,
         user_id: this.localUserData.id,
+        token: this.localUserData.token,
         module_type: 2,
       }
       this.$api.userInfo.addHobbyVideo(reqData).then(res => {
@@ -224,7 +235,21 @@ export default {
           this.palyData.likes += 1;
         }
       })
-    }
+    },
+    computedTime(msTime){ //秒ms, 毫秒mss
+      // let day = Math.floor((time) / (86400000)); //天
+      // let hours = Math.floor((mssTime % 86400000) / 3600000); //时
+      let minutes = parseInt((msTime % 3600000) / 60); //分 ((mstime % (1000 * 60 *60)) / 60)
+      let seconds = parseInt((msTime % 60)); //秒
+      // console.log(this.duboolnum(minutes), this.duboolnum(seconds));
+      return this.duboolnum(minutes) + ':' + this.duboolnum(seconds)
+    },
+    duboolnum(num){
+      if(num < 10){
+        num = '0' + num;
+      }
+      return num
+    },
   }
 };
 </script>

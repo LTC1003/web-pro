@@ -54,7 +54,7 @@ export default {
       errMsgText: '',
       isTagErrMsg: false, //tag err提示 
       userRoles: 'userRoles',
-      defTitle: 'defTitle',
+      defTitle: '退出',
       selectRole: '',
       tags: [],
       setArr: [],
@@ -187,13 +187,11 @@ export default {
           case 2:    
           this.tags = n.data;
           this.defTitle = '添加兴趣'       
-            break;
-          case 3:    
+            break;        
+          default: // 3
           this.defTitle = n.docs
           this.defTitle = '退出'   
-            break;           
-          default: 
-            break;
+          break;
         }
       },
       deep:true

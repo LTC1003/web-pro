@@ -51,6 +51,7 @@
     methods: {
       getShortList(){
         let reqData = {
+          token: this.localUserData.token,
           user_id: this.localUserData.id,
           module_type: 1,
           page: this.currentPage,
@@ -61,7 +62,7 @@
             this.datalist = res.data.result;
             this.isContent = 1;
           } else {
-            this.contentBackInfo = "空空如也，什么都没有观看过";
+            this.contentBackInfo = "空空如也!";
             this.isContent = 0;
           }
         });

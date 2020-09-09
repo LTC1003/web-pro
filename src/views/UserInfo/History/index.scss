@@ -29,14 +29,17 @@
       font-size: 14px;
       line-height:30px;
       text-align: center;
-      background-color: #ffffff;
-      color: #333333;
-      border: 1px solid #cccccc;
+      background:rgba(223,46,71,1);
+      color: #ffffff;
+      border: 1px solid #DF2E47;
+      // background-color: #ffffff;
+      // color: #333333;
+      // border: 1px solid #cccccc;
       &:hover{
         cursor: pointer;
-        background:rgba(223,46,71,1);
-        color: #ffffff;
-        border: 1px solid #DF2E47;
+        // background:rgba(223,46,71,1);
+        // color: #ffffff;
+        // border: 1px solid #DF2E47;
       }
     }
   }

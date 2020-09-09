@@ -135,7 +135,7 @@ export const addLookVideoHistory = (params) => {
     params,
   })
 }
-// 删除历史观看(批量) user_id id_list module_type
+// 删除历史观看(批量) user_id id_list module_type token
 export const delListLookVideoHistory = (data) => {
   return axios({
     url: '/api/user/look/batch_del',
@@ -155,7 +155,7 @@ export const addHobbyVideo = (params) =>{
     params,
   })
 }
-// 兴趣短视频list||兴趣专刊视频list  user_id module_type page limit
+// 兴趣短视频list||兴趣专刊视频list token user_id module_type page limit
 export const videoHobbyList = (params) =>{
   return axios({
     url: '/api/user/my_interest/list',
@@ -163,7 +163,7 @@ export const videoHobbyList = (params) =>{
     params,
   })
 }
-// 删除兴趣视频 user_id id_list module_type
+// 删除兴趣视频 token user_id id_list module_type
 export const videoHobbyDelete = (data) =>{
   return axios({
     url: '/api/user/my_interest/batch_del',

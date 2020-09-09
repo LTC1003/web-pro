@@ -24,7 +24,7 @@
           <i
             class="el-icon-search el-input__icon"
             slot="suffix"
-            @click="searchAll">
+            @click="searchAll(searchVal)">
           </i>
         </el-input>
       </div>
@@ -43,8 +43,8 @@
           </el-dropdown-menu>
         </el-dropdown>
         <div class="loginbtngurop" v-else>
-          <span class="sign" @click="signClick('login')">登录</span> 
-          <span class="register" @click="signClick('register')">注册</span>
+          <span class="sign" @click="signClick('login')">注册登录</span> 
+          <!-- <span class="register" @click="signClick('register')">注册</span> -->
         </div>
       </div>
       <Login :login="loginMsg" v-if="visibleState"
@@ -87,6 +87,7 @@ export default {
         {name: '历史',pathName: 'history'},
         {name: '上传',pathName: 'upload'},
         {name: '观众',pathName: 'audience'},
+        {name: '兴趣',pathName: 'myhobby'},
         {name: '消息',pathName: 'messages'},
         {name: '退出',pathName: 'outUsers'},
       ],
@@ -147,10 +148,8 @@ export default {
     getColumn(typeObj){
       this.$router.push({name: 'video-zone', query: typeObj});
     },
-    searchAll(ev){
-      console.log(ev, this.searchVal);
-      this.searchPlaceholder = this.searchVal;
-      this.$router.push({name: 'search-info-list', query: {searchVal:this.searchVal}});
+    searchAll(searchVal){
+      this.$router.push({name: 'search-info-list', query: {searchVal: searchVal}});
     }
   },
   // watch: {

@@ -12,7 +12,6 @@
             <el-avatar class="avatar" :src="personalData.avatar"></el-avatar>
           </el-form-item>
           <el-form-item label="身份" prop="userRole">
-            <!-- <el-button round plain type="warning" size="mini">{{personalData.userRole}}</el-button> -->
             <div class="rolename">
               {{getRoleName(personalData.userRole)}}
             </div>
@@ -102,6 +101,13 @@ export default {
     PopupWin,
   },
   data() {
+    var validateName = (rule, value, callback) => {
+      if (/^[a-zA-Z0-9\u4e00-\u9fa5]{2,8}$/.test(value)) {
+        callback();
+      } else {
+        callback(new Error('昵称2-8位字母、数组、下划线、或组合'));
+      }
+    };
     return {
       //三级联动
       options: regionData,
@@ -133,8 +139,8 @@ export default {
           {required: true, message: '必填', trigger: 'change' }
         ],
         userName: [
-          { required: true, message: '请输入昵称', trigger: 'blur' },
-          { min: 2, max: 8, message: '昵称2到8个字符', trigger: 'blur' }
+          // { required: true, message: '请输入昵称', trigger: 'blur' },
+          { validator: validateName, message: '昵称2到8个字符', trigger: 'change' }
         ],
         userCard: [
           { required: false, message: '', trigger: 'blur' },
