@@ -2,13 +2,13 @@
   <div id="privacy">
       <div class="title">
         <!-- {{agrData.title}} -->
-        “ToSee”隐私政策  
+        “TooSee”隐私政策  
       </div>
       <div>最近更新时间：2020年06月10日</div>
       <div>上次更新时间：2020年01月10日</div>
       <div class="section-content">
         <!-- {{agrData.content}} -->
-        <div>江苏精易达信息技术股份有限公司及其关联公司（简称“我们”）作为”ToSee”的运营者，深知个人信息对您的重要性，我们将按照法律法规的规定，保护您的个人信息及隐私安全</div>
+        <div>江苏精易达信息技术股份有限公司及其关联公司（简称“我们”）作为”TooSee”的运营者，深知个人信息对您的重要性，我们将按照法律法规的规定，保护您的个人信息及隐私安全</div>
         <div class="kaitou">
           本隐私政策将帮助您了解：
           <ol>
@@ -47,7 +47,7 @@
         // text: '隐私政策',
         localUserData: '',
         agrData: {
-          // content: "的“ToSee”服务协议↵“ToSee”服务协议（下称“本协议”）是您与“ToSee”软件（网站）",
+          // content: "的“TooSee”服务协议↵“TooSee”服务协议（下称“本协议”）是您与“TooSee”软件（网站）",
           // createTime: "2020-06-15 13:26:16",
           // effectTime: "2020-07-01 15:07:40",
           // id: 1,

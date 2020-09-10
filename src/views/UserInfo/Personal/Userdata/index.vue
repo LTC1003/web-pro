@@ -82,7 +82,7 @@
       </div>
       <div class="setcol" v-else>
         <div>密码</div>
-        <div class="setState">设置初始密码 {{personalData.passwordStatus}}</div>
+        <div class="setState">设置初始密码</div>
         <el-button class="setbtn" @click="setUserBtn('createPaswd')">设置密码</el-button>
       </div>
     </div>

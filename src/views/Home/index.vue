@@ -2,7 +2,7 @@
   <div class="home">
     <HeaderParts :typeList="videoTypeList" ></HeaderParts>
     <div class="sitewarp">
-      <div class="title">ToSee</div>
+      <div class="title">TooSee</div>
       <div class="docs-text">move your mood</div>
       <div class="control-download">
         <div class="discriminate_code">

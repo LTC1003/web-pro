@@ -3,9 +3,10 @@
     <h2 class="caption">创建密码</h2>
     <div class="pawdbox">
       <div class="formbox">
-        <el-input v-model="firstPawd" placeholder="输入6-20位英文或数字密码"></el-input>
+        <el-input v-model="firstPawd" placeholder="输入6-20位英文或数字密码" @blur="onblur(firstPawd)"></el-input>
         <div class="err-text" style="color: #f00" v-show="isErr">{{errText}}</div>
-        <el-button class="creactRightBtn" @click="isRight()">确定</el-button>
+        <!-- <el-button class="creactRightBtn" :plain="plain" :disabled="onchange(firstPawd)" @click="isRight()">确定</el-button> -->
+        <el-button class="creactRightBtn" type="danger" :plain="plain" :disabled="onchange(firstPawd)" @click="isRight()">确定</el-button>
       </div>
     </div>  
   </div>
@@ -24,6 +25,7 @@ export default {
       firstPawd: '',
       isErr: false,
       errText: '规则错误，密码6-20位',
+      plain: true,
     }
   },
   mounted() {
@@ -58,15 +60,22 @@ export default {
         });
       }
     },
-    // onchange(){
-    //   console.log('asduii', 2223);
-    //   if(/^(\w){6,20}$/.test(this.firstPawd) == false){
-    //     this.isErr = true;
-    //     return 
-    //   } else {
-    //     this.isErr = false;
-    //   }
-    // }
+    onblur(val){
+      if(/^(\w){6,20}$/.test(val) == false){
+        return this.isErr = true;
+      } else {
+        return this.isErr = false;
+      }
+    },
+    onchange(val){
+      if(/^(\w){6,20}$/.test(val) == false){
+        this.plain = true;
+        return true
+      } else {
+        this.plain = false;
+        return false
+      }
+    }
   }
 };
 </script>
@@ -95,18 +104,18 @@ export default {
       .creactRightBtn{
         width: 130px;
         height: 36px;
-        background: #FFBBC4;
         border-radius: 18px;
         font-size: 14px;
-        color: #FFFFFF;
         line-height: 36px;
         padding: 0;
         margin-top: 30px;
         border: none;
-        &:hover{
-          color: #FFFFFF;
-          background: #ec2741d2;
-        }
+        color: #FFBBC4;
+        background: #ec2741d2;
+        // &:hover{
+        //   background: #FFBBC4;
+        //   color: #FFFFFF;
+        // }
       }
     }
   }

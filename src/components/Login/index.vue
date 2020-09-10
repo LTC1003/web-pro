@@ -304,14 +304,13 @@
                 }
                 objData['moblie'] = this.loginVerify.moblie;
                 this.$api.userInfo.userLoginMobile(objData).then( res => {
-                  if(res.message === "操作成功"){
+                  if(res.message == '注册成功' || res.message == '操作成功'){
                     localStorage.loginUserInfo = JSON.stringify(res.data.result);
                     // localStorage.setItem('STORAGE_STATE', 1);  // 本地存储登录状态 1 
                     // this.$store.state.LoginUserInfo = JSON.parse(localStorage.getItem('loginUserInfo'));
                     this.$emit('changeState', {isShow : false, isLogin: 1, userData: JSON.parse(localStorage.loginUserInfo)}) // 退出弹框
                   } else {
                     // message: "验证码错误或已失效"
-                    console.log(res.message);
                     this.$message.error(res.message);
                   }
                 });
